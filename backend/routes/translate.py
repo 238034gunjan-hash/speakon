@@ -5,12 +5,14 @@ translate_bp = Blueprint("translate", __name__)
 
 @translate_bp.route("/translate", methods=["POST"])
 def translate():
+    data = request.get_json(silent=True) or {}
 
-    data = request.json
+    text = data.get("text", "")
+    source_lang = data.get("source_lang", "English")
+    target_lang = data.get("target_lang", "Nepali")
 
-    text = data.get("text")
-    source_lang = data.get("source_lang")
-    target_lang = data.get("target_lang")
+    if not text.strip():
+        return jsonify({"error": "Missing text"}), 400
 
     translated = translate_text(
         text,
