@@ -11,42 +11,69 @@
 const MODE_PHRASES = {
   shop: [
     { text: "How much does this cost?", translated: "यो कति रुपैयाँ हो?" },
-    { text: "Can you lower the price?", translated: "के तपाईं मूल्य घटाउन सक्नुहुन्छ?" },
+    {
+      text: "Can you lower the price?",
+      translated: "के तपाईं मूल्य घटाउन सक्नुहुन्छ?",
+    },
     { text: "I only want one.", translated: "मलाई एउटा मात्र चाहिन्छ।" },
-    { text: "Do you accept cards?", translated: "के तपाईं कार्ड स्वीकार गर्नुहुन्छ?" },
+    {
+      text: "Do you accept cards?",
+      translated: "के तपाईं कार्ड स्वीकार गर्नुहुन्छ?",
+    },
     { text: "That is too expensive.", translated: "यो धेरै महँगो भयो।" },
-    { text: "Can I see another one?", translated: "के म अर्को हेर्न सक्छु?" }
+    { text: "Can I see another one?", translated: "के म अर्को हेर्न सक्छु?" },
   ],
   taxi: [
-    { text: "Please take me to this location.", translated: "कृपया मलाई यो ठाउँमा लैजानुहोस्।" },
+    {
+      text: "Please take me to this location.",
+      translated: "कृपया मलाई यो ठाउँमा लैजानुहोस्।",
+    },
     { text: "Stop here.", translated: "यहाँ रोक्नुहोस्।" },
     { text: "How much is the fare?", translated: "भाडा कति हो?" },
     { text: "Please drive slowly.", translated: "कृपया बिस्तारै हाक्नुहोस्।" },
-    { text: "Can you wait for me?", translated: "के तपाईं मेरो लागि पर्खन सक्नुहुन्छ?" },
-    { text: "Take me to the airport.", translated: "मलाई विमानस्थल लैजानुहोस्।" }
+    {
+      text: "Can you wait for me?",
+      translated: "के तपाईं मेरो लागि पर्खन सक्नुहुन्छ?",
+    },
+    {
+      text: "Take me to the airport.",
+      translated: "मलाई विमानस्थल लैजानुहोस्।",
+    },
   ],
   hotel: [
     { text: "I have a reservation.", translated: "मेरो बुकिङ छ।" },
-    { text: "I need a room for one night.", translated: "मलाई एक रातको लागि कोठा चाहिन्छ।" },
+    {
+      text: "I need a room for one night.",
+      translated: "मलाई एक रातको लागि कोठा चाहिन्छ।",
+    },
     { text: "Is breakfast included?", translated: "के बिहानको खाना समावेश छ?" },
     { text: "The Wi-Fi is not working.", translated: "वाइफाइ चलेको छैन।" },
-    { text: "Can I get room service?", translated: "के म कोठा सेवा पाउन सक्छु?" },
-    { text: "I want to check out.", translated: "म चेक आउट गर्न चाहन्छु।" }
+    {
+      text: "Can I get room service?",
+      translated: "के म कोठा सेवा पाउन सक्छु?",
+    },
+    { text: "I want to check out.", translated: "म चेक आउट गर्न चाहन्छु।" },
   ],
   dining: [
     { text: "I would like to order.", translated: "म अर्डर गर्न चाहन्छु।" },
-    { text: "Do you have vegetarian food?", translated: "के तपाईंसँग शाकाहारी खाना छ?" },
-    { text: "No spicy food please.", translated: "कृपया पिरो खाना नहाल्नुहोला।" },
+    {
+      text: "Do you have vegetarian food?",
+      translated: "के तपाईंसँग शाकाहारी खाना छ?",
+    },
+    {
+      text: "No spicy food please.",
+      translated: "कृपया पिरो खाना नहाल्नुहोला।",
+    },
     { text: "Can I see the menu?", translated: "के म मेनु हेर्न सक्छु?" },
     { text: "The food was excellent.", translated: "खाना निकै मिठो थियो।" },
-    { text: "Can I get the bill?", translated: "के म बिल पाउन सक्छु?" }
+    { text: "Can I get the bill?", translated: "के म बिल पाउन सक्छु?" },
   ],
   emergency: [
     { text: "Need Assistance", translated: "मलाई सहयोग चाहियो।" },
     { text: "Call Police", translated: "प्रहरीलाई फोन गर्नुहोस्।" },
     { text: "Need Hospital", translated: "मलाई अस्पताल जानुपर्छ।" },
-    { text: "I Am Lost", translated: "म हराएँ।" }
-  ]
+    { text: "I Am Lost", translated: "म हराएँ।" },
+  ],
 };
 
 const MODE_METADATA = {
@@ -54,60 +81,94 @@ const MODE_METADATA = {
     title: "Voice Translator",
     desc: "Speak naturally and hear translations instantly.",
     class: "",
-    label: "Modes: General"
+    label: "Modes: General",
   },
   shop: {
     title: "Shop Mode",
     desc: "Help tourists communicate while shopping in markets or local boutiques.",
     class: "theme-shop",
-    label: "Modes: Shop"
+    label: "Modes: Shop",
   },
   taxi: {
     title: "Taxi Mode",
     desc: "Communicate with cab, auto-rickshaw, or ride-share drivers seamlessly.",
     class: "theme-taxi",
-    label: "Modes: Taxi"
+    label: "Modes: Taxi",
   },
   hotel: {
     title: "Hotel Mode",
     desc: "Navigate hotel room check-in, Wi-Fi networks, and hospitality services.",
     class: "theme-hotel",
-    label: "Modes: Hotel"
+    label: "Modes: Hotel",
   },
   dining: {
     title: "Dining Mode",
     desc: "Order local meals, specify spice tolerances, and request dining bills.",
     class: "theme-dining",
-    label: "Modes: Dining"
+    label: "Modes: Dining",
   },
   emergency: {
     title: "Emergency Broadcast",
     desc: "High-visibility critical commands for stressful travel situations.",
     class: "theme-shop", // Employs crimson rose/red HSL
-    label: "Modes: Emergency"
-  }
+    label: "Modes: Emergency",
+  },
 };
 
 // Compile dictionary bidirectionally
 const DEMO_TRANSLATIONS = {
-  "hello": "नमस्ते",
+  hello: "नमस्ते",
   "thank you": "धन्यवाद",
-  "yes": "हो",
-  "no": "होइन",
+  yes: "हो",
+  no: "होइन",
   "how are you?": "तपाईंलाई कस्तो छ?",
-  
-  "नमस्ते": "Hello / Namaste",
-  "धन्यवाद": "Thank you",
-  "हो": "Yes",
-  "होइन": "No"
+
+  नमस्ते: "Hello / Namaste",
+  धन्यवाद: "Thank you",
+  हो: "Yes",
+  होइन: "No",
 };
 
 // Inject phrases into the lookups
 for (const mode in MODE_PHRASES) {
-  MODE_PHRASES[mode].forEach(phrase => {
+  MODE_PHRASES[mode].forEach((phrase) => {
     DEMO_TRANSLATIONS[phrase.text.toLowerCase().trim()] = phrase.translated;
     DEMO_TRANSLATIONS[phrase.translated.toLowerCase().trim()] = phrase.text;
   });
+}
+
+const API_BASE_URL =
+  window.location.protocol === "file:" || window.location.port === "5500"
+    ? "http://localhost:5000"
+    : window.location.origin;
+
+async function translateViaBackend(text) {
+  const url = `${API_BASE_URL}/translate`;
+
+  const response = await fetch(url, {
+    method: "POST",
+    mode: "cors",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      text,
+      source_lang: sourceLanguage.value,
+      target_lang: targetLanguage.value,
+    }),
+  });
+
+  if (!response.ok) {
+    const errorBody = await response.text();
+    throw new Error(`Translate API error: ${response.status} ${errorBody}`);
+  }
+
+  const data = await response.json();
+  if (data.error) {
+    throw new Error(data.error);
+  }
+
+  return data.translated_text;
 }
 
 // -------------------------------------------------------------
@@ -201,7 +262,7 @@ let historiesByMode = {
   taxi: [],
   hotel: [],
   dining: [],
-  emergency: []
+  emergency: [],
 };
 
 function initStorage() {
@@ -233,7 +294,7 @@ function initStorage() {
 
   // Reload isolated histories
   const modes = ["general", "shop", "taxi", "hotel", "dining", "emergency"];
-  modes.forEach(mode => {
+  modes.forEach((mode) => {
     const cached = localStorage.getItem(`speakon_history_${mode}`);
     if (cached !== null) {
       historiesByMode[mode] = JSON.parse(cached);
@@ -253,7 +314,10 @@ function initStorage() {
 }
 
 function saveActiveHistory() {
-  localStorage.setItem(`speakon_history_${activeMode}`, JSON.stringify(historiesByMode[activeMode]));
+  localStorage.setItem(
+    `speakon_history_${activeMode}`,
+    JSON.stringify(historiesByMode[activeMode]),
+  );
   renderConversationList();
   renderHistoryTab();
 }
@@ -298,7 +362,9 @@ window.addEventListener("offline", () => {
 
 // Profile Modal Interactions
 openProfile.addEventListener("click", () => profileModal.classList.add("show"));
-closeProfileModal.addEventListener("click", () => profileModal.classList.remove("show"));
+closeProfileModal.addEventListener("click", () =>
+  profileModal.classList.remove("show"),
+);
 profileModal.addEventListener("click", (e) => {
   if (e.target === profileModal) profileModal.classList.remove("show");
 });
@@ -334,7 +400,7 @@ btnSwitchToSignUp.addEventListener("click", () => {
 // -------------------------------------------------------------
 
 function speakTranslation(text, customRate = null) {
-  if (!('speechSynthesis' in window)) {
+  if (!("speechSynthesis" in window)) {
     showToast("Text-to-speech not supported in this browser.");
     return;
   }
@@ -350,9 +416,13 @@ function speakTranslation(text, customRate = null) {
   const voices = window.speechSynthesis.getVoices();
   let selectedVoice = null;
   if (targetNepali) {
-    selectedVoice = voices.find(v => v.lang.includes("ne") || v.lang.includes("NP"));
+    selectedVoice = voices.find(
+      (v) => v.lang.includes("ne") || v.lang.includes("NP"),
+    );
   } else {
-    selectedVoice = voices.find(v => v.lang.includes("en-US") || v.lang.includes("en-GB"));
+    selectedVoice = voices.find(
+      (v) => v.lang.includes("en-US") || v.lang.includes("en-GB"),
+    );
   }
   if (selectedVoice) utterance.voice = selectedVoice;
 
@@ -360,7 +430,8 @@ function speakTranslation(text, customRate = null) {
 }
 
 // Web Speech Recognition
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+const SpeechRecognition =
+  window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition = null;
 
 if (SpeechRecognition) {
@@ -372,11 +443,11 @@ if (SpeechRecognition) {
     isListening = true;
     micButton.classList.add("listening");
     wavesContainer.classList.add("animating");
-    
+
     statusBadge.className = "status-badge listening";
     statusText.textContent = "Listening";
     statusInstruction.textContent = "Please speak clearly into your device...";
-    
+
     const fromEnglish = sourceLanguage.value === "English";
     recognition.lang = fromEnglish ? "en-US" : "ne-NP";
   };
@@ -384,8 +455,8 @@ if (SpeechRecognition) {
   recognition.onerror = (event) => {
     console.error("Speech Recognition Error:", event.error);
     stopRecordingSession();
-    
-    if (event.error === 'not-allowed') {
+
+    if (event.error === "not-allowed") {
       showToast("Microphone access blocked. Enable permissions in settings.");
     } else {
       showToast("Microphone capture issue. Launching simulation fallback...");
@@ -411,7 +482,7 @@ function startRecordingSession() {
   if (recognition) {
     try {
       recognition.start();
-    } catch(e) {
+    } catch (e) {
       recognition.stop();
       setTimeout(() => recognition.start(), 200);
     }
@@ -419,11 +490,11 @@ function startRecordingSession() {
     isListening = true;
     micButton.classList.add("listening");
     wavesContainer.classList.add("animating");
-    
+
     statusBadge.className = "status-badge listening";
     statusText.textContent = "Listening";
     statusInstruction.textContent = "Simulating voice input...";
-    
+
     setTimeout(() => {
       stopRecordingSession();
       simulateSpeechInput();
@@ -435,15 +506,15 @@ function stopRecordingSession() {
   isListening = false;
   micButton.classList.remove("listening");
   wavesContainer.classList.remove("animating");
-  
+
   statusBadge.className = "status-badge";
   statusText.textContent = "Ready";
   statusInstruction.textContent = "Tap the microphone and begin speaking";
-  
+
   if (recognition) {
     try {
       recognition.stop();
-    } catch(e){}
+    } catch (e) {}
   }
 }
 
@@ -453,7 +524,8 @@ function simulateSpeechInput() {
 
   if (fromEnglish) {
     if (activeMode === "shop") fallbackText = "How much does this cost?";
-    else if (activeMode === "taxi") fallbackText = "Please take me to the airport.";
+    else if (activeMode === "taxi")
+      fallbackText = "Please take me to the airport.";
     else if (activeMode === "dining") fallbackText = "Can I see the menu?";
     else if (activeMode === "hotel") fallbackText = "I have a reservation.";
     else fallbackText = "Hello, how are you?";
@@ -473,35 +545,7 @@ function simulateSpeechInput() {
 // 6. Translation Engine
 // -------------------------------------------------------------
 
-function runTranslateAlgorithm(text) {
-  const norm = text.toLowerCase().trim().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g,"");
-  
-  if (DEMO_TRANSLATIONS[norm]) {
-    return DEMO_TRANSLATIONS[norm];
-  }
-  if (DEMO_TRANSLATIONS[text.trim()]) {
-    return DEMO_TRANSLATIONS[text.trim()];
-  }
-
-  const toNepali = targetLanguage.value === "Nepali";
-  if (toNepali) {
-    if (norm.includes("hotel") || norm.includes("room")) return "के होटलमा कोठा उपलब्ध छ? (Hotel Availability Inquiry)";
-    if (norm.includes("cost") || norm.includes("price") || norm.includes("how much")) return "यो कति रुपैयाँ हो? (Price inquiry)";
-    if (norm.includes("menu") || norm.includes("food") || norm.includes("eat")) return "के म मेनु हेर्न सक्छु? (Menu request)";
-    if (norm.includes("stop") || norm.includes("here")) return "कृपया यहाँ रोक्नुहोस्। (Request to stop here)";
-    
-    return `नेपाली अनुवाद: "${text}" (Dynamic Translator)`;
-  } else {
-    if (norm.includes("कोठा") || norm.includes("होटल")) return "Is a room available at the hotel?";
-    if (norm.includes("कति") || norm.includes("रुपैयाँ") || norm.includes("पैसा")) return "How much does this cost?";
-    if (norm.includes("मेनु") || norm.includes("खाना")) return "Can I see the menu, please?";
-    if (norm.includes("रोक") || norm.includes("यहाँ")) return "Please stop the vehicle here.";
-    
-    return `English Translation: "${text}" (Dynamic Translator)`;
-  }
-}
-
-function processTranslation(sourceText) {
+async function processTranslation(sourceText) {
   if (!sourceText.trim()) {
     showToast("Type or speak a phrase to translate.");
     return;
@@ -514,29 +558,48 @@ function processTranslation(sourceText) {
   const originalLang = sourceLanguage.value;
   const translatedLang = targetLanguage.value;
 
-  setTimeout(() => {
-    const resultText = runTranslateAlgorithm(sourceText);
-    
-    const entry = {
-      id: Date.now(),
-      from: originalLang,
-      to: translatedLang,
-      original: sourceText,
-      translated: resultText,
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    };
+  let resultText;
+  try {
+    resultText = await translateViaBackend(sourceText);
+  } catch (error) {
+    console.error("Backend translation error:", error);
+    showToast("Backend translation failed. Please check the server.");
+    statusBadge.className = "status-badge error";
+    statusText.textContent = "Translation failed";
+    statusInstruction.textContent = "Unable to get backend response.";
+    return;
+  }
 
-    historiesByMode[activeMode].push(entry);
-    saveActiveHistory();
+  if (!resultText) {
+    showToast("Backend returned no translation.");
+    statusBadge.className = "status-badge error";
+    statusText.textContent = "No translation";
+    statusInstruction.textContent = "Backend response was empty.";
+    return;
+  }
 
-    statusBadge.className = "status-badge ready-playback";
-    statusText.textContent = "Playback Ready";
-    statusInstruction.textContent = "Audio translation built!";
+  const entry = {
+    id: Date.now(),
+    from: originalLang,
+    to: translatedLang,
+    original: sourceText,
+    translated: resultText,
+    timestamp: new Date().toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    }),
+  };
 
-    if (autoPlayActive) {
-      speakTranslation(resultText);
-    }
-  }, 600);
+  historiesByMode[activeMode].push(entry);
+  saveActiveHistory();
+
+  statusBadge.className = "status-badge ready-playback";
+  statusText.textContent = "Playback Ready";
+  statusInstruction.textContent = "Audio translation built!";
+
+  if (autoPlayActive) {
+    speakTranslation(resultText);
+  }
 }
 
 // -------------------------------------------------------------
@@ -561,7 +624,7 @@ function renderConversationList() {
     return;
   }
 
-  currentLog.forEach(entry => {
+  currentLog.forEach((entry) => {
     const sentRow = document.createElement("div");
     sentRow.className = "speech-row sent";
     sentRow.innerHTML = `
@@ -575,8 +638,10 @@ function renderConversationList() {
 
     const recRow = document.createElement("div");
     recRow.className = "speech-row received";
-    
-    const isBookmarked = savedBookmarks.some(b => b.original === entry.original);
+
+    const isBookmarked = savedBookmarks.some(
+      (b) => b.original === entry.original,
+    );
 
     recRow.innerHTML = `
       <div class="speech-bubble">
@@ -605,8 +670,8 @@ function renderConversationList() {
             </svg>
           </button>
           
-          <button class="action-icon-btn btn-action-bookmark ${isBookmarked ? 'saved' : ''}" title="Save Phrase" aria-label="Save phrase to favorites">
-            <svg viewBox="0 0 24 24" fill="${isBookmarked ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <button class="action-icon-btn btn-action-bookmark ${isBookmarked ? "saved" : ""}" title="Save Phrase" aria-label="Save phrase to favorites">
+            <svg viewBox="0 0 24 24" fill="${isBookmarked ? "currentColor" : "none"}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
             </svg>
           </button>
@@ -627,21 +692,27 @@ function renderConversationList() {
       navigator.clipboard.writeText(entry.translated);
       showToast("Copied to clipboard!");
     });
-    recRow.querySelector(".btn-action-bookmark").addEventListener("click", (e) => {
-      const idx = savedBookmarks.findIndex(b => b.original === entry.original);
-      if (idx > -1) {
-        savedBookmarks.splice(idx, 1);
-        e.currentTarget.classList.remove("saved");
-        e.currentTarget.querySelector("svg").setAttribute("fill", "none");
-        showToast("Removed from saved phrases list.");
-      } else {
-        savedBookmarks.push(entry);
-        e.currentTarget.classList.add("saved");
-        e.currentTarget.querySelector("svg").setAttribute("fill", "currentColor");
-        showToast("Bookmarked to saved phrases.");
-      }
-      saveGlobalBookmarks();
-    });
+    recRow
+      .querySelector(".btn-action-bookmark")
+      .addEventListener("click", (e) => {
+        const idx = savedBookmarks.findIndex(
+          (b) => b.original === entry.original,
+        );
+        if (idx > -1) {
+          savedBookmarks.splice(idx, 1);
+          e.currentTarget.classList.remove("saved");
+          e.currentTarget.querySelector("svg").setAttribute("fill", "none");
+          showToast("Removed from saved phrases list.");
+        } else {
+          savedBookmarks.push(entry);
+          e.currentTarget.classList.add("saved");
+          e.currentTarget
+            .querySelector("svg")
+            .setAttribute("fill", "currentColor");
+          showToast("Bookmarked to saved phrases.");
+        }
+        saveGlobalBookmarks();
+      });
 
     chatContainer.appendChild(recRow);
   });
@@ -651,7 +722,7 @@ function renderConversationList() {
 
 function renderModePhrases() {
   modePhrasesGrid.innerHTML = "";
-  
+
   if (activeMode === "general") {
     modePhrasesCard.style.display = "none";
     return;
@@ -661,7 +732,7 @@ function renderModePhrases() {
   modePhrasesCard.style.display = "flex";
   phrasesCardTitle.textContent = `${MODE_METADATA[activeMode].title} Phrases`;
 
-  MODE_PHRASES[activeMode].forEach(phraseObj => {
+  MODE_PHRASES[activeMode].forEach((phraseObj) => {
     const chip = document.createElement("button");
     chip.className = "mode-phrase-btn";
     chip.innerHTML = `
@@ -688,17 +759,18 @@ function renderGlobalPhrasesTab() {
     shopping: shoppingGrid,
     dining: diningGrid,
     transportation: transGrid,
-    hotel: hotelGrid
+    hotel: hotelGrid,
   };
 
-  categories.forEach(cat => {
+  categories.forEach((cat) => {
     const grid = grids[cat];
     if (!grid) return;
 
     grid.innerHTML = "";
-    const mapKey = cat === "shopping" ? "shop" : cat === "transportation" ? "taxi" : cat;
-    
-    MODE_PHRASES[mapKey].forEach(phraseObj => {
+    const mapKey =
+      cat === "shopping" ? "shop" : cat === "transportation" ? "taxi" : cat;
+
+    MODE_PHRASES[mapKey].forEach((phraseObj) => {
       const btn = document.createElement("button");
       btn.className = "phrase-row-btn";
       btn.innerHTML = `
@@ -712,9 +784,15 @@ function renderGlobalPhrasesTab() {
 
       btn.addEventListener("click", () => {
         // Switch to appropriate tab and select context
-        document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
-        document.querySelector('.nav-tab[data-target="tab-translator"]').classList.add("active");
-        document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+        document
+          .querySelectorAll(".nav-tab")
+          .forEach((t) => t.classList.remove("active"));
+        document
+          .querySelector('.nav-tab[data-target="tab-translator"]')
+          .classList.add("active");
+        document
+          .querySelectorAll(".tab-panel")
+          .forEach((p) => p.classList.remove("active"));
         document.getElementById("tab-translator").classList.add("active");
 
         setTranslatorMode(mapKey);
@@ -732,7 +810,10 @@ function renderHistoryTab() {
   historyList.innerHTML = "";
   historyCount.textContent = `${savedBookmarks.length} bookmarked phrases`;
 
-  const totalHistoryCount = Object.values(historiesByMode).reduce((sum, list) => sum + list.length, 0);
+  const totalHistoryCount = Object.values(historiesByMode).reduce(
+    (sum, list) => sum + list.length,
+    0,
+  );
 
   if (totalHistoryCount === 0 && savedBookmarks.length === 0) {
     historyList.innerHTML = `
@@ -751,7 +832,7 @@ function renderHistoryTab() {
     bookmarkHeader.textContent = "⭐ Starred Favorites";
     historyList.appendChild(bookmarkHeader);
 
-    savedBookmarks.forEach(fav => {
+    savedBookmarks.forEach((fav) => {
       const item = document.createElement("div");
       item.className = "history-item";
       item.innerHTML = `
@@ -780,7 +861,7 @@ function renderHistoryTab() {
   // Recents list
   const allRecents = [];
   for (const mode in historiesByMode) {
-    historiesByMode[mode].forEach(entry => {
+    historiesByMode[mode].forEach((entry) => {
       allRecents.push({ ...entry, mode: mode });
     });
   }
@@ -792,10 +873,13 @@ function renderHistoryTab() {
     recentHeader.textContent = "🕰️ Recent Translations";
     historyList.appendChild(recentHeader);
 
-    allRecents.sort((a,b) => b.id - a.id).slice(0, 10).forEach(recent => {
-      const item = document.createElement("div");
-      item.className = "history-item";
-      item.innerHTML = `
+    allRecents
+      .sort((a, b) => b.id - a.id)
+      .slice(0, 10)
+      .forEach((recent) => {
+        const item = document.createElement("div");
+        item.className = "history-item";
+        item.innerHTML = `
         <div class="history-meta">
           <span class="history-langs">${recent.from} → ${recent.to} (${recent.mode.toUpperCase()})</span>
           <div class="history-item-actions">
@@ -810,12 +894,12 @@ function renderHistoryTab() {
         <span class="history-translated">${recent.translated}</span>
       `;
 
-      item.querySelector(".btn-recent-play").addEventListener("click", () => {
-        speakTranslation(recent.translated);
-      });
+        item.querySelector(".btn-recent-play").addEventListener("click", () => {
+          speakTranslation(recent.translated);
+        });
 
-      historyList.appendChild(item);
-    });
+        historyList.appendChild(item);
+      });
   }
 }
 
@@ -833,7 +917,7 @@ function setTranslatorMode(modeKey, triggerToast = true) {
   localStorage.setItem("speakon_active_mode", modeKey);
 
   // Update modes list modal highlighting
-  document.querySelectorAll(".mode-selection-item").forEach(item => {
+  document.querySelectorAll(".mode-selection-item").forEach((item) => {
     item.classList.remove("active");
     if (item.dataset.mode === modeKey) {
       item.classList.add("active");
@@ -886,14 +970,18 @@ function setTranslatorMode(modeKey, triggerToast = true) {
 }
 
 // Modes selection Modal toggles
-btnModesTrigger.addEventListener("click", () => modesModal.classList.add("show"));
-closeModesModal.addEventListener("click", () => modesModal.classList.remove("show"));
+btnModesTrigger.addEventListener("click", () =>
+  modesModal.classList.add("show"),
+);
+closeModesModal.addEventListener("click", () =>
+  modesModal.classList.remove("show"),
+);
 modesModal.addEventListener("click", (e) => {
   if (e.target === modesModal) modesModal.classList.remove("show");
 });
 
 // Bind list items inside modes selector modal
-document.querySelectorAll(".mode-selection-item").forEach(item => {
+document.querySelectorAll(".mode-selection-item").forEach((item) => {
   item.addEventListener("click", () => {
     const key = item.dataset.mode;
     setTranslatorMode(key);
@@ -926,15 +1014,15 @@ micButton.addEventListener("click", () => {
 });
 
 // Manual Text inputs
-btnManualTranslate.addEventListener("click", () => {
+btnManualTranslate.addEventListener("click", async () => {
   const text = manualTextInput.value;
-  processTranslation(text);
+  await processTranslation(text);
   manualTextInput.value = "";
 });
-manualTextInput.addEventListener("keypress", (e) => {
+manualTextInput.addEventListener("keypress", async (e) => {
   if (e.key === "Enter") {
     const text = manualTextInput.value;
-    processTranslation(text);
+    await processTranslation(text);
     manualTextInput.value = "";
   }
 });
@@ -947,10 +1035,10 @@ btnConversationClear.addEventListener("click", () => {
 });
 
 // Emergency Alert Buttons click
-document.querySelectorAll(".emergency-btn").forEach(btn => {
+document.querySelectorAll(".emergency-btn").forEach((btn) => {
   btn.addEventListener("click", () => {
     const phraseLabel = btn.dataset.phrase;
-    
+
     // Load emergency context view first
     setTranslatorMode("emergency", false);
 
@@ -963,13 +1051,17 @@ document.querySelectorAll(".emergency-btn").forEach(btn => {
 // -------------------------------------------------------------
 // 9. Bottom Navigation Tabs
 // -------------------------------------------------------------
-document.querySelectorAll(".nav-tab").forEach(tab => {
+document.querySelectorAll(".nav-tab").forEach((tab) => {
   tab.addEventListener("click", () => {
-    document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
+    document
+      .querySelectorAll(".nav-tab")
+      .forEach((t) => t.classList.remove("active"));
     tab.classList.add("active");
 
     const targetId = tab.dataset.target;
-    document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+    document
+      .querySelectorAll(".tab-panel")
+      .forEach((p) => p.classList.remove("active"));
     document.getElementById(targetId).classList.add("active");
 
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1024,7 +1116,7 @@ btnResetBookmarks.addEventListener("click", () => {
 
 btnResetApp.addEventListener("click", () => {
   localStorage.clear();
-  
+
   for (const m in historiesByMode) {
     historiesByMode[m] = [];
   }
