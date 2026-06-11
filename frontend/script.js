@@ -171,6 +171,9 @@ async function translateViaBackend(text) {
   return data.translated_text;
 }
 
+const WHISPER_API_URL =
+  "https://fastwhisperapi-production-0f22.up.railway.app/transcribe";
+
 // -------------------------------------------------------------
 // 2. DOM Elements Mapping
 // -------------------------------------------------------------
@@ -250,10 +253,14 @@ const connectivityText = document.getElementById("connectivityText");
 
 let activeMode = "general"; // Default
 let isListening = false;
+let isTranscribing = false;
 let autoPlayActive = true;
 let speechSpeedRate = 1.0;
 let savedBookmarks = []; // Bookmarked favorites
 let toastTimer;
+let mediaRecorder = null;
+let mediaStream = null;
+let recordedChunks = [];
 
 // Isolated histories per mode
 let historiesByMode = {
@@ -429,77 +436,185 @@ function speakTranslation(text, customRate = null) {
   window.speechSynthesis.speak(utterance);
 }
 
-// Web Speech Recognition
-const SpeechRecognition =
-  window.SpeechRecognition || window.webkitSpeechRecognition;
-let recognition = null;
+// Microphone capture and Whisper transcription
+function setMicStatus(state, title, instruction) {
+  statusBadge.className = `status-badge ${state}`.trim();
+  statusText.textContent = title;
+  statusInstruction.textContent = instruction;
+}
 
-if (SpeechRecognition) {
-  recognition = new SpeechRecognition();
-  recognition.continuous = false;
-  recognition.interimResults = false;
+function stopActiveStream() {
+  if (mediaStream) {
+    mediaStream.getTracks().forEach((track) => track.stop());
+    mediaStream = null;
+  }
+}
 
-  recognition.onstart = () => {
-    isListening = true;
-    micButton.classList.add("listening");
-    wavesContainer.classList.add("animating");
+async function transcribeAudioBlob(audioBlob) {
+  if (!audioBlob || audioBlob.size === 0) {
+    throw new Error("empty-audio");
+  }
 
-    statusBadge.className = "status-badge listening";
-    statusText.textContent = "Listening";
-    statusInstruction.textContent = "Please speak clearly into your device...";
+  const formData = new FormData();
+  formData.append("audio", audioBlob, "recording.webm");
 
-    const fromEnglish = sourceLanguage.value === "English";
-    recognition.lang = fromEnglish ? "en-US" : "ne-NP";
-  };
+  const response = await fetch(WHISPER_API_URL, {
+    method: "POST",
+    body: formData,
+  });
 
-  recognition.onerror = (event) => {
-    console.error("Speech Recognition Error:", event.error);
-    stopRecordingSession();
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`whisper-api-${response.status}: ${errorText}`);
+  }
 
-    if (event.error === "not-allowed") {
-      showToast("Microphone access blocked. Enable permissions in settings.");
-    } else {
-      showToast("Microphone capture issue. Launching simulation fallback...");
-      simulateSpeechInput();
-    }
-  };
-
-  recognition.onend = () => {
-    stopRecordingSession();
-  };
-
-  recognition.onresult = (event) => {
-    const rawResult = event.results[0][0].transcript;
-    if (rawResult) {
-      processTranslation(rawResult);
-    } else {
-      showToast("No speech recognized. Try speaking again.");
-    }
-  };
+  return response.json();
 }
 
 function startRecordingSession() {
-  if (recognition) {
-    try {
-      recognition.start();
-    } catch (e) {
-      recognition.stop();
-      setTimeout(() => recognition.start(), 200);
-    }
-  } else {
-    isListening = true;
-    micButton.classList.add("listening");
-    wavesContainer.classList.add("animating");
-
-    statusBadge.className = "status-badge listening";
-    statusText.textContent = "Listening";
-    statusInstruction.textContent = "Simulating voice input...";
-
-    setTimeout(() => {
-      stopRecordingSession();
-      simulateSpeechInput();
-    }, 2400);
+  if (isListening || isTranscribing) {
+    return;
   }
+
+  if (!navigator.mediaDevices || !window.MediaRecorder) {
+    showToast("Voice capture is not supported in this browser.");
+    return;
+  }
+
+  isListening = true;
+  micButton.classList.add("listening");
+  wavesContainer.classList.add("animating");
+  setMicStatus(
+    "listening",
+    "Listening",
+    "Please speak clearly into your microphone...",
+  );
+
+  navigator.mediaDevices
+    .getUserMedia({ audio: true })
+    .then((stream) => {
+      if (!isListening) {
+        stream.getTracks().forEach((track) => track.stop());
+        return;
+      }
+
+      mediaStream = stream;
+      recordedChunks = [];
+
+      const preferredMimeTypes = [
+        "audio/webm;codecs=opus",
+        "audio/webm",
+        "audio/mp4",
+      ];
+      const mimeType = preferredMimeTypes.find((type) =>
+        window.MediaRecorder.isTypeSupported(type),
+      );
+
+      mediaRecorder = mimeType
+        ? new MediaRecorder(stream, { mimeType })
+        : new MediaRecorder(stream);
+
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data && event.data.size > 0) {
+          recordedChunks.push(event.data);
+        }
+      };
+
+      mediaRecorder.onerror = (event) => {
+        console.error("MediaRecorder error:", event.error || event);
+        stopRecordingSession();
+        showToast("Microphone capture failed. Please try again.");
+      };
+
+      mediaRecorder.onstop = async () => {
+        const currentRecorder = mediaRecorder;
+        const audioBlob = new Blob(recordedChunks, {
+          type: currentRecorder?.mimeType || "audio/webm",
+        });
+
+        recordedChunks = [];
+        mediaRecorder = null;
+        stopActiveStream();
+
+        if (!audioBlob.size) {
+          isTranscribing = false;
+          setMicStatus("error", "No Audio", "No audio was captured. Try again.");
+          showToast("No audio captured.");
+          return;
+        }
+
+        isTranscribing = true;
+        setMicStatus(
+          "transcribing",
+          "Transcribing",
+          "Sending audio to Whisper for speech-to-text...",
+        );
+
+        try {
+          const response = await transcribeAudioBlob(audioBlob);
+          const transcript = (response && response.text ? String(response.text) : "").trim();
+
+          if (!transcript) {
+            throw new Error("empty-transcript");
+          }
+
+          showToast(
+            response.language
+              ? `Transcribed ${response.language} audio.`
+              : "Audio transcribed successfully.",
+          );
+          await processTranslation(transcript);
+        } catch (error) {
+          console.error("Whisper transcription error:", error);
+          const message = String(error?.message || error);
+
+          if (message.includes("empty-audio")) {
+            showToast("No audio was captured. Please try again.");
+          } else if (message.includes("empty-transcript")) {
+            setMicStatus(
+              "error",
+              "No Text",
+              "Speech was captured, but Whisper returned no transcript.",
+            );
+            showToast("Whisper returned no text.");
+          } else {
+            setMicStatus(
+              "error",
+              "Transcription Failed",
+              "Unable to convert audio to text.",
+            );
+            showToast("Transcription failed. Please try again.");
+          }
+        } finally {
+          isTranscribing = false;
+        }
+      };
+
+      try {
+        mediaRecorder.start();
+      } catch (error) {
+        console.error("Failed to start MediaRecorder:", error);
+        stopRecordingSession();
+        showToast("Could not start microphone recording.");
+      }
+    })
+    .catch((error) => {
+      console.error("Microphone permission error:", error);
+      isListening = false;
+      micButton.classList.remove("listening");
+      wavesContainer.classList.remove("animating");
+      setMicStatus(
+        "error",
+        "Permission Needed",
+        "Allow microphone access to use voice input.",
+      );
+
+      if (error && error.name === "NotAllowedError") {
+        showToast("Microphone permission denied.");
+      } else {
+        showToast("Unable to access microphone.");
+      }
+    });
 }
 
 function stopRecordingSession() {
@@ -507,14 +622,15 @@ function stopRecordingSession() {
   micButton.classList.remove("listening");
   wavesContainer.classList.remove("animating");
 
-  statusBadge.className = "status-badge";
-  statusText.textContent = "Ready";
-  statusInstruction.textContent = "Tap the microphone and begin speaking";
-
-  if (recognition) {
+  if (mediaRecorder && mediaRecorder.state === "recording") {
     try {
-      recognition.stop();
+      mediaRecorder.stop();
     } catch (e) {}
+    return;
+  }
+
+  if (!isTranscribing) {
+    setMicStatus("", "Ready", "Tap the microphone and begin speaking");
   }
 }
 
