@@ -554,6 +554,8 @@ function startRecordingSession() {
           const response = await transcribeAudioBlob(audioBlob);
           const transcript = (response && response.text ? String(response.text) : "").trim();
 
+          console.log("Whisper transcript received:", transcript);
+
           if (!transcript) {
             throw new Error("empty-transcript");
           }
