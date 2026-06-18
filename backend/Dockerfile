@@ -5,13 +5,13 @@ WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-COPY backend/requirements.txt ./requirements.txt
+COPY requirements.txt ./requirements.txt
 
 RUN pip install --upgrade pip \
     && pip install --no-cache-dir -r requirements.txt
 
-COPY backend/ .
+COPY . .
 
-EXPOSE 5000
+EXPOSE 8080
 
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "app:app"]
+CMD gunicorn -w 4 -b 0.0.0.0:${PORT:-8080} app:app

@@ -138,9 +138,10 @@ for (const mode in MODE_PHRASES) {
 }
 
 const API_BASE_URL =
-  window.location.protocol === "file:" || window.location.port === "5500"
+  window.SPEAKON_API_BASE_URL ||
+  (window.location.protocol === "file:" || window.location.port === "5500"
     ? "http://localhost:5000"
-    : window.location.origin;
+    : window.location.origin);
 
 async function translateViaBackend(text) {
   const url = `${API_BASE_URL}/translate`;

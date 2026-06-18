@@ -1,48 +1,47 @@
-# Deploying to Railway
+# Deploying Speak-On to Railway
 
-This project contains two services you can deploy to Railway:
+Deploy this repo as two Railway services: one backend service and one frontend service.
 
-- Backend: `backend` (Python Flask app) — listens on port 5000
-- Frontend: `frontend` (static site) — served on port 80
+## 1. Backend service
 
-Recommended approach: create two Railway services (one for backend, one for frontend) and point each service to the corresponding Dockerfile (`backend/Dockerfile` and `frontend/Dockerfile`).
+Create a Railway service from this repository with:
 
-Steps (using Railway CLI):
+- Root Directory: `backend`
+- Dockerfile Path: `Dockerfile`
+- Start command: leave blank when using Docker, or use `gunicorn -w 4 -b 0.0.0.0:${PORT:-8080} app:app`
 
-1. Install Railway CLI: https://railway.app/docs/cli
+Set this Railway variable on the backend service:
 
-2. From repo root, create or link a Railway project:
+- `GROQ_API_KEY`: your Groq API key
 
-```bash
-railway login
-railway init
+After deployment, copy the backend public URL from Railway, for example:
+
+```text
+https://your-backend-service.up.railway.app
 ```
 
-3. Backend service:
+## 2. Frontend service
 
-```bash
-# Create a new service for the backend
-railway link --project PROJECT_ID --service backend
-# From the Railway dashboard, set the service's Dockerfile path to `backend/Dockerfile`
-# Or run `railway up` from the repo root and choose the `backend` folder when prompted.
+Create a second Railway service from the same repository with:
+
+- Root Directory: `frontend`
+- Dockerfile Path: `Dockerfile`
+- Start command: leave blank when using Docker
+
+Set this Railway variable on the frontend service:
+
+- `API_BASE_URL`: the backend public URL copied above
+
+Example:
+
+```text
+API_BASE_URL=https://your-backend-service.up.railway.app
 ```
 
-Environment variables:
+## What was fixed
 
-- `GROQ_API_KEY` — required by `backend/services/translator.py`
+The Railway crash was caused by `gunicorn==20.1.0` importing `pkg_resources`, which may be missing in modern Python environments. The requirements now use `gunicorn>=23.0.0` and also include `setuptools` as a fallback.
 
-Set env vars in the Railway dashboard for the backend service before deploying.
+The backend now has its own `backend/requirements.txt`, and both backend start commands bind to Railway's `$PORT`.
 
-4. Frontend service:
-
-```bash
-# Create a new service for the frontend
-railway link --project PROJECT_ID --service frontend
-# Point the service to `frontend/Dockerfile` or choose static hosting and upload the `frontend/` directory
-```
-
-Notes:
-
-- The backend Dockerfile exposes port 5000 and uses `gunicorn` to run the Flask app.
-- The backend `requirements.txt` was converted to UTF-8 and includes `python-dotenv` so Railway secrets can be loaded during local testing; on Railway use the dashboard env settings.
-- Make sure to add the `GROQ_API_KEY` (or whichever API key you use) in Railway service settings.
+The frontend Docker container now creates `config.js` at startup from `API_BASE_URL`, so the static frontend can call the separately deployed backend service.

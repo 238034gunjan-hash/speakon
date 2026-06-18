@@ -5,4 +5,4 @@ COPY . /usr/share/nginx/html
 
 EXPOSE 80
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["sh", "-c", "printf \"window.SPEAKON_API_BASE_URL = '%s';\\n\" \"$API_BASE_URL\" > /usr/share/nginx/html/config.js && nginx -g 'daemon off;'"]
