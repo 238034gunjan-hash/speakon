@@ -1,0 +1,17 @@
+project = { name = "SpeakOn" }
+
+[[services]]
+name = "backend"
+path = "backend"
+dockerfile = "backend/Dockerfile"
+start = "gunicorn -w 4 -b 0.0.0.0:5000 app:app"
+
+[services.environment]
+# Set this in Railway Dashboard or via `railway variables`
+GROQ_API_KEY = ""
+
+[[services]]
+name = "frontend"
+path = "frontend"
+dockerfile = "frontend/Dockerfile"
+start = "nginx -g 'daemon off;'"
