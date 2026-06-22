@@ -1,17 +1,84 @@
-import psycopg2
 import os
+import psycopg2
 from dotenv import load_dotenv
 
-load_dotenv()
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 
-try:
-    conn = psycopg2.connect(DATABASE_URL)
-    cursor = conn.cursor()
 
-    print("Connected to Neon PostgreSQL!")
+def get_connection():
+    if not DATABASE_URL:
+        raise RuntimeError("DATABASE_URL is not configured")
 
-except Exception as e:
-    print("Connection failed")
-    print(e)
+    return psycopg2.connect(DATABASE_URL, connect_timeout=10)
+
+
+def init_db():
+    with get_connection() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute(
+                """
+                CREATE TABLE IF NOT EXISTS users (
+                    id SERIAL PRIMARY KEY,
+                    email VARCHAR(255) UNIQUE NOT NULL,
+                    password_hash VARCHAR(255),
+                    first_name VARCHAR(100),
+                    last_name VARCHAR(100),
+                    google_id VARCHAR(255) UNIQUE,
+                    profile_picture VARCHAR(500),
+                    is_google_user BOOLEAN NOT NULL DEFAULT FALSE,
+                    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+                )
+                """
+            )
+            cursor.execute(
+                """
+                ALTER TABLE users
+                    ADD COLUMN IF NOT EXISTS password_hash VARCHAR(255),
+                    ADD COLUMN IF NOT EXISTS first_name VARCHAR(100),
+                    ADD COLUMN IF NOT EXISTS last_name VARCHAR(100),
+                    ADD COLUMN IF NOT EXISTS google_id VARCHAR(255),
+                    ADD COLUMN IF NOT EXISTS profile_picture VARCHAR(500),
+                    ADD COLUMN IF NOT EXISTS is_google_user BOOLEAN NOT NULL DEFAULT FALSE,
+                    ADD COLUMN IF NOT EXISTS created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                    ADD COLUMN IF NOT EXISTS updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+                """
+            )
+            cursor.execute(
+                """
+                UPDATE users
+                SET password_hash = password
+                WHERE password_hash IS NULL
+                  AND password IS NOT NULL
+                  AND password LIKE '$2%'
+                """
+            )
+            cursor.execute(
+                """
+                CREATE UNIQUE INDEX IF NOT EXISTS users_email_lower_unique
+                ON users (LOWER(email))
+                WHERE email IS NOT NULL
+                """
+            )
+            cursor.execute(
+                """
+                CREATE UNIQUE INDEX IF NOT EXISTS users_google_id_unique
+                ON users (google_id)
+                WHERE google_id IS NOT NULL
+                """
+            )
+            cursor.execute(
+                """
+                CREATE TABLE IF NOT EXISTS translations (
+                    id SERIAL PRIMARY KEY,
+                    input_text TEXT,
+                    translated_text TEXT,
+                    source_language VARCHAR(50),
+                    target_language VARCHAR(50),
+                    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+                )
+                """
+            )

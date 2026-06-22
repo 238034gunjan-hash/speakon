@@ -298,8 +298,14 @@ body.dark-mode .connectivity-badge {
 .profile-btn {
   width: 36px;
   height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 50%;
   color: var(--text-muted);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
   border: var(--border-thick) solid var(--border);
   background-color: var(--card-bg);
 }
@@ -767,6 +773,17 @@ body.dark-mode .status-text {
 }
 .status-badge.translating .status-text {
   color: #D97706;
+}
+
+.status-badge.transcribing {
+  background-color: #E0F2FE;
+}
+.status-badge.transcribing .status-dot {
+  background-color: #0284C7;
+  animation: pulseScale 0.8s infinite alternate;
+}
+.status-badge.transcribing .status-text {
+  color: #0284C7;
 }
 
 .status-badge.ready-playback {
@@ -1807,4 +1824,43 @@ body.dark-mode .toast-notification {
     display:flex;
     align-items:center;
     gap:12px;
+}
+
+.account-session {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding-top: 4px;
+}
+
+.account-session[hidden] {
+  display: none;
+}
+
+.account-avatar {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+  border-radius: 50%;
+  background: var(--primary-light);
+  color: var(--primary);
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.account-name {
+  color: var(--text);
+}
+
+.account-email {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+.account-logout {
+  margin-top: 16px;
 }
