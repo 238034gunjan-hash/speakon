@@ -1,6 +1,7 @@
 // Authentication management
 class Auth {
   constructor() {
+    this.apiBaseUrl = (window.SPEAKON_API_BASE_URL || '').replace(/\/$/, '');
     this.accessToken = localStorage.getItem('access_token');
     this.refreshToken = localStorage.getItem('refresh_token');
     try {
@@ -12,8 +13,15 @@ class Auth {
     this.googleClientId = null;
   }
 
+  apiUrl(url) {
+    if (/^https?:\/\//i.test(url)) {
+      return url;
+    }
+    return `${this.apiBaseUrl}${url.startsWith('/') ? url : `/${url}`}`;
+  }
+
   async request(url, options = {}) {
-    const response = await fetch(url, options);
+    const response = await fetch(this.apiUrl(url), options);
     const data = await response.json().catch(() => ({}));
 
     if (!response.ok) {
@@ -146,7 +154,7 @@ class Auth {
     }
 
     try {
-      const response = await fetch('/api/auth/me', {
+      const response = await fetch(this.apiUrl('/api/auth/me'), {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${this.accessToken}`,
@@ -176,7 +184,7 @@ class Auth {
   // Refresh access token
   async refreshAccessToken() {
     try {
-      const response = await fetch('/api/auth/refresh', {
+      const response = await fetch(this.apiUrl('/api/auth/refresh'), {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${this.refreshToken}`,
@@ -230,7 +238,7 @@ class Auth {
       ...this.getAuthHeader(),
     };
 
-    let response = await fetch(url, options);
+    let response = await fetch(this.apiUrl(url), options);
 
     if (response.status === 401) {
       try {
@@ -239,7 +247,7 @@ class Auth {
           ...options.headers,
           ...this.getAuthHeader(),
         };
-        response = await fetch(url, options);
+        response = await fetch(this.apiUrl(url), options);
       } catch (error) {
         this.logout();
         throw error;
