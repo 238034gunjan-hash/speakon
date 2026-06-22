@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up - Speak-On</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .auth-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 20px;
+    }
+
+    .auth-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      padding: 40px;
+    }
+
+    .auth-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .auth-header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .auth-header p {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #333;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      transition: border-color 0.3s;
+      box-sizing: border-box;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .form-row .form-group {
+      margin-bottom: 0;
+    }
+
+    .btn-signup {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s;
+      margin-top: 10px;
+    }
+
+    .btn-signup:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-signup:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 25px 0;
+      color: #999;
+      font-size: 12px;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #ddd;
+    }
+
+    .divider span {
+      margin: 0 10px;
+    }
+
+    .btn-google {
+      width: 100%;
+      padding: 12px;
+      background: white;
+      color: #333;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: background 0.2s;
+    }
+
+    .btn-google:hover {
+      background: #f9f9f9;
+    }
+
+    .google-icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    .auth-footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .auth-footer a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .auth-footer a:hover {
+      text-decoration: underline;
+    }
+
+    .error-message {
+      background: #fee;
+      color: #c33;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    .success-message {
+      background: #efe;
+      color: #3c3;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .success-message.show {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <div class="auth-card">
+      <div class="auth-header">
+        <h1>Sign Up</h1>
+        <p>Create your Speak-On account</p>
+      </div>
+
+      <div id="errorMessage" class="error-message"></div>
+      <div id="successMessage" class="success-message"></div>
+
+      <form id="signupForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" name="firstName" placeholder="John">
+          </div>
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="lastName" placeholder="Doe">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required placeholder="your@email.com">
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required placeholder="••••••••" minlength="6">
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="••••••••">
+        </div>
+
+        <button type="submit" class="btn-signup" id="signupBtn">Create Account</button>
+      </form>
+
+      <div class="divider">
+        <span>OR</span>
+      </div>
+
+      <div class="btn-google" id="googleBtn"></div>
+
+      <div class="auth-footer">
+        Already have an account? <a href="/login.html">Log in</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Google Sign-In Script -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="auth.js"></script>
+
+  <script>
+    const signupForm = document.getElementById('signupForm');
+    const signupBtn = document.getElementById('signupBtn');
+    const errorMessage = document.getElementById('errorMessage');
+    const successMessage = document.getElementById('successMessage');
+    const googleBtn = document.getElementById('googleBtn');
+
+    // Check if already logged in
+    if (auth.isLoggedIn()) {
+      window.location.href = '/index.html';
+    }
+
+    // Handle form submission
+    signupForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      const firstName = document.getElementById('firstName').value;
+      const lastName = document.getElementById('lastName').value;
+
+      // Validate passwords match
+      if (password !== confirmPassword) {
+        errorMessage.textContent = '✗ Passwords do not match';
+        errorMessage.classList.add('show');
+        return;
+      }
+
+      // Validate password length
+      if (password.length < 6) {
+        errorMessage.textContent = '✗ Password must be at least 6 characters';
+        errorMessage.classList.add('show');
+        return;
+      }
+
+      signupBtn.disabled = true;
+      signupBtn.textContent = 'Creating Account...';
+      errorMessage.classList.remove('show');
+
+      try {
+        await auth.signup(email, password, firstName, lastName);
+        successMessage.textContent = '✓ Account created! Redirecting...';
+        successMessage.classList.add('show');
+        setTimeout(() => {
+          window.location.href = '/index.html';
+        }, 1500);
+      } catch (error) {
+        errorMessage.textContent = '✗ ' + error.message;
+        errorMessage.classList.add('show');
+      } finally {
+        signupBtn.disabled = false;
+        signupBtn.textContent = 'Create Account';
+      }
+    });
+
+    function handleGoogleSignIn(response) {
+      const token = response.credential;
+
+      signupBtn.disabled = true;
+      errorMessage.classList.remove('show');
+
+      auth.googleSignIn(token)
+        .then(() => {
+          successMessage.textContent = '✓ Account created with Google! Redirecting...';
+          successMessage.classList.add('show');
+          setTimeout(() => {
+            window.location.href = '/index.html';
+          }, 1500);
+        })
+        .catch((error) => {
+          errorMessage.textContent = '✗ ' + error.message;
+          errorMessage.classList.add('show');
+        })
+        .finally(() => {
+          signupBtn.disabled = false;
+        });
+    }
+
+    auth.initGoogleButton(googleBtn, handleGoogleSignIn, 'signup_with').catch((error) => {
+      googleBtn.hidden = true;
+      console.error(error);
+    });
+  </script>
+</body>
+</html>

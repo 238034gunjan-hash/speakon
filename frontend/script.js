@@ -244,6 +244,13 @@ const emailInput = document.getElementById("emailInput");
 const passwordInput = document.getElementById("passwordInput");
 const btnEmailLogin = document.getElementById("btnEmailLogin");
 const btnSwitchToSignUp = document.getElementById("btnSwitchToSignUp");
+const signedOutAccount = document.getElementById("signedOutAccount");
+const signedInAccount = document.getElementById("signedInAccount");
+const accountModalDescription = document.getElementById("accountModalDescription");
+const accountAvatar = document.getElementById("accountAvatar");
+const accountName = document.getElementById("accountName");
+const accountEmail = document.getElementById("accountEmail");
+const btnLogout = document.getElementById("btnLogout");
 const connectivityBadge = document.getElementById("connectivityBadge");
 const connectivityText = document.getElementById("connectivityText");
 
@@ -368,7 +375,10 @@ window.addEventListener("offline", () => {
 });
 
 // Profile Modal Interactions
-openProfile.addEventListener("click", () => profileModal.classList.add("show"));
+openProfile.addEventListener("click", () => {
+  renderAccountModal();
+  profileModal.classList.add("show");
+});
 closeProfileModal.addEventListener("click", () =>
   profileModal.classList.remove("show"),
 );
@@ -376,30 +386,99 @@ profileModal.addEventListener("click", (e) => {
   if (e.target === profileModal) profileModal.classList.remove("show");
 });
 
-btnGoogleLogin.addEventListener("click", () => {
-  showToast("Google Authentication started...");
-  setTimeout(() => {
-    profileModal.classList.remove("show");
-    showToast("Successfully logged in with Google!");
-    openProfile.innerHTML = `<span style="font-weight:800; font-size:0.75rem; color:var(--primary);">Acc</span>`;
-  }, 800);
-});
+function updateProfileButton(user) {
+  const firstName = user?.first_name?.trim();
+  if (!firstName) return;
 
-btnEmailLogin.addEventListener("click", () => {
-  if (emailInput.value && passwordInput.value) {
-    showToast("Signing in...");
-    setTimeout(() => {
-      profileModal.classList.remove("show");
-      showToast("Logged in successfully!");
-      openProfile.innerHTML = `<span style="font-weight:800; font-size:0.75rem; color:var(--primary);">Acc</span>`;
-    }, 700);
-  } else {
-    showToast("Please enter an email and password.");
-  }
+  openProfile.textContent = firstName.charAt(0).toUpperCase();
+  openProfile.setAttribute("aria-label", `${firstName} account`);
+  openProfile.title = firstName;
+}
+
+function resetProfileButton() {
+  openProfile.innerHTML = `
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+      <circle cx="12" cy="7" r="4"></circle>
+    </svg>`;
+  openProfile.setAttribute("aria-label", "Profile Account");
+  openProfile.removeAttribute("title");
+}
+
+updateProfileButton(auth.user);
+
+function renderAccountModal() {
+  const user = auth.user;
+  const isSignedIn = auth.isLoggedIn() && user;
+
+  signedOutAccount.hidden = Boolean(isSignedIn);
+  signedInAccount.hidden = !isSignedIn;
+  accountModalDescription.textContent = isSignedIn
+    ? "You are signed in to Speak-On."
+    : "Sign in to save and synchronize your language learning progress.";
+
+  if (!isSignedIn) return;
+
+  const firstName = user.first_name?.trim() || "User";
+  accountAvatar.textContent = firstName.charAt(0).toUpperCase();
+  accountName.textContent = firstName;
+  accountEmail.textContent = user.email || "";
+}
+
+btnLogout.addEventListener("click", () => {
+  auth.logout(false);
+  resetProfileButton();
+  renderAccountModal();
+  profileModal.classList.remove("show");
+  showToast("Logged out successfully.");
 });
 
 btnSwitchToSignUp.addEventListener("click", () => {
-  showToast("Opening sign up portal...");
+  window.location.href = "/signup.html";
+});
+
+function handleGoogleSignInFromProfile(response) {
+  auth.googleSignIn(response.credential)
+    .then(() => {
+      showToast("Successfully logged in with Google!");
+      profileModal.classList.remove("show");
+      updateProfileButton(auth.user);
+      renderAccountModal();
+    })
+    .catch((error) => {
+      showToast("Google sign-in failed: " + error.message);
+    });
+}
+
+auth.initGoogleButton(btnGoogleLogin, handleGoogleSignInFromProfile).catch((error) => {
+  btnGoogleLogin.hidden = true;
+  console.error(error);
+});
+
+loginForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  if (!emailInput.value || !passwordInput.value) {
+    showToast("Please enter an email and password.");
+    return;
+  }
+
+  btnEmailLogin.disabled = true;
+  btnEmailLogin.textContent = "Signing in...";
+
+  try {
+    await auth.login(emailInput.value, passwordInput.value);
+    profileModal.classList.remove("show");
+    showToast("Logged in successfully!");
+    updateProfileButton(auth.user);
+    renderAccountModal();
+    loginForm.reset();
+  } catch (error) {
+    showToast(error.message);
+  } finally {
+    btnEmailLogin.disabled = false;
+    btnEmailLogin.textContent = "Sign In";
+  }
 });
 
 // -------------------------------------------------------------
