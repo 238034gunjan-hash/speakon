@@ -6,6 +6,7 @@ from flask_jwt_extended import JWTManager
 from dotenv import load_dotenv
 from routes.translate import translate_bp
 from routes.auth import auth_bp
+from routes.transcribe import transcribe_bp
 from db import init_db
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -29,6 +30,7 @@ init_db()
 # Register blueprints
 app.register_blueprint(translate_bp)
 app.register_blueprint(auth_bp)
+app.register_blueprint(transcribe_bp)
 
 
 @app.before_request

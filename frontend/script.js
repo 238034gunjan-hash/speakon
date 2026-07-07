@@ -172,8 +172,7 @@ async function translateViaBackend(text) {
   return data.translated_text;
 }
 
-const WHISPER_API_URL =
-  "https://fastwhisperapi-production-0f22.up.railway.app/transcribe";
+const WHISPER_API_URL = `${API_BASE_URL}/transcribe`;
 
 // -------------------------------------------------------------
 // 2. DOM Elements Mapping
@@ -537,6 +536,7 @@ async function transcribeAudioBlob(audioBlob) {
 
   const formData = new FormData();
   formData.append("audio", audioBlob, "recording.webm");
+  formData.append("language", sourceLanguage.value);
 
   const response = await fetch(WHISPER_API_URL, {
     method: "POST",

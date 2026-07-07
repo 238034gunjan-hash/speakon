@@ -5,8 +5,8 @@ import os
 load_dotenv()
 
 client = OpenAI(
-    base_url="https://api.groq.com/openai/v1",
-    api_key=os.getenv("GROQ_API_KEY"),
+    api_key=os.getenv("DEEPSEEK_API_KEY"),
+    base_url="https://api.deepseek.com",
 )
 
 def translate_text(text, source_lang, target_lang):
@@ -24,7 +24,7 @@ Text:
 """
 
     response = client.chat.completions.create(
-    model="llama-3.3-70b-versatile",
+    model="deepseek-chat",
     temperature=0.1,
     messages=[
         {
@@ -51,9 +51,9 @@ Can you help me? -> के तपाईं मलाई मद्दत गर�
 """
         },
         {
-            "role": "user",
-            "content": text
-        }
+    "role": "user",
+    "content": f"Translate from {source_lang} to {target_lang}:\n\n{text}"
+}
     ]
 )
 
