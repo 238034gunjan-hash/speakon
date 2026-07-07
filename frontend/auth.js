@@ -2,13 +2,13 @@
 class Auth {
   constructor() {
     this.apiBaseUrl = (window.SPEAKON_API_BASE_URL || '').replace(/\/$/, '');
-    this.accessToken = localStorage.getItem('access_token');
-    this.refreshToken = localStorage.getItem('refresh_token');
+    this.accessToken = sessionStorage.getItem('access_token');
+    this.refreshToken = sessionStorage.getItem('refresh_token');
     try {
-      this.user = JSON.parse(localStorage.getItem('user')) || null;
+      this.user = JSON.parse(sessionStorage.getItem('user')) || null;
     } catch {
       this.user = null;
-      localStorage.removeItem('user');
+      sessionStorage.removeItem('user');
     }
     this.googleClientId = null;
   }
@@ -49,7 +49,7 @@ class Auth {
 
       this.setTokens(data.access_token, data.refresh_token);
       this.user = data.user;
-      localStorage.setItem('user', JSON.stringify(this.user));
+      sessionStorage.setItem('user', JSON.stringify(this.user));
 
       return data;
     } catch (error) {
@@ -71,7 +71,7 @@ class Auth {
 
       this.setTokens(data.access_token, data.refresh_token);
       this.user = data.user;
-      localStorage.setItem('user', JSON.stringify(this.user));
+      sessionStorage.setItem('user', JSON.stringify(this.user));
 
       return data;
     } catch (error) {
@@ -93,7 +93,7 @@ class Auth {
 
       this.setTokens(data.access_token, data.refresh_token);
       this.user = data.user;
-      localStorage.setItem('user', JSON.stringify(this.user));
+      sessionStorage.setItem('user', JSON.stringify(this.user));
 
       return data;
     } catch (error) {
@@ -143,8 +143,8 @@ class Auth {
   setTokens(accessToken, refreshToken) {
     this.accessToken = accessToken;
     this.refreshToken = refreshToken;
-    localStorage.setItem('access_token', accessToken);
-    localStorage.setItem('refresh_token', refreshToken);
+    sessionStorage.setItem('access_token', accessToken);
+    sessionStorage.setItem('refresh_token', refreshToken);
   }
 
   // Get current user
@@ -171,7 +171,7 @@ class Auth {
 
       const data = await response.json();
       this.user = data.user;
-      localStorage.setItem('user', JSON.stringify(this.user));
+      sessionStorage.setItem('user', JSON.stringify(this.user));
 
       return this.user;
     } catch (error) {
@@ -211,9 +211,9 @@ class Auth {
     this.accessToken = null;
     this.refreshToken = null;
     this.user = null;
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    localStorage.removeItem('user');
+    sessionStorage.removeItem('access_token');
+    sessionStorage.removeItem('refresh_token');
+    sessionStorage.removeItem('user');
     if (redirectToLogin) {
       window.location.href = '/login.html';
     }

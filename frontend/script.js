@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Speak-On Voice Translator - Main Application Logic
  * Implements actual and simulated Web Speech APIs, persistent local storage,
  * dynamic theme switching, categorized phrases, and emergency triggers.
@@ -10,69 +10,69 @@
 
 const MODE_PHRASES = {
   shop: [
-    { text: "How much does this cost?", translated: "यो कति रुपैयाँ हो?" },
+    { text: "How much does this cost?", translated: "à¤¯à¥‹ à¤•à¤¤à¤¿ à¤°à¥à¤ªà¥ˆà¤¯à¤¾à¤ à¤¹à¥‹?" },
     {
       text: "Can you lower the price?",
-      translated: "के तपाईं मूल्य घटाउन सक्नुहुन्छ?",
+      translated: "à¤•à¥‡ à¤¤à¤ªà¤¾à¤ˆà¤‚ à¤®à¥‚à¤²à¥à¤¯ à¤˜à¤Ÿà¤¾à¤‰à¤¨ à¤¸à¤•à¥à¤¨à¥à¤¹à¥à¤¨à¥à¤›?",
     },
-    { text: "I only want one.", translated: "मलाई एउटा मात्र चाहिन्छ।" },
+    { text: "I only want one.", translated: "à¤®à¤²à¤¾à¤ˆ à¤à¤‰à¤Ÿà¤¾ à¤®à¤¾à¤¤à¥à¤° à¤šà¤¾à¤¹à¤¿à¤¨à¥à¤›à¥¤" },
     {
       text: "Do you accept cards?",
-      translated: "के तपाईं कार्ड स्वीकार गर्नुहुन्छ?",
+      translated: "à¤•à¥‡ à¤¤à¤ªà¤¾à¤ˆà¤‚ à¤•à¤¾à¤°à¥à¤¡ à¤¸à¥à¤µà¥€à¤•à¤¾à¤° à¤—à¤°à¥à¤¨à¥à¤¹à¥à¤¨à¥à¤›?",
     },
-    { text: "That is too expensive.", translated: "यो धेरै महँगो भयो।" },
-    { text: "Can I see another one?", translated: "के म अर्को हेर्न सक्छु?" },
+    { text: "That is too expensive.", translated: "à¤¯à¥‹ à¤§à¥‡à¤°à¥ˆ à¤®à¤¹à¤à¤—à¥‹ à¤­à¤¯à¥‹à¥¤" },
+    { text: "Can I see another one?", translated: "à¤•à¥‡ à¤® à¤…à¤°à¥à¤•à¥‹ à¤¹à¥‡à¤°à¥à¤¨ à¤¸à¤•à¥à¤›à¥?" },
   ],
   taxi: [
     {
       text: "Please take me to this location.",
-      translated: "कृपया मलाई यो ठाउँमा लैजानुहोस्।",
+      translated: "à¤•à¥ƒà¤ªà¤¯à¤¾ à¤®à¤²à¤¾à¤ˆ à¤¯à¥‹ à¤ à¤¾à¤‰à¤à¤®à¤¾ à¤²à¥ˆà¤œà¤¾à¤¨à¥à¤¹à¥‹à¤¸à¥à¥¤",
     },
-    { text: "Stop here.", translated: "यहाँ रोक्नुहोस्।" },
-    { text: "How much is the fare?", translated: "भाडा कति हो?" },
-    { text: "Please drive slowly.", translated: "कृपया बिस्तारै हाक्नुहोस्।" },
+    { text: "Stop here.", translated: "à¤¯à¤¹à¤¾à¤ à¤°à¥‹à¤•à¥à¤¨à¥à¤¹à¥‹à¤¸à¥à¥¤" },
+    { text: "How much is the fare?", translated: "à¤­à¤¾à¤¡à¤¾ à¤•à¤¤à¤¿ à¤¹à¥‹?" },
+    { text: "Please drive slowly.", translated: "à¤•à¥ƒà¤ªà¤¯à¤¾ à¤¬à¤¿à¤¸à¥à¤¤à¤¾à¤°à¥ˆ à¤¹à¤¾à¤•à¥à¤¨à¥à¤¹à¥‹à¤¸à¥à¥¤" },
     {
       text: "Can you wait for me?",
-      translated: "के तपाईं मेरो लागि पर्खन सक्नुहुन्छ?",
+      translated: "à¤•à¥‡ à¤¤à¤ªà¤¾à¤ˆà¤‚ à¤®à¥‡à¤°à¥‹ à¤²à¤¾à¤—à¤¿ à¤ªà¤°à¥à¤–à¤¨ à¤¸à¤•à¥à¤¨à¥à¤¹à¥à¤¨à¥à¤›?",
     },
     {
       text: "Take me to the airport.",
-      translated: "मलाई विमानस्थल लैजानुहोस्।",
+      translated: "à¤®à¤²à¤¾à¤ˆ à¤µà¤¿à¤®à¤¾à¤¨à¤¸à¥à¤¥à¤² à¤²à¥ˆà¤œà¤¾à¤¨à¥à¤¹à¥‹à¤¸à¥à¥¤",
     },
   ],
   hotel: [
-    { text: "I have a reservation.", translated: "मेरो बुकिङ छ।" },
+    { text: "I have a reservation.", translated: "à¤®à¥‡à¤°à¥‹ à¤¬à¥à¤•à¤¿à¤™ à¤›à¥¤" },
     {
       text: "I need a room for one night.",
-      translated: "मलाई एक रातको लागि कोठा चाहिन्छ।",
+      translated: "à¤®à¤²à¤¾à¤ˆ à¤à¤• à¤°à¤¾à¤¤à¤•à¥‹ à¤²à¤¾à¤—à¤¿ à¤•à¥‹à¤ à¤¾ à¤šà¤¾à¤¹à¤¿à¤¨à¥à¤›à¥¤",
     },
-    { text: "Is breakfast included?", translated: "के बिहानको खाना समावेश छ?" },
-    { text: "The Wi-Fi is not working.", translated: "वाइफाइ चलेको छैन।" },
+    { text: "Is breakfast included?", translated: "à¤•à¥‡ à¤¬à¤¿à¤¹à¤¾à¤¨à¤•à¥‹ à¤–à¤¾à¤¨à¤¾ à¤¸à¤®à¤¾à¤µà¥‡à¤¶ à¤›?" },
+    { text: "The Wi-Fi is not working.", translated: "à¤µà¤¾à¤‡à¤«à¤¾à¤‡ à¤šà¤²à¥‡à¤•à¥‹ à¤›à¥ˆà¤¨à¥¤" },
     {
       text: "Can I get room service?",
-      translated: "के म कोठा सेवा पाउन सक्छु?",
+      translated: "à¤•à¥‡ à¤® à¤•à¥‹à¤ à¤¾ à¤¸à¥‡à¤µà¤¾ à¤ªà¤¾à¤‰à¤¨ à¤¸à¤•à¥à¤›à¥?",
     },
-    { text: "I want to check out.", translated: "म चेक आउट गर्न चाहन्छु।" },
+    { text: "I want to check out.", translated: "à¤® à¤šà¥‡à¤• à¤†à¤‰à¤Ÿ à¤—à¤°à¥à¤¨ à¤šà¤¾à¤¹à¤¨à¥à¤›à¥à¥¤" },
   ],
   dining: [
-    { text: "I would like to order.", translated: "म अर्डर गर्न चाहन्छु।" },
+    { text: "I would like to order.", translated: "à¤® à¤…à¤°à¥à¤¡à¤° à¤—à¤°à¥à¤¨ à¤šà¤¾à¤¹à¤¨à¥à¤›à¥à¥¤" },
     {
       text: "Do you have vegetarian food?",
-      translated: "के तपाईंसँग शाकाहारी खाना छ?",
+      translated: "à¤•à¥‡ à¤¤à¤ªà¤¾à¤ˆà¤‚à¤¸à¤à¤— à¤¶à¤¾à¤•à¤¾à¤¹à¤¾à¤°à¥€ à¤–à¤¾à¤¨à¤¾ à¤›?",
     },
     {
       text: "No spicy food please.",
-      translated: "कृपया पिरो खाना नहाल्नुहोला।",
+      translated: "à¤•à¥ƒà¤ªà¤¯à¤¾ à¤ªà¤¿à¤°à¥‹ à¤–à¤¾à¤¨à¤¾ à¤¨à¤¹à¤¾à¤²à¥à¤¨à¥à¤¹à¥‹à¤²à¤¾à¥¤",
     },
-    { text: "Can I see the menu?", translated: "के म मेनु हेर्न सक्छु?" },
-    { text: "The food was excellent.", translated: "खाना निकै मिठो थियो।" },
-    { text: "Can I get the bill?", translated: "के म बिल पाउन सक्छु?" },
+    { text: "Can I see the menu?", translated: "à¤•à¥‡ à¤® à¤®à¥‡à¤¨à¥ à¤¹à¥‡à¤°à¥à¤¨ à¤¸à¤•à¥à¤›à¥?" },
+    { text: "The food was excellent.", translated: "à¤–à¤¾à¤¨à¤¾ à¤¨à¤¿à¤•à¥ˆ à¤®à¤¿à¤ à¥‹ à¤¥à¤¿à¤¯à¥‹à¥¤" },
+    { text: "Can I get the bill?", translated: "à¤•à¥‡ à¤® à¤¬à¤¿à¤² à¤ªà¤¾à¤‰à¤¨ à¤¸à¤•à¥à¤›à¥?" },
   ],
   emergency: [
-    { text: "Need Assistance", translated: "मलाई सहयोग चाहियो।" },
-    { text: "Call Police", translated: "प्रहरीलाई फोन गर्नुहोस्।" },
-    { text: "Need Hospital", translated: "मलाई अस्पताल जानुपर्छ।" },
-    { text: "I Am Lost", translated: "म हराएँ।" },
+    { text: "Need Assistance", translated: "à¤®à¤²à¤¾à¤ˆ à¤¸à¤¹à¤¯à¥‹à¤— à¤šà¤¾à¤¹à¤¿à¤¯à¥‹à¥¤" },
+    { text: "Call Police", translated: "à¤ªà¥à¤°à¤¹à¤°à¥€à¤²à¤¾à¤ˆ à¤«à¥‹à¤¨ à¤—à¤°à¥à¤¨à¥à¤¹à¥‹à¤¸à¥à¥¤" },
+    { text: "Need Hospital", translated: "à¤®à¤²à¤¾à¤ˆ à¤…à¤¸à¥à¤ªà¤¤à¤¾à¤² à¤œà¤¾à¤¨à¥à¤ªà¤°à¥à¤›à¥¤" },
+    { text: "I Am Lost", translated: "à¤® à¤¹à¤°à¤¾à¤à¤à¥¤" },
   ],
 };
 
@@ -115,18 +115,28 @@ const MODE_METADATA = {
   },
 };
 
-// Compile dictionary bidirectionally
-const DEMO_TRANSLATIONS = {
-  hello: "नमस्ते",
-  "thank you": "धन्यवाद",
-  yes: "हो",
-  no: "होइन",
-  "how are you?": "तपाईंलाई कस्तो छ?",
+const MODE_TRANSLATION_CONTEXT = {
+  general:
+    "Everyday travel conversation. Keep the translation natural, polite, and broadly useful.",
+  shop:
+    "Local market or shop conversation. Expect prices, bargaining, discounts, quantities, checkout, payment, change, receipts, and product questions.",
+  taxi:
+    "Taxi, ride-share, bus, or local transport conversation. Expect directions, pickup/dropoff, fares, waiting, traffic, routes, luggage, and timing.",
+  hotel:
+    "Hotel or guesthouse conversation. Expect booking, check-in, checkout, room issues, Wi-Fi, breakfast, room service, keys, and hospitality requests.",
+  dining:
+    "Restaurant or cafe conversation. Expect menus, ordering, spice level, dietary needs, billing, water, table service, and food feedback.",
+  emergency:
+    "Urgent emergency conversation. Keep wording direct, clear, respectful, and easy to understand under stress.",
+};
 
-  नमस्ते: "Hello / Namaste",
-  धन्यवाद: "Thank you",
-  हो: "Yes",
-  होइन: "No",
+// Compile quick phrase lookups bidirectionally.
+const DEMO_TRANSLATIONS = {
+  hello: "Namaste",
+  "thank you": "Dhanyabad",
+  yes: "Ho",
+  no: "Hoina",
+  "how are you?": "Tapailai kasto cha?",
 };
 
 // Inject phrases into the lookups
@@ -156,6 +166,16 @@ async function translateViaBackend(text) {
       text,
       source_lang: sourceLanguage.value,
       target_lang: targetLanguage.value,
+      mode: activeMode,
+      mode_title: MODE_METADATA[activeMode]?.title || "General Mode",
+      mode_context:
+        MODE_TRANSLATION_CONTEXT[activeMode] || MODE_TRANSLATION_CONTEXT.general,
+      recent_messages: activeMessages.slice(-6).map((message) => ({
+        original_text: message.original_text,
+        translated_text: message.translated_text,
+        original_language: message.original_language,
+        translated_language: message.translated_language,
+      })),
     }),
   });
 
@@ -210,6 +230,7 @@ const modePhrasesGrid = document.getElementById("modePhrasesGrid");
 
 // Conversational Chat Container
 const chatContainer = document.getElementById("chatContainer");
+const conversationList = document.getElementById("conversationList");
 const btnConversationClear = document.getElementById("btnConversationClear");
 
 // Category grids in Phrases Tab
@@ -263,83 +284,203 @@ let isListening = false;
 let isTranscribing = false;
 let autoPlayActive = true;
 let speechSpeedRate = 1.0;
-let savedBookmarks = []; // Bookmarked favorites
+let savedBookmarks = []; // In-memory bookmarked favorites for the current session
 let toastTimer;
 let mediaRecorder = null;
 let mediaStream = null;
 let recordedChunks = [];
+let availableSpeechVoices = [];
+let conversations = [];
+let activeConversation = null;
+let activeMessages = [];
 
-// Isolated histories per mode
-let historiesByMode = {
-  general: [],
-  shop: [],
-  taxi: [],
-  hotel: [],
-  dining: [],
-  emergency: [],
-};
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
 
-function initStorage() {
-  // Theme settings reload
-  if (localStorage.getItem("speakon_darkmode") === "true") {
-    document.body.classList.add("dark-mode");
-    toggleDarkMode.checked = true;
+function formatConversationDate(value) {
+  if (!value) return "";
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+
+  const today = new Date();
+  const yesterday = new Date();
+  yesterday.setDate(today.getDate() - 1);
+
+  if (date.toDateString() === today.toDateString()) return "Today";
+  if (date.toDateString() === yesterday.toDateString()) return "Yesterday";
+
+  return date.toLocaleDateString([], { month: "short", day: "numeric" });
+}
+
+function formatMessageTime(value) {
+  const date = value ? new Date(value) : new Date();
+  return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+}
+
+function messageToEntry(message) {
+  return {
+    id: message.id,
+    from: message.original_language,
+    to: message.translated_language,
+    original: message.original_text,
+    translated: message.translated_text,
+    timestamp: formatMessageTime(message.created_at),
+    createdAt: message.created_at,
+  };
+}
+
+async function parseApiResponse(response) {
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(data.error || "Request failed");
   }
-  if (localStorage.getItem("speakon_highcontrast") === "true") {
-    document.body.classList.add("high-contrast");
-    toggleHighContrast.checked = true;
+  return data;
+}
+
+async function apiFetch(path, options = {}) {
+  const response = await auth.fetchWithAuth(path, {
+    ...options,
+    headers: {
+      ...(options.headers || {}),
+    },
+  });
+  return parseApiResponse(response);
+}
+
+async function loadConversations(selectFirst = true) {
+  if (!auth.isLoggedIn()) {
+    conversations = [];
+    activeConversation = null;
+    activeMessages = [];
+    renderConversationSidebar();
+    renderConversationList();
+    renderHistoryTab();
+    return;
   }
 
-  // Audio settings
-  if (localStorage.getItem("speakon_autoplay") !== null) {
-    autoPlayActive = localStorage.getItem("speakon_autoplay") === "true";
-    toggleAutoPlay.checked = autoPlayActive;
-  }
-  if (localStorage.getItem("speakon_speed") !== null) {
-    speechSpeedRate = parseFloat(localStorage.getItem("speakon_speed"));
-    speechSpeedSlider.value = speechSpeedRate;
-    speechSpeedVal.textContent = `${speechSpeedRate.toFixed(1)}x`;
-  }
+  try {
+    const data = await apiFetch("/conversations");
+    conversations = data.conversations || [];
+    renderConversationSidebar();
+    renderHistoryTab();
 
-  // Reload bookmarks favorited
-  if (localStorage.getItem("speakon_saved") !== null) {
-    savedBookmarks = JSON.parse(localStorage.getItem("speakon_saved"));
-  }
-
-  // Reload isolated histories
-  const modes = ["general", "shop", "taxi", "hotel", "dining", "emergency"];
-  modes.forEach((mode) => {
-    const cached = localStorage.getItem(`speakon_history_${mode}`);
-    if (cached !== null) {
-      historiesByMode[mode] = JSON.parse(cached);
+    if (selectFirst && conversations.length > 0) {
+      await loadConversation(conversations[0].id);
+    } else if (conversations.length === 0) {
+      activeConversation = null;
+      activeMessages = [];
+      renderConversationList();
     }
+  } catch (error) {
+    console.error("Failed to load conversations:", error);
+    showToast("Could not load conversation history.");
+  }
+}
+
+async function createConversation() {
+  const data = await apiFetch("/conversations", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      source_language: sourceLanguage.value,
+      target_language: targetLanguage.value,
+    }),
   });
 
-  // Reload selected active mode on startup
-  const savedActiveMode = localStorage.getItem("speakon_active_mode");
-  if (savedActiveMode && modes.includes(savedActiveMode)) {
-    setTranslatorMode(savedActiveMode, false);
-  } else {
-    setTranslatorMode("general", false);
+  activeConversation = data.conversation;
+  activeMessages = [];
+  conversations = [
+    activeConversation,
+    ...conversations.filter((item) => item.id !== activeConversation.id),
+  ];
+  renderConversationSidebar();
+  renderConversationList();
+  renderHistoryTab();
+  return activeConversation;
+}
+
+async function ensureActiveConversation() {
+  if (activeConversation) {
+    return activeConversation;
+  }
+  return createConversation();
+}
+
+async function loadConversation(conversationId) {
+  try {
+    const data = await apiFetch(`/conversations/${conversationId}`);
+    activeConversation = data.conversation;
+    activeMessages = data.messages || [];
+    sourceLanguage.value = activeConversation.source_language;
+    targetLanguage.value = activeConversation.target_language;
+    renderConversationSidebar();
+    renderConversationList();
+  } catch (error) {
+    console.error("Failed to load conversation:", error);
+    showToast("Could not open that conversation.");
+  }
+}
+
+async function deleteConversation(conversationId) {
+  try {
+    await apiFetch(`/conversations/${conversationId}`, { method: "DELETE" });
+    conversations = conversations.filter((item) => item.id !== conversationId);
+    if (activeConversation?.id === conversationId) {
+      activeConversation = null;
+      activeMessages = [];
+    }
+    renderConversationSidebar();
+    renderConversationList();
+    renderHistoryTab();
+    showToast("Conversation deleted.");
+  } catch (error) {
+    console.error("Failed to delete conversation:", error);
+    showToast("Could not delete conversation.");
+  }
+}
+
+async function saveTranslatedMessage(entry) {
+  if (!auth.isLoggedIn()) {
+    throw new Error("Sign in to save conversation history.");
   }
 
+  const conversation = await ensureActiveConversation();
+  const data = await apiFetch("/messages", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      conversation_id: conversation.id,
+      sender: "user",
+      original_text: entry.original,
+      translated_text: entry.translated,
+      original_language: entry.from,
+      translated_language: entry.to,
+      audio_url: entry.audio_url || null,
+    }),
+  });
+
+  activeConversation = data.conversation;
+  activeMessages.push(data.message);
+  conversations = [
+    activeConversation,
+    ...conversations.filter((item) => item.id !== activeConversation.id),
+  ];
+  renderConversationSidebar();
   renderHistoryTab();
+  return messageToEntry(data.message);
+}
+
+async function initApp() {
+  setTranslatorMode("general", false);
   updateOfflineStatus();
-}
-
-function saveActiveHistory() {
-  localStorage.setItem(
-    `speakon_history_${activeMode}`,
-    JSON.stringify(historiesByMode[activeMode]),
-  );
-  renderConversationList();
-  renderHistoryTab();
-}
-
-function saveGlobalBookmarks() {
-  localStorage.setItem("speakon_saved", JSON.stringify(savedBookmarks));
-  renderConversationList();
-  renderHistoryTab();
+  await loadConversations(true);
 }
 
 // -------------------------------------------------------------
@@ -427,8 +568,14 @@ function renderAccountModal() {
 
 btnLogout.addEventListener("click", () => {
   auth.logout(false);
+  conversations = [];
+  activeConversation = null;
+  activeMessages = [];
   resetProfileButton();
   renderAccountModal();
+  renderConversationSidebar();
+  renderConversationList();
+  renderHistoryTab();
   profileModal.classList.remove("show");
   showToast("Logged out successfully.");
 });
@@ -444,6 +591,7 @@ function handleGoogleSignInFromProfile(response) {
       profileModal.classList.remove("show");
       updateProfileButton(auth.user);
       renderAccountModal();
+      loadConversations(true);
     })
     .catch((error) => {
       showToast("Google sign-in failed: " + error.message);
@@ -472,6 +620,7 @@ loginForm.addEventListener("submit", async (event) => {
     showToast("Logged in successfully!");
     updateProfileButton(auth.user);
     renderAccountModal();
+    await loadConversations(true);
     loginForm.reset();
   } catch (error) {
     showToast(error.message);
@@ -485,7 +634,63 @@ loginForm.addEventListener("submit", async (event) => {
 // 5. Speech Synthesizers & Recorders
 // -------------------------------------------------------------
 
-function speakTranslation(text, customRate = null) {
+const TTS_LANGUAGE_CONFIG = {
+  English: {
+    lang: "en-US",
+    voiceLangs: ["en-US", "en-GB", "en"],
+    voiceNames: ["english"],
+  },
+  Nepali: {
+    lang: "ne-NP",
+    voiceLangs: ["ne-NP", "ne", "hi-IN", "hi"],
+    voiceNames: ["nepali", "hindi"],
+  },
+};
+
+function refreshSpeechVoices() {
+  if (!("speechSynthesis" in window)) {
+    availableSpeechVoices = [];
+    return availableSpeechVoices;
+  }
+
+  availableSpeechVoices = window.speechSynthesis.getVoices();
+  return availableSpeechVoices;
+}
+
+function getSpeechConfig(language) {
+  return TTS_LANGUAGE_CONFIG[language] || TTS_LANGUAGE_CONFIG.English;
+}
+
+function findSpeechVoice(language) {
+  const config = getSpeechConfig(language);
+  const voices = refreshSpeechVoices();
+
+  return (
+    voices.find((voice) => config.voiceLangs.includes(voice.lang)) ||
+    voices.find((voice) =>
+      config.voiceLangs.some((lang) =>
+        voice.lang.toLowerCase().startsWith(lang.toLowerCase().split("-")[0]),
+      ),
+    ) ||
+    voices.find((voice) =>
+      config.voiceNames.some((name) =>
+        voice.name.toLowerCase().includes(name),
+      ),
+    ) ||
+    null
+  );
+}
+
+function initSpeechVoices() {
+  if (!("speechSynthesis" in window)) {
+    return;
+  }
+
+  refreshSpeechVoices();
+  window.speechSynthesis.addEventListener("voiceschanged", refreshSpeechVoices);
+}
+
+function speakTranslation(text, customRate = null, language = targetLanguage.value) {
   if (!("speechSynthesis" in window)) {
     showToast("Text-to-speech not supported in this browser.");
     return;
@@ -494,26 +699,26 @@ function speakTranslation(text, customRate = null) {
   window.speechSynthesis.cancel();
 
   const utterance = new SpeechSynthesisUtterance(text);
-  const targetNepali = targetLanguage.value === "Nepali";
+  const speechConfig = getSpeechConfig(language);
+  const selectedVoice = findSpeechVoice(language);
 
-  utterance.lang = targetNepali ? "ne-NP" : "en-US";
+  utterance.lang = speechConfig.lang;
   utterance.rate = customRate || speechSpeedRate;
 
-  const voices = window.speechSynthesis.getVoices();
-  let selectedVoice = null;
-  if (targetNepali) {
-    selectedVoice = voices.find(
-      (v) => v.lang.includes("ne") || v.lang.includes("NP"),
-    );
-  } else {
-    selectedVoice = voices.find(
-      (v) => v.lang.includes("en-US") || v.lang.includes("en-GB"),
-    );
-  }
   if (selectedVoice) utterance.voice = selectedVoice;
+
+  utterance.onerror = () => {
+    showToast(`Could not play ${language} voice on this device.`);
+  };
+
+  if (language === "Nepali" && !selectedVoice) {
+    showToast("Nepali voice is not installed. Trying browser default voice.");
+  }
 
   window.speechSynthesis.speak(utterance);
 }
+
+initSpeechVoices();
 
 // Microphone capture and Whisper transcription
 function setMicStatus(state, title, instruction) {
@@ -728,11 +933,11 @@ function simulateSpeechInput() {
     else if (activeMode === "hotel") fallbackText = "I have a reservation.";
     else fallbackText = "Hello, how are you?";
   } else {
-    if (activeMode === "shop") fallbackText = "यो कति रुपैयाँ हो?";
-    else if (activeMode === "taxi") fallbackText = "मलाई विमानस्थल लैजानुहोस्।";
-    else if (activeMode === "dining") fallbackText = "के म मेनु हेर्न सक्छु?";
-    else if (activeMode === "hotel") fallbackText = "मेरो बुकिङ छ।";
-    else fallbackText = "नमस्ते, तपाईंलाई कस्तो छ?";
+    if (activeMode === "shop") fallbackText = "à¤¯à¥‹ à¤•à¤¤à¤¿ à¤°à¥à¤ªà¥ˆà¤¯à¤¾à¤ à¤¹à¥‹?";
+    else if (activeMode === "taxi") fallbackText = "à¤®à¤²à¤¾à¤ˆ à¤µà¤¿à¤®à¤¾à¤¨à¤¸à¥à¤¥à¤² à¤²à¥ˆà¤œà¤¾à¤¨à¥à¤¹à¥‹à¤¸à¥à¥¤";
+    else if (activeMode === "dining") fallbackText = "à¤•à¥‡ à¤® à¤®à¥‡à¤¨à¥ à¤¹à¥‡à¤°à¥à¤¨ à¤¸à¤•à¥à¤›à¥?";
+    else if (activeMode === "hotel") fallbackText = "à¤®à¥‡à¤°à¥‹ à¤¬à¥à¤•à¤¿à¤™ à¤›à¥¤";
+    else fallbackText = "à¤¨à¤®à¤¸à¥à¤¤à¥‡, à¤¤à¤ªà¤¾à¤ˆà¤‚à¤²à¤¾à¤ˆ à¤•à¤¸à¥à¤¤à¥‹ à¤›?";
   }
 
   showToast("Audio capture parsed.");
@@ -788,15 +993,32 @@ async function processTranslation(sourceText) {
     }),
   };
 
-  historiesByMode[activeMode].push(entry);
-  saveActiveHistory();
+  let savedEntry = entry;
+  try {
+    savedEntry = await saveTranslatedMessage(entry);
+  } catch (error) {
+    console.error("Failed to save message:", error);
+    activeMessages.push({
+      id: entry.id,
+      sender: "user",
+      original_text: entry.original,
+      translated_text: entry.translated,
+      original_language: entry.from,
+      translated_language: entry.to,
+      audio_url: null,
+      created_at: new Date().toISOString(),
+    });
+    showToast("Translation ready, but history was not saved.");
+  }
+
+  renderConversationList();
 
   statusBadge.className = "status-badge ready-playback";
   statusText.textContent = "Playback Ready";
   statusInstruction.textContent = "Audio translation built!";
 
   if (autoPlayActive) {
-    speakTranslation(resultText);
+    speakTranslation(savedEntry.translated, null, savedEntry.to);
   }
 }
 
@@ -805,7 +1027,7 @@ async function processTranslation(sourceText) {
 // -------------------------------------------------------------
 
 function renderConversationList() {
-  const currentLog = historiesByMode[activeMode];
+  const currentLog = activeMessages.map(messageToEntry);
   chatContainer.innerHTML = "";
 
   if (currentLog.length === 0) {
@@ -816,7 +1038,7 @@ function renderConversationList() {
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
           </svg>
         </div>
-        <p>Ready to translate. Tap the microphone or a quick phrase card above.</p>
+        <p>${auth.isLoggedIn() ? "Start a new translation or reopen a saved conversation." : "Sign in to save and sync conversation history."}</p>
       </div>
     `;
     return;
@@ -827,7 +1049,7 @@ function renderConversationList() {
     sentRow.className = "speech-row sent";
     sentRow.innerHTML = `
       <div class="speech-bubble">
-        <div class="bubble-meta">👤 Tourist (${entry.from})</div>
+        <div class="bubble-meta">Tourist (${entry.from})</div>
         <div class="bubble-text">${entry.original}</div>
         <div class="bubble-time">${entry.timestamp}</div>
       </div>
@@ -843,7 +1065,7 @@ function renderConversationList() {
 
     recRow.innerHTML = `
       <div class="speech-bubble">
-        <div class="bubble-meta">🤖 Translation (${entry.to})</div>
+        <div class="bubble-meta">– Translation (${entry.to})</div>
         <div class="bubble-text">${entry.translated}</div>
         <div class="bubble-time">${entry.timestamp}</div>
         
@@ -879,11 +1101,11 @@ function renderConversationList() {
 
     // Hook bubble listeners
     recRow.querySelector(".btn-action-play").addEventListener("click", () => {
-      speakTranslation(entry.translated, speechSpeedRate);
+      speakTranslation(entry.translated, speechSpeedRate, entry.to);
       showToast("Reading audio translation.");
     });
     recRow.querySelector(".btn-action-slow").addEventListener("click", () => {
-      speakTranslation(entry.translated, 0.7);
+      speakTranslation(entry.translated, 0.7, entry.to);
       showToast("Reading slowly (0.7x speed).");
     });
     recRow.querySelector(".btn-action-copy").addEventListener("click", () => {
@@ -909,13 +1131,53 @@ function renderConversationList() {
             .setAttribute("fill", "currentColor");
           showToast("Bookmarked to saved phrases.");
         }
-        saveGlobalBookmarks();
+        renderConversationList();
+        renderHistoryTab();
       });
 
     chatContainer.appendChild(recRow);
   });
 
   chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+function renderConversationSidebar() {
+  if (!conversationList) {
+    return;
+  }
+
+  conversationList.innerHTML = "";
+
+  if (!auth.isLoggedIn()) {
+    conversationList.innerHTML = `<div class="conversation-empty">Sign in to sync conversations.</div>`;
+    return;
+  }
+
+  if (conversations.length === 0) {
+    conversationList.innerHTML = `<div class="conversation-empty">No conversations yet.</div>`;
+    return;
+  }
+
+  conversations.forEach((conversation) => {
+    const item = document.createElement("button");
+    item.className = `conversation-item ${activeConversation?.id === conversation.id ? "active" : ""}`;
+    item.type = "button";
+    item.innerHTML = `
+      <span class="conversation-item-main">
+        <span class="conversation-item-title">${escapeHtml(conversation.title)}</span>
+        <span class="conversation-item-meta">${escapeHtml(conversation.source_language)} <-> ${escapeHtml(conversation.target_language)}</span>
+      </span>
+      <span class="conversation-item-date">${escapeHtml(formatConversationDate(conversation.updated_at))}</span>
+      <span class="conversation-delete" title="Delete conversation" aria-label="Delete conversation">x</span>
+    `;
+
+    item.addEventListener("click", () => loadConversation(conversation.id));
+    item.querySelector(".conversation-delete").addEventListener("click", (event) => {
+      event.stopPropagation();
+      deleteConversation(conversation.id);
+    });
+    conversationList.appendChild(item);
+  });
 }
 
 function renderModePhrases() {
@@ -1006,99 +1268,47 @@ function renderGlobalPhrasesTab() {
 
 function renderHistoryTab() {
   historyList.innerHTML = "";
-  historyCount.textContent = `${savedBookmarks.length} bookmarked phrases`;
+  historyCount.textContent = `${conversations.length} database conversations`;
 
-  const totalHistoryCount = Object.values(historiesByMode).reduce(
-    (sum, list) => sum + list.length,
-    0,
-  );
-
-  if (totalHistoryCount === 0 && savedBookmarks.length === 0) {
+  if (!auth.isLoggedIn()) {
     historyList.innerHTML = `
       <div style="text-align:center; padding: 40px 10px; color:var(--text-muted);">
-        <p>No translation logs found.</p>
+        <p>Sign in to view synchronized conversation history.</p>
       </div>
     `;
     return;
   }
 
-  // Bookmarks first
-  if (savedBookmarks.length > 0) {
-    const bookmarkHeader = document.createElement("div");
-    bookmarkHeader.className = "settings-group-title";
-    bookmarkHeader.style.marginTop = "10px";
-    bookmarkHeader.textContent = "⭐ Starred Favorites";
-    historyList.appendChild(bookmarkHeader);
+  if (conversations.length === 0) {
+    historyList.innerHTML = `
+      <div style="text-align:center; padding: 40px 10px; color:var(--text-muted);">
+        <p>No conversations saved yet.</p>
+      </div>
+    `;
+    return;
+  }
 
-    savedBookmarks.forEach((fav) => {
-      const item = document.createElement("div");
-      item.className = "history-item";
-      item.innerHTML = `
-        <div class="history-meta">
-          <span class="history-langs">${fav.from} → ${fav.to}</span>
-          <div class="history-item-actions">
-            <button class="action-icon-btn btn-fav-play" aria-label="Play audio">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polygon points="5 3 19 12 5 21 5 3"></polygon>
-              </svg>
-            </button>
-          </div>
-        </div>
-        <span class="history-original">${fav.original}</span>
-        <span class="history-translated">${fav.translated}</span>
-      `;
-
-      item.querySelector(".btn-fav-play").addEventListener("click", () => {
-        speakTranslation(fav.translated);
-      });
-
-      historyList.appendChild(item);
+  conversations.forEach((conversation) => {
+    const item = document.createElement("button");
+    item.className = "history-item conversation-history-item";
+    item.type = "button";
+    item.innerHTML = `
+      <div class="history-meta">
+        <span class="history-langs">${escapeHtml(conversation.source_language)} <-> ${escapeHtml(conversation.target_language)}</span>
+        <span>${escapeHtml(formatConversationDate(conversation.updated_at))}</span>
+      </div>
+      <span class="history-original">${escapeHtml(conversation.title)}</span>
+      <span class="history-translated">${conversation.message_count || 0} messages</span>
+    `;
+    item.addEventListener("click", () => {
+      loadConversation(conversation.id);
+      document.querySelectorAll(".nav-tab").forEach((t) => t.classList.remove("active"));
+      document.querySelector('.nav-tab[data-target="tab-translator"]').classList.add("active");
+      document.querySelectorAll(".tab-panel").forEach((p) => p.classList.remove("active"));
+      document.getElementById("tab-translator").classList.add("active");
     });
-  }
-
-  // Recents list
-  const allRecents = [];
-  for (const mode in historiesByMode) {
-    historiesByMode[mode].forEach((entry) => {
-      allRecents.push({ ...entry, mode: mode });
-    });
-  }
-
-  if (allRecents.length > 0) {
-    const recentHeader = document.createElement("div");
-    recentHeader.className = "settings-group-title";
-    recentHeader.style.marginTop = "20px";
-    recentHeader.textContent = "🕰️ Recent Translations";
-    historyList.appendChild(recentHeader);
-
-    allRecents
-      .sort((a, b) => b.id - a.id)
-      .slice(0, 10)
-      .forEach((recent) => {
-        const item = document.createElement("div");
-        item.className = "history-item";
-        item.innerHTML = `
-        <div class="history-meta">
-          <span class="history-langs">${recent.from} → ${recent.to} (${recent.mode.toUpperCase()})</span>
-          <div class="history-item-actions">
-            <button class="action-icon-btn btn-recent-play" aria-label="Play audio">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polygon points="5 3 19 12 5 21 5 3"></polygon>
-              </svg>
-            </button>
-          </div>
-        </div>
-        <span class="history-original">${recent.original}</span>
-        <span class="history-translated">${recent.translated}</span>
-      `;
-
-        item.querySelector(".btn-recent-play").addEventListener("click", () => {
-          speakTranslation(recent.translated);
-        });
-
-        historyList.appendChild(item);
-      });
-  }
+    historyList.appendChild(item);
+  });
 }
 
 // -------------------------------------------------------------
@@ -1112,7 +1322,6 @@ function setTranslatorMode(modeKey, triggerToast = true) {
   if (isListening) stopRecordingSession();
 
   activeMode = modeKey;
-  localStorage.setItem("speakon_active_mode", modeKey);
 
   // Update modes list modal highlighting
   document.querySelectorAll(".mode-selection-item").forEach((item) => {
@@ -1148,7 +1357,6 @@ function setTranslatorMode(modeKey, triggerToast = true) {
   // Load contextual phrase lists
   renderModePhrases();
 
-  // Load isolated conversation log
   renderConversationList();
 
   // Reset microphone instructions and badges
@@ -1225,11 +1433,20 @@ manualTextInput.addEventListener("keypress", async (e) => {
   }
 });
 
-// Clear conversation histories
-btnConversationClear.addEventListener("click", () => {
-  historiesByMode[activeMode] = [];
-  saveActiveHistory();
-  showToast("Cleared active conversation history.");
+// New database-backed conversation
+btnConversationClear.addEventListener("click", async () => {
+  if (!auth.isLoggedIn()) {
+    showToast("Sign in to create synced conversations.");
+    return;
+  }
+
+  try {
+    await createConversation();
+    showToast("New conversation started.");
+  } catch (error) {
+    console.error("Failed to create conversation:", error);
+    showToast("Could not start a new conversation.");
+  }
 });
 
 // Emergency Alert Buttons click
@@ -1272,24 +1489,20 @@ document.querySelectorAll(".nav-tab").forEach((tab) => {
 
 toggleAutoPlay.addEventListener("change", (e) => {
   autoPlayActive = e.target.checked;
-  localStorage.setItem("speakon_autoplay", autoPlayActive);
   showToast(autoPlayActive ? "Auto-play enabled." : "Auto-play disabled.");
 });
 
 speechSpeedSlider.addEventListener("input", (e) => {
   speechSpeedRate = parseFloat(e.target.value);
   speechSpeedVal.textContent = `${speechSpeedRate.toFixed(1)}x`;
-  localStorage.setItem("speakon_speed", speechSpeedRate);
 });
 
 toggleDarkMode.addEventListener("change", (e) => {
   if (e.target.checked) {
     document.body.classList.add("dark-mode");
-    localStorage.setItem("speakon_darkmode", "true");
     showToast("Softer dark theme activated.");
   } else {
     document.body.classList.remove("dark-mode");
-    localStorage.setItem("speakon_darkmode", "false");
     showToast("Standard light theme active.");
   }
 });
@@ -1297,28 +1510,29 @@ toggleDarkMode.addEventListener("change", (e) => {
 toggleHighContrast.addEventListener("change", (e) => {
   if (e.target.checked) {
     document.body.classList.add("high-contrast");
-    localStorage.setItem("speakon_highcontrast", "true");
     showToast("High contrast mode active.");
   } else {
     document.body.classList.remove("high-contrast");
-    localStorage.setItem("speakon_highcontrast", "false");
     showToast("Standard text contrast active.");
   }
 });
 
 btnResetBookmarks.addEventListener("click", () => {
   savedBookmarks = [];
-  saveGlobalBookmarks();
+  renderConversationList();
+  renderHistoryTab();
   showToast("Bookmarks deleted successfully.");
 });
 
-btnResetApp.addEventListener("click", () => {
-  localStorage.clear();
+btnClearHistory.addEventListener("click", async () => {
+  await loadConversations(false);
+  showToast("Conversation history refreshed.");
+});
 
-  for (const m in historiesByMode) {
-    historiesByMode[m] = [];
-  }
+btnResetApp.addEventListener("click", () => {
   savedBookmarks = [];
+  activeConversation = null;
+  activeMessages = [];
   autoPlayActive = true;
   speechSpeedRate = 1.0;
 
@@ -1332,13 +1546,14 @@ btnResetApp.addEventListener("click", () => {
   toggleHighContrast.checked = false;
 
   setTranslatorMode("general", false);
+  renderConversationList();
   renderHistoryTab();
 
-  showToast("Speak-On data successfully reset.");
+  showToast("Speak-On screen settings reset.");
 });
 
 // -------------------------------------------------------------
 // 11. Initializer call execution
 // -------------------------------------------------------------
-initStorage();
+initApp();
 renderGlobalPhrasesTab();

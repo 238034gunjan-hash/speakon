@@ -179,12 +179,20 @@
             <!-- Chat Conversations Area -->
             <div class="chat-section">
               <div class="chat-header">
-                <span class="chat-title">Recent Conversations</span>
-                <button class="chat-clear-btn" id="btnConversationClear" aria-label="Clear active conversation">Clear Chat</button>
+                <span class="chat-title">Conversations</span>
+                <button class="chat-clear-btn" id="btnConversationClear" aria-label="Start a new conversation">New Chat</button>
               </div>
-              
-              <div class="chat-container" id="chatContainer">
-                <!-- Dynamic chat bubbles loaded by JavaScript -->
+
+              <div class="conversation-workspace">
+                <aside class="conversation-sidebar" aria-label="Conversation history">
+                  <div class="conversation-list" id="conversationList">
+                    <!-- Dynamic conversation list loaded by JavaScript -->
+                  </div>
+                </aside>
+
+                <div class="chat-container" id="chatContainer">
+                  <!-- Dynamic chat bubbles loaded by JavaScript -->
+                </div>
               </div>
             </div>
 
@@ -257,14 +265,14 @@
       <!-- 3. TRANSLATION HISTORY TAB SECTION -->
       <section class="tab-panel" id="tab-history">
         <div class="section-intro">
-          <h1 class="main-heading">Translation History</h1>
-          <p class="main-subheading">Review recent translations. Click to play audio or save as favorite.</p>
+          <h1 class="main-heading">Conversation History</h1>
+          <p class="main-subheading">Review synchronized conversations saved in your account.</p>
         </div>
 
         <div class="card history-card">
           <div class="history-controls">
-            <span class="history-count" id="historyCount">0 saved entries</span>
-            <button class="btn-clear-history" id="btnClearHistory">Clear All</button>
+            <span class="history-count" id="historyCount">0 conversations</span>
+            <button class="btn-clear-history" id="btnClearHistory">Refresh</button>
           </div>
           
           <div class="history-list" id="historyList">
@@ -334,12 +342,12 @@
           </div>
 
           <div class="settings-group">
-            <h2 class="settings-group-title">System Storage</h2>
+            <h2 class="settings-group-title">Session Data</h2>
             
             <div class="setting-row item-btn-row">
               <div class="setting-info">
                 <span class="setting-title">Delete Saved Phrases</span>
-                <span class="setting-desc">Clear bookmarked entries from your offline favorites storage</span>
+                <span class="setting-desc">Clear bookmarked entries for this browser session</span>
               </div>
               <button class="danger-btn" id="btnResetBookmarks">Clear Saved</button>
             </div>
@@ -347,7 +355,7 @@
             <div class="setting-row item-btn-row">
               <div class="setting-info">
                 <span class="setting-title">Reset Application</span>
-                <span class="setting-desc">Wipes all cached translations, preferences, and offline histories</span>
+                <span class="setting-desc">Resets on-screen preferences without deleting database conversations</span>
               </div>
               <button class="danger-btn" id="btnResetApp">Reset All Data</button>
             </div>

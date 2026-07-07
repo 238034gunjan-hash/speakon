@@ -865,6 +865,98 @@ body.dark-mode .status-text {
   color: var(--text-muted);
 }
 .chat-clear-btn:hover {
+  color: var(--primary);
+}
+
+.conversation-workspace {
+  display: grid;
+  grid-template-columns: minmax(160px, 0.42fr) minmax(0, 1fr);
+  gap: 12px;
+  align-items: stretch;
+}
+
+.conversation-sidebar {
+  background-color: var(--card-bg);
+  border: var(--border-thick) solid var(--border);
+  border-radius: var(--border-radius-lg);
+  min-height: 260px;
+  max-height: 340px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.conversation-list {
+  height: 100%;
+  overflow-y: auto;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.conversation-empty {
+  color: var(--text-muted);
+  font-size: 0.86rem;
+  padding: 14px 10px;
+}
+
+.conversation-item {
+  width: 100%;
+  min-height: 58px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px;
+  border-radius: var(--border-radius-sm);
+  color: var(--text);
+  text-align: left;
+  position: relative;
+}
+
+.conversation-item:hover,
+.conversation-item.active {
+  background-color: var(--primary-alpha);
+}
+
+.conversation-item-main {
+  min-width: 0;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.conversation-item-title,
+.conversation-item-meta {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.conversation-item-title {
+  font-weight: 700;
+  font-size: 0.88rem;
+}
+
+.conversation-item-meta,
+.conversation-item-date {
+  color: var(--text-muted);
+  font-size: 0.74rem;
+}
+
+.conversation-delete {
+  width: 20px;
+  height: 20px;
+  border-radius: 99px;
+  color: var(--text-muted);
+  flex: 0 0 auto;
+  text-align: center;
+  line-height: 18px;
+}
+
+.conversation-delete:hover {
+  background-color: var(--accent-red-light);
   color: var(--accent-red);
 }
 
@@ -882,6 +974,26 @@ body.dark-mode .status-text {
   box-shadow: var(--shadow-sm);
   scroll-behavior: smooth;
   transition: all var(--transition-normal);
+}
+
+@media (max-width: 760px) {
+  .conversation-workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .conversation-sidebar {
+    min-height: auto;
+    max-height: none;
+  }
+
+  .conversation-list {
+    flex-direction: row;
+    overflow-x: auto;
+  }
+
+  .conversation-item {
+    min-width: 180px;
+  }
 }
 
 .chat-empty-state {

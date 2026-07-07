@@ -10,6 +10,10 @@ def translate():
     text = data.get("text", "")
     source_lang = data.get("source_lang", "English")
     target_lang = data.get("target_lang", "Nepali")
+    mode = data.get("mode", "general")
+    mode_title = data.get("mode_title", "General Mode")
+    mode_context = data.get("mode_context", "")
+    recent_messages = data.get("recent_messages", [])
 
     if not text.strip():
         return jsonify({"error": "Missing text"}), 400
@@ -17,7 +21,11 @@ def translate():
     translated = translate_text(
         text,
         source_lang,
-        target_lang
+        target_lang,
+        mode=mode,
+        mode_title=mode_title,
+        mode_context=mode_context,
+        recent_messages=recent_messages,
     )
 
     return jsonify({
