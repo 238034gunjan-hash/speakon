@@ -19,8 +19,20 @@ CREATE TABLE IF NOT EXISTS messages (
     original_language VARCHAR(50) NOT NULL,
     translated_language VARCHAR(50) NOT NULL,
     audio_url TEXT,
+    suggested_reply TEXT,
+    suggested_translation TEXT,
+    suggested_reply_language VARCHAR(50),
+    suggested_translation_language VARCHAR(50),
+    suggestion_reason TEXT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+ALTER TABLE messages
+    ADD COLUMN IF NOT EXISTS suggested_reply TEXT,
+    ADD COLUMN IF NOT EXISTS suggested_translation TEXT,
+    ADD COLUMN IF NOT EXISTS suggested_reply_language VARCHAR(50),
+    ADD COLUMN IF NOT EXISTS suggested_translation_language VARCHAR(50),
+    ADD COLUMN IF NOT EXISTS suggestion_reason TEXT;
 
 CREATE INDEX IF NOT EXISTS conversations_user_id_idx
 ON conversations (user_id);

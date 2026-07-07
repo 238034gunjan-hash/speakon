@@ -1,4 +1,5 @@
 import os
+import json
 
 from dotenv import load_dotenv
 from openai import OpenAI
@@ -123,6 +124,26 @@ def _format_recent_messages(recent_messages):
     return "\n".join(lines) if lines else "No previous conversation context."
 
 
+def _parse_json_object(content):
+    try:
+        return json.loads(content)
+    except (TypeError, json.JSONDecodeError):
+        pass
+
+    if not content:
+        return None
+
+    start = content.find("{")
+    end = content.rfind("}")
+    if start == -1 or end == -1 or end <= start:
+        return None
+
+    try:
+        return json.loads(content[start : end + 1])
+    except json.JSONDecodeError:
+        return None
+
+
 def translate_text(
     text,
     source_lang,
@@ -172,3 +193,80 @@ Rules:
     )
 
     return response.choices[0].message.content.strip()
+
+
+def suggest_tourist_reply(
+    text,
+    translated_text,
+    source_lang,
+    target_lang,
+    mode="general",
+    mode_title=None,
+    mode_context=None,
+    recent_messages=None,
+):
+    guidance = _mode_guidance(mode, mode_title, mode_context)
+    recent_context = _format_recent_messages(recent_messages)
+
+    tourist_language = source_lang if source_lang == "English" else target_lang
+    local_language = target_lang if tourist_language == source_lang else source_lang
+
+    system_prompt = f"""
+You are SpeakOn's travel negotiation and conversation assistant.
+
+The app already translated the user's message. Your job is to suggest a smart next thing
+the tourist could say, from the tourist's side, for the active situation.
+
+Active mode: {guidance["name"]}
+Mode context: {guidance["context"]}
+
+Conversation context:
+{recent_context}
+
+Latest user message ({source_lang}): {text}
+Latest translation ({target_lang}): {translated_text}
+
+Behavior:
+- In Shop Mode, bargain politely for the tourist when appropriate.
+- In Taxi Mode, help clarify fare, route, pickup/dropoff, waiting, or safety.
+- In Hotel Mode, help ask for practical guest-friendly next steps.
+- In Dining Mode, help order, clarify spice/diet needs, or handle billing politely.
+- In Emergency Mode, suggest only urgent, direct safety/help wording.
+- Keep the suggestion short enough to say aloud.
+- Be respectful and culturally sensitive.
+
+Return only JSON with these fields:
+{{
+  "suggested_reply": "tourist-side reply in {tourist_language}",
+  "suggested_translation": "translation of that reply in {local_language}",
+  "reason": "brief reason in English, 12 words or fewer"
+}}
+"""
+
+    response = client.chat.completions.create(
+        model="deepseek-chat",
+        temperature=0.25,
+        messages=[
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": "Suggest the tourist's next reply."},
+        ],
+    )
+
+    suggestion = _parse_json_object(response.choices[0].message.content)
+    if not suggestion:
+        return None
+
+    suggested_reply = str(suggestion.get("suggested_reply") or "").strip()
+    suggested_translation = str(suggestion.get("suggested_translation") or "").strip()
+    reason = str(suggestion.get("reason") or "").strip()
+
+    if not suggested_reply or not suggested_translation:
+        return None
+
+    return {
+        "suggested_reply": suggested_reply,
+        "suggested_translation": suggested_translation,
+        "suggested_reply_language": tourist_language,
+        "suggested_translation_language": local_language,
+        "suggestion_reason": reason,
+    }

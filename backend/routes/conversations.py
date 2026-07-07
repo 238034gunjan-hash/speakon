@@ -99,6 +99,13 @@ def create_message():
         "original_language": data["original_language"].strip(),
         "translated_language": data["translated_language"].strip(),
         "audio_url": (data.get("audio_url") or None),
+        "suggested_reply": (data.get("suggested_reply") or None),
+        "suggested_translation": (data.get("suggested_translation") or None),
+        "suggested_reply_language": (data.get("suggested_reply_language") or None),
+        "suggested_translation_language": (
+            data.get("suggested_translation_language") or None
+        ),
+        "suggestion_reason": (data.get("suggestion_reason") or None),
     }
 
     try:

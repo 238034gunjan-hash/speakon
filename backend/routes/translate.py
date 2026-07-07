@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from services.translator import translate_text
+from services.translator import suggest_tourist_reply, translate_text
 
 translate_bp = Blueprint("translate", __name__)
 
@@ -27,7 +27,18 @@ def translate():
         mode_context=mode_context,
         recent_messages=recent_messages,
     )
+    suggestion = suggest_tourist_reply(
+        text,
+        translated,
+        source_lang,
+        target_lang,
+        mode=mode,
+        mode_title=mode_title,
+        mode_context=mode_context,
+        recent_messages=recent_messages,
+    )
 
     return jsonify({
-        "translated_text": translated
+        "translated_text": translated,
+        "suggestion": suggestion,
     })

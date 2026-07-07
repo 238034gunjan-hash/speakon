@@ -189,7 +189,10 @@ async function translateViaBackend(text) {
     throw new Error(data.error);
   }
 
-  return data.translated_text;
+  return {
+    translatedText: data.translated_text,
+    suggestion: data.suggestion || null,
+  };
 }
 
 const WHISPER_API_URL = `${API_BASE_URL}/transcribe`;
@@ -282,7 +285,7 @@ const connectivityText = document.getElementById("connectivityText");
 let activeMode = "general"; // Default
 let isListening = false;
 let isTranscribing = false;
-let autoPlayActive = true;
+let autoPlayActive = false;
 let speechSpeedRate = 1.0;
 let savedBookmarks = []; // In-memory bookmarked favorites for the current session
 let toastTimer;
@@ -331,6 +334,11 @@ function messageToEntry(message) {
     to: message.translated_language,
     original: message.original_text,
     translated: message.translated_text,
+    suggestedReply: message.suggested_reply,
+    suggestedTranslation: message.suggested_translation,
+    suggestedReplyLanguage: message.suggested_reply_language,
+    suggestedTranslationLanguage: message.suggested_translation_language,
+    suggestionReason: message.suggestion_reason,
     timestamp: formatMessageTime(message.created_at),
     createdAt: message.created_at,
   };
@@ -463,6 +471,11 @@ async function saveTranslatedMessage(entry) {
       original_language: entry.from,
       translated_language: entry.to,
       audio_url: entry.audio_url || null,
+      suggested_reply: entry.suggestedReply || null,
+      suggested_translation: entry.suggestedTranslation || null,
+      suggested_reply_language: entry.suggestedReplyLanguage || null,
+      suggested_translation_language: entry.suggestedTranslationLanguage || null,
+      suggestion_reason: entry.suggestionReason || null,
     }),
   });
 
@@ -961,9 +974,9 @@ async function processTranslation(sourceText) {
   const originalLang = sourceLanguage.value;
   const translatedLang = targetLanguage.value;
 
-  let resultText;
+  let translationResult;
   try {
-    resultText = await translateViaBackend(sourceText);
+    translationResult = await translateViaBackend(sourceText);
   } catch (error) {
     console.error("Backend translation error:", error);
     showToast("Backend translation failed. Please check the server.");
@@ -973,7 +986,7 @@ async function processTranslation(sourceText) {
     return;
   }
 
-  if (!resultText) {
+  if (!translationResult?.translatedText) {
     showToast("Backend returned no translation.");
     statusBadge.className = "status-badge error";
     statusText.textContent = "No translation";
@@ -986,7 +999,14 @@ async function processTranslation(sourceText) {
     from: originalLang,
     to: translatedLang,
     original: sourceText,
-    translated: resultText,
+    translated: translationResult.translatedText,
+    suggestedReply: translationResult.suggestion?.suggested_reply || null,
+    suggestedTranslation: translationResult.suggestion?.suggested_translation || null,
+    suggestedReplyLanguage:
+      translationResult.suggestion?.suggested_reply_language || null,
+    suggestedTranslationLanguage:
+      translationResult.suggestion?.suggested_translation_language || null,
+    suggestionReason: translationResult.suggestion?.suggestion_reason || null,
     timestamp: new Date().toLocaleTimeString([], {
       hour: "2-digit",
       minute: "2-digit",
@@ -1006,6 +1026,11 @@ async function processTranslation(sourceText) {
       original_language: entry.from,
       translated_language: entry.to,
       audio_url: null,
+      suggested_reply: entry.suggestedReply,
+      suggested_translation: entry.suggestedTranslation,
+      suggested_reply_language: entry.suggestedReplyLanguage,
+      suggested_translation_language: entry.suggestedTranslationLanguage,
+      suggestion_reason: entry.suggestionReason,
       created_at: new Date().toISOString(),
     });
     showToast("Translation ready, but history was not saved.");
@@ -1062,12 +1087,28 @@ function renderConversationList() {
     const isBookmarked = savedBookmarks.some(
       (b) => b.original === entry.original,
     );
+    const suggestionHtml =
+      entry.suggestedReply && entry.suggestedTranslation
+        ? `
+        <div class="ai-suggestion-card">
+          <div class="ai-suggestion-label">AI suggestion${entry.suggestionReason ? ` · ${escapeHtml(entry.suggestionReason)}` : ""}</div>
+          <div class="ai-suggestion-text">${escapeHtml(entry.suggestedReply)}</div>
+          <div class="ai-suggestion-translation">${escapeHtml(entry.suggestedTranslation)}</div>
+          <div class="ai-suggestion-actions">
+            <button class="suggestion-action-btn btn-suggestion-use" type="button">Use</button>
+            <button class="suggestion-action-btn btn-suggestion-copy" type="button">Copy</button>
+            <button class="suggestion-action-btn btn-suggestion-play" type="button">Play</button>
+          </div>
+        </div>
+        `
+        : "";
 
     recRow.innerHTML = `
       <div class="speech-bubble">
         <div class="bubble-meta">– Translation (${entry.to})</div>
         <div class="bubble-text">${entry.translated}</div>
         <div class="bubble-time">${entry.timestamp}</div>
+        ${suggestionHtml}
         
         <div class="bubble-actions">
           <button class="action-icon-btn btn-action-play" title="Play Voice Audio" aria-label="Play translation voice">
@@ -1111,6 +1152,23 @@ function renderConversationList() {
     recRow.querySelector(".btn-action-copy").addEventListener("click", () => {
       navigator.clipboard.writeText(entry.translated);
       showToast("Copied to clipboard!");
+    });
+    recRow.querySelector(".btn-suggestion-use")?.addEventListener("click", () => {
+      manualTextInput.value = entry.suggestedReply;
+      manualTextInput.focus();
+      showToast("Suggestion added to input.");
+    });
+    recRow.querySelector(".btn-suggestion-copy")?.addEventListener("click", () => {
+      navigator.clipboard.writeText(entry.suggestedReply);
+      showToast("Suggestion copied.");
+    });
+    recRow.querySelector(".btn-suggestion-play")?.addEventListener("click", () => {
+      speakTranslation(
+        entry.suggestedTranslation,
+        speechSpeedRate,
+        entry.suggestedTranslationLanguage || entry.to,
+      );
+      showToast("Reading suggested reply.");
     });
     recRow
       .querySelector(".btn-action-bookmark")
@@ -1533,13 +1591,13 @@ btnResetApp.addEventListener("click", () => {
   savedBookmarks = [];
   activeConversation = null;
   activeMessages = [];
-  autoPlayActive = true;
+  autoPlayActive = false;
   speechSpeedRate = 1.0;
 
   document.body.className = "";
   appShell.className = "app-shell";
 
-  toggleAutoPlay.checked = true;
+  toggleAutoPlay.checked = false;
   speechSpeedSlider.value = 1.0;
   speechSpeedVal.textContent = "1.0x";
   toggleDarkMode.checked = false;

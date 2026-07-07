@@ -99,6 +99,11 @@ class ConversationService:
                            m.original_language,
                            m.translated_language,
                            m.audio_url,
+                           m.suggested_reply,
+                           m.suggested_translation,
+                           m.suggested_reply_language,
+                           m.suggested_translation_language,
+                           m.suggestion_reason,
                            m.created_at
                     FROM messages m
                     JOIN conversations c ON c.id = m.conversation_id
@@ -148,9 +153,14 @@ class ConversationService:
                         translated_text,
                         original_language,
                         translated_language,
-                        audio_url
+                        audio_url,
+                        suggested_reply,
+                        suggested_translation,
+                        suggested_reply_language,
+                        suggested_translation_language,
+                        suggestion_reason
                     )
-                    VALUES (%s, %s, %s, %s, %s, %s, %s)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                     RETURNING id,
                               conversation_id,
                               sender,
@@ -159,6 +169,11 @@ class ConversationService:
                               original_language,
                               translated_language,
                               audio_url,
+                              suggested_reply,
+                              suggested_translation,
+                              suggested_reply_language,
+                              suggested_translation_language,
+                              suggestion_reason,
                               created_at
                     """,
                     (
@@ -169,6 +184,11 @@ class ConversationService:
                         payload["original_language"],
                         payload["translated_language"],
                         payload.get("audio_url"),
+                        payload.get("suggested_reply"),
+                        payload.get("suggested_translation"),
+                        payload.get("suggested_reply_language"),
+                        payload.get("suggested_translation_language"),
+                        payload.get("suggestion_reason"),
                     ),
                 )
                 message = _serialize_row(cursor.fetchone())

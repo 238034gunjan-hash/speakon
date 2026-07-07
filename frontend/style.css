@@ -1108,6 +1108,56 @@ body.dark-mode .bubble-actions {
   border-color: rgba(255, 255, 255, 0.08);
 }
 
+.ai-suggestion-card {
+  margin-top: 12px;
+  padding: 10px;
+  border: var(--border-thick) solid var(--border);
+  border-radius: var(--border-radius-sm);
+  background-color: var(--primary-alpha);
+}
+
+.ai-suggestion-label {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 4px;
+}
+
+.ai-suggestion-text {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.ai-suggestion-translation {
+  margin-top: 4px;
+  font-size: 0.86rem;
+  color: var(--text-muted);
+}
+
+.ai-suggestion-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.suggestion-action-btn {
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: var(--border-radius-sm);
+  background-color: var(--card-bg);
+  border: var(--border-thick) solid var(--border);
+  color: var(--primary);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.suggestion-action-btn:hover {
+  background-color: var(--primary);
+  color: var(--text-inverse);
+}
+
 .action-icon-btn {
   width: 28px;
   height: 28px;
