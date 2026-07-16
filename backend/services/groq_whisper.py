@@ -5,12 +5,16 @@ import requests
 
 GROQ_TRANSCRIPTIONS_URL = "https://api.groq.com/openai/v1/audio/transcriptions"
 
+# Nudges spelling/recognition toward common tourism terms. Override via env if needed.
+DEFAULT_PROMPT = os.getenv(
+    "GROQ_WHISPER_PROMPT",
+    "Nepal tourism conversation. Terms: Thamel, Pokhara, Kathmandu, namaste, "
+    "rupees, dal bhat, momo, trekking, Everest, guesthouse.",
+)
+
 
 def _get_groq_whisper_key():
-    return (
-        os.getenv("GROQ_API_WHISPER_KEY")
-        
-    )
+    return os.getenv("GROQ_API_WHISPER_KEY")
 
 
 def _language_code(language):
@@ -23,24 +27,34 @@ def _language_code(language):
     return language_map.get(language.strip().lower())
 
 
+def _is_all_noise(segments, threshold=0.6):
+    """True if every segment is almost certainly non-speech (background noise)."""
+    return bool(segments) and all(
+        seg.get("no_speech_prob", 0) > threshold for seg in segments
+    )
+
+
 def transcribe_audio(audio_file, language=None):
     api_key = _get_groq_whisper_key()
     if not api_key:
         raise RuntimeError("GROQ_API_WHISPER_KEY is not configured")
 
-    model = os.getenv("GROQ_WHISPER_MODEL", "whisper-large-v3-turbo")
+    # Full large-v3, not turbo — turbo is weaker on Nepali.
+    model = os.getenv("GROQ_WHISPER_MODEL", "whisper-large-v3")
     filename = audio_file.filename or "recording.webm"
     content_type = audio_file.mimetype or "audio/webm"
 
+    # Default to English (the app's main language) so we NEVER fall back to
+    # auto-detection, which was the source of the misdetection problem.
+    lang = _language_code(language) or "en"
+
     data = {
         "model": model,
-        "response_format": "json",
+        "response_format": "verbose_json",  # gives per-segment no_speech_prob
         "temperature": "0",
+        "language": lang,
+        "prompt": DEFAULT_PROMPT,
     }
-
-    language = _language_code(language)
-    if language:
-        data["language"] = language
 
     try:
         response = requests.post(
@@ -54,16 +68,27 @@ def transcribe_audio(audio_file, language=None):
         raise RuntimeError(f"Groq transcription request failed: {error}") from error
 
     if not response.ok:
-        raise RuntimeError(f"Groq transcription failed: {response.status_code} {response.text}")
+        raise RuntimeError(
+            f"Groq transcription failed: {response.status_code} {response.text}"
+        )
 
     try:
         result = response.json()
     except ValueError as error:
-        raise RuntimeError("Groq transcription returned an invalid JSON response") from error
+        raise RuntimeError(
+            "Groq transcription returned an invalid JSON response"
+        ) from error
+
+    segments = result.get("segments", [])
+    text = (result.get("text") or "").strip()
+
+    # Drop clips that are just background noise/silence instead of returning junk.
+    if _is_all_noise(segments):
+        text = ""
 
     return {
-        "text": (result.get("text") or "").strip(),
-        "language": language,
+        "text": text,
+        "language": lang,
         "provider": "groq",
         "model": model,
     }
