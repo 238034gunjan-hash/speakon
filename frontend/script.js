@@ -153,7 +153,7 @@ const API_BASE_URL =
     ? "http://localhost:5000"
     : window.location.origin);
 
-async function translateViaBackend(text) {
+async function translateViaBackend(text, options = {}) {
   const url = `${API_BASE_URL}/translate`;
 
   const response = await fetch(url, {
@@ -176,6 +176,7 @@ async function translateViaBackend(text) {
         original_language: message.original_language,
         translated_language: message.translated_language,
       })),
+      emergency_action: options.emergencyAction || undefined,
     }),
   });
 
@@ -190,6 +191,7 @@ async function translateViaBackend(text) {
   }
 
   return {
+    sourceText: data.source_text || text,
     translatedText: data.translated_text,
     suggestion: data.suggestion || null,
   };
@@ -295,6 +297,7 @@ let recordedChunks = [];
 let activeTtsAudio = null;
 let activeTtsAudioUrl = null;
 let ttsPlaybackRequestId = 0;
+let emergencyRequestInProgress = false;
 let conversations = [];
 let activeConversation = null;
 let activeMessages = [];
@@ -933,7 +936,7 @@ function simulateSpeechInput() {
 // 6. Translation Engine
 // -------------------------------------------------------------
 
-async function processTranslation(sourceText) {
+async function processTranslation(sourceText, options = {}) {
   if (!sourceText.trim()) {
     showToast("Type or speak a phrase to translate.");
     return;
@@ -948,7 +951,7 @@ async function processTranslation(sourceText) {
 
   let translationResult;
   try {
-    translationResult = await translateViaBackend(sourceText);
+    translationResult = await translateViaBackend(sourceText, options);
   } catch (error) {
     console.error("Backend translation error:", error);
     showToast("Backend translation failed. Please check the server.");
@@ -970,7 +973,7 @@ async function processTranslation(sourceText) {
     id: Date.now(),
     from: originalLang,
     to: translatedLang,
-    original: sourceText,
+    original: translationResult.sourceText,
     translated: translationResult.translatedText,
     suggestedReply: translationResult.suggestion?.suggested_reply || null,
     suggestedTranslation: translationResult.suggestion?.suggested_translation || null,
@@ -1213,7 +1216,9 @@ function renderConversationSidebar() {
 function renderModePhrases() {
   modePhrasesGrid.innerHTML = "";
 
-  if (activeMode === "general") {
+  // The dedicated emergency section already provides its four quick actions.
+  // Do not render another generic phrase list when that mode is active.
+  if (activeMode === "general" || activeMode === "emergency") {
     modePhrasesCard.style.display = "none";
     return;
   }
@@ -1480,16 +1485,37 @@ btnConversationClear.addEventListener("click", async () => {
 });
 
 // Emergency Alert Buttons click
+const emergencyActions = {
+  "Need Assistance": "assistance",
+  "Call Police": "police",
+  "Need Hospital": "hospital",
+  "I Am Lost": "lost",
+};
+
 document.querySelectorAll(".emergency-btn").forEach((btn) => {
-  btn.addEventListener("click", () => {
+  btn.addEventListener("click", async () => {
+    if (emergencyRequestInProgress) return;
+
     const phraseLabel = btn.dataset.phrase;
+    const emergencyAction = emergencyActions[phraseLabel];
+    if (!emergencyAction) return;
 
-    // Load emergency context view first
-    setTranslatorMode("emergency", false);
+    emergencyRequestInProgress = true;
+    document.querySelectorAll(".emergency-btn").forEach((button) => {
+      button.disabled = true;
+    });
 
-    setTimeout(() => {
-      processTranslation(phraseLabel);
-    }, 400);
+    try {
+      setTranslatorMode("emergency", false);
+      await processTranslation(phraseLabel, {
+        emergencyAction,
+      });
+    } finally {
+      emergencyRequestInProgress = false;
+      document.querySelectorAll(".emergency-btn").forEach((button) => {
+        button.disabled = false;
+      });
+    }
   });
 });
 

@@ -90,6 +90,21 @@ MODE_GUIDANCE = {
 }
 
 
+# Quick-access labels are intentionally converted server-side so that the
+# spoken/translated message is a clear request, not a literal UI label.
+EMERGENCY_MESSAGES = {
+    "assistance": "Please help me. I have an emergency.",
+    "police": "Please call the police. I need help.",
+    "hospital": "Please take me to the nearest hospital. I need medical help.",
+    "lost": "I am lost. Please help me find my way.",
+}
+
+
+def get_emergency_message(action, fallback_text=""):
+    """Return a concise, natural message for an emergency quick action."""
+    return EMERGENCY_MESSAGES.get(str(action or "").strip().lower(), fallback_text)
+
+
 def _normalize_mode(mode):
     return str(mode or "general").strip().lower()
 

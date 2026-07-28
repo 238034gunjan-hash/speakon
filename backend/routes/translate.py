@@ -1,5 +1,9 @@
 from flask import Blueprint, request, jsonify
-from services.translator import suggest_tourist_reply, translate_text
+from services.translator import (
+    get_emergency_message,
+    suggest_tourist_reply,
+    translate_text,
+)
 
 translate_bp = Blueprint("translate", __name__)
 
@@ -14,9 +18,13 @@ def translate():
     mode_title = data.get("mode_title", "General Mode")
     mode_context = data.get("mode_context", "")
     recent_messages = data.get("recent_messages", [])
+    emergency_action = data.get("emergency_action")
 
     if not text.strip():
         return jsonify({"error": "Missing text"}), 400
+
+    if str(mode).strip().lower() == "emergency" and emergency_action:
+        text = get_emergency_message(emergency_action, text)
 
     translated = translate_text(
         text,
@@ -39,6 +47,7 @@ def translate():
     )
 
     return jsonify({
+        "source_text": text,
         "translated_text": translated,
         "suggestion": suggestion,
     })
