@@ -1,6 +1,6 @@
 ﻿/**
  * Speak-On Voice Translator - Main Application Logic
- * Implements actual and simulated Web Speech APIs, persistent local storage,
+ * Implements translation, Edge TTS playback, persistent local storage,
  * dynamic theme switching, categorized phrases, and emergency triggers.
  */
 
@@ -292,7 +292,9 @@ let toastTimer;
 let mediaRecorder = null;
 let mediaStream = null;
 let recordedChunks = [];
-let availableSpeechVoices = [];
+let activeTtsAudio = null;
+let activeTtsAudioUrl = null;
+let ttsPlaybackRequestId = 0;
 let conversations = [];
 let activeConversation = null;
 let activeMessages = [];
@@ -644,94 +646,64 @@ loginForm.addEventListener("submit", async (event) => {
 });
 
 // -------------------------------------------------------------
-// 5. Speech Synthesizers & Recorders
+// 5. Edge TTS Playback & Recorders
 // -------------------------------------------------------------
 
-const TTS_LANGUAGE_CONFIG = {
-  English: {
-    lang: "en-US",
-    voiceLangs: ["en-US", "en-GB", "en"],
-    voiceNames: ["english"],
-  },
-  Nepali: {
-    lang: "ne-NP",
-    voiceLangs: ["ne-NP", "ne", "hi-IN", "hi"],
-    voiceNames: ["nepali", "hindi"],
-  },
-};
-
-function refreshSpeechVoices() {
-  if (!("speechSynthesis" in window)) {
-    availableSpeechVoices = [];
-    return availableSpeechVoices;
+function stopTtsPlayback() {
+  if (activeTtsAudio) {
+    activeTtsAudio.pause();
+    activeTtsAudio = null;
   }
-
-  availableSpeechVoices = window.speechSynthesis.getVoices();
-  return availableSpeechVoices;
-}
-
-function getSpeechConfig(language) {
-  return TTS_LANGUAGE_CONFIG[language] || TTS_LANGUAGE_CONFIG.English;
-}
-
-function findSpeechVoice(language) {
-  const config = getSpeechConfig(language);
-  const voices = refreshSpeechVoices();
-
-  return (
-    voices.find((voice) => config.voiceLangs.includes(voice.lang)) ||
-    voices.find((voice) =>
-      config.voiceLangs.some((lang) =>
-        voice.lang.toLowerCase().startsWith(lang.toLowerCase().split("-")[0]),
-      ),
-    ) ||
-    voices.find((voice) =>
-      config.voiceNames.some((name) =>
-        voice.name.toLowerCase().includes(name),
-      ),
-    ) ||
-    null
-  );
-}
-
-function initSpeechVoices() {
-  if (!("speechSynthesis" in window)) {
-    return;
+  if (activeTtsAudioUrl) {
+    URL.revokeObjectURL(activeTtsAudioUrl);
+    activeTtsAudioUrl = null;
   }
-
-  refreshSpeechVoices();
-  window.speechSynthesis.addEventListener("voiceschanged", refreshSpeechVoices);
 }
 
-function speakTranslation(text, customRate = null, language = targetLanguage.value) {
-  if (!("speechSynthesis" in window)) {
-    showToast("Text-to-speech not supported in this browser.");
-    return;
+async function speakTranslation(text, customRate = null, language = targetLanguage.value) {
+  if (!String(text || "").trim()) return;
+
+  const requestId = ++ttsPlaybackRequestId;
+  stopTtsPlayback();
+
+  try {
+    const response = await auth.fetchWithAuth("/tts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        text,
+        // The translation language title (for example, English or Nepali)
+        // is normalized by the backend to the matching Edge Neural voice.
+        language,
+        speed: customRate || speechSpeedRate,
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({}));
+      throw new Error(error.error || "Could not generate speech");
+    }
+
+    const audioUrl = URL.createObjectURL(await response.blob());
+    if (requestId !== ttsPlaybackRequestId) {
+      URL.revokeObjectURL(audioUrl);
+      return;
+    }
+
+    const audio = new Audio(audioUrl);
+    activeTtsAudio = audio;
+    activeTtsAudioUrl = audioUrl;
+    audio.playbackRate = customRate || speechSpeedRate;
+    audio.onended = audio.onerror = () => {
+      if (activeTtsAudio === audio) stopTtsPlayback();
+    };
+    await audio.play();
+  } catch (error) {
+    if (requestId !== ttsPlaybackRequestId) return;
+    console.error("Edge TTS playback failed:", error);
+    showToast(error.message || `Could not play ${language} audio.`);
   }
-
-  window.speechSynthesis.cancel();
-
-  const utterance = new SpeechSynthesisUtterance(text);
-  const speechConfig = getSpeechConfig(language);
-  const selectedVoice = findSpeechVoice(language);
-
-  utterance.lang = speechConfig.lang;
-  utterance.rate = customRate || speechSpeedRate;
-
-  if (selectedVoice) utterance.voice = selectedVoice;
-
-  utterance.onerror = () => {
-    showToast(`Could not play ${language} voice on this device.`);
-  };
-
-  if (language === "Nepali" && !selectedVoice) {
-    showToast("Nepali voice is not installed. Trying browser default voice.");
-  }
-
-  window.speechSynthesis.speak(utterance);
 }
-
-initSpeechVoices();
 
 // Microphone capture and Whisper transcription
 function setMicStatus(state, title, instruction) {
