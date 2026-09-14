@@ -260,51 +260,17 @@ body.dark-mode .app-name {
   gap: 14px;
 }
 
-/* Connectivity Indicator Badge */
-.connectivity-badge {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background-color: var(--primary-alpha);
-  border: var(--border-thick) solid var(--border);
-  padding: 4px 10px;
-  border-radius: 99px;
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: var(--primary);
-  transition: all var(--transition-normal);
-}
-body.dark-mode .connectivity-badge {
-  color: #FFFFFF;
-}
-
-.badge-dot {
-  width: 6px;
-  height: 6px;
-  background-color: #10B981; /* Green */
-  border-radius: 50%;
-  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
-}
-
-.connectivity-badge.offline {
-  background-color: var(--accent-red-alpha);
-  color: var(--accent-red);
-}
-.connectivity-badge.offline .badge-dot {
-  background-color: var(--accent-red);
-  box-shadow: 0 0 0 3px rgba(217, 56, 58, 0.2);
-}
-
 .profile-btn {
-  width: 36px;
-  height: 36px;
+  min-width: 132px;
+  height: 38px;
+  padding: 0 14px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  color: var(--text-muted);
+  border-radius: 10px;
+  color: var(--primary);
   font: inherit;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   font-weight: 700;
   border: var(--border-thick) solid var(--border);
   background-color: var(--card-bg);
@@ -314,9 +280,12 @@ body.dark-mode .connectivity-badge {
   background-color: var(--primary-light);
   transform: translateY(-1px);
 }
-.profile-btn svg {
-  width: 18px;
-  height: 18px;
+
+.profile-btn.is-signed-in {
+  min-width: 38px;
+  width: 38px;
+  padding: 0;
+  border-radius: 50%;
 }
 
 /* -------------------------------------------------------------
@@ -1800,23 +1769,12 @@ body.dark-mode .toast-notification {
 .selection-icon-hotel { color: #059669; background-color: rgba(5, 150, 105, 0.08); }
 .selection-icon-dining { color: #EA580C; background-color: rgba(234, 88, 12, 0.08); }
 
-.mode-item-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
+.mode-item-info { flex: 1; }
 
 .mode-item-title {
   font-size: 0.92rem;
   font-weight: 700;
   color: var(--text);
-}
-
-.mode-item-desc {
-  font-size: 0.74rem;
-  color: var(--text-muted);
-  line-height: 1.35;
 }
 
 .mode-item-chevron {

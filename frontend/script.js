@@ -79,37 +79,31 @@ const MODE_PHRASES = {
 const MODE_METADATA = {
   general: {
     title: "Voice Translator",
-    desc: "Speak naturally and hear translations instantly.",
     class: "",
     label: "Modes: General",
   },
   shop: {
     title: "Shop Mode",
-    desc: "Help tourists communicate while shopping in markets or local boutiques.",
     class: "theme-shop",
     label: "Modes: Shop",
   },
   taxi: {
     title: "Taxi Mode",
-    desc: "Communicate with cab, auto-rickshaw, or ride-share drivers seamlessly.",
     class: "theme-taxi",
     label: "Modes: Taxi",
   },
   hotel: {
     title: "Hotel Mode",
-    desc: "Navigate hotel room check-in, Wi-Fi networks, and hospitality services.",
     class: "theme-hotel",
     label: "Modes: Hotel",
   },
   dining: {
     title: "Dining Mode",
-    desc: "Order local meals, specify spice tolerances, and request dining bills.",
     class: "theme-dining",
     label: "Modes: Dining",
   },
   emergency: {
     title: "Emergency Broadcast",
-    desc: "High-visibility critical commands for stressful travel situations.",
     class: "theme-shop", // Employs crimson rose/red HSL
     label: "Modes: Emergency",
   },
@@ -207,7 +201,6 @@ const appShell = document.getElementById("appShell");
 
 // Mode headers & triggers
 const mainScreenTitle = document.getElementById("mainScreenTitle");
-const mainScreenDesc = document.getElementById("mainScreenDesc");
 const btnModesTrigger = document.getElementById("btnModesTrigger");
 const btnClearModeContext = document.getElementById("btnClearModeContext");
 const activeModeLabel = document.getElementById("activeModeLabel");
@@ -277,8 +270,6 @@ const accountAvatar = document.getElementById("accountAvatar");
 const accountName = document.getElementById("accountName");
 const accountEmail = document.getElementById("accountEmail");
 const btnLogout = document.getElementById("btnLogout");
-const connectivityBadge = document.getElementById("connectivityBadge");
-const connectivityText = document.getElementById("connectivityText");
 
 // -------------------------------------------------------------
 // 3. Application State & Storage Setup
@@ -497,7 +488,6 @@ async function saveTranslatedMessage(entry) {
 
 async function initApp() {
   setTranslatorMode("general", false);
-  updateOfflineStatus();
   await loadConversations(true);
 }
 
@@ -514,25 +504,6 @@ function showToast(message) {
   }, 2400);
 }
 
-// Network indicator state watcher
-function updateOfflineStatus() {
-  if (navigator.onLine) {
-    connectivityBadge.classList.remove("offline");
-    connectivityText.textContent = "Online";
-  } else {
-    connectivityBadge.classList.add("offline");
-    connectivityText.textContent = "Offline Mode";
-  }
-}
-window.addEventListener("online", () => {
-  updateOfflineStatus();
-  showToast("Internet restored. Cloud engine online.");
-});
-window.addEventListener("offline", () => {
-  updateOfflineStatus();
-  showToast("Offline mode. Local dictionary engine active.");
-});
-
 // Profile Modal Interactions
 openProfile.addEventListener("click", () => {
   renderAccountModal();
@@ -547,21 +518,22 @@ profileModal.addEventListener("click", (e) => {
 
 function updateProfileButton(user) {
   const firstName = user?.first_name?.trim();
-  if (!firstName) return;
+  if (!firstName) {
+    resetProfileButton();
+    return;
+  }
 
   openProfile.textContent = firstName.charAt(0).toUpperCase();
   openProfile.setAttribute("aria-label", `${firstName} account`);
   openProfile.title = firstName;
+  openProfile.classList.add("is-signed-in");
 }
 
 function resetProfileButton() {
-  openProfile.innerHTML = `
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-      <circle cx="12" cy="7" r="4"></circle>
-    </svg>`;
-  openProfile.setAttribute("aria-label", "Profile Account");
+  openProfile.textContent = "Login / Register";
+  openProfile.setAttribute("aria-label", "Login or register");
   openProfile.removeAttribute("title");
+  openProfile.classList.remove("is-signed-in");
 }
 
 updateProfileButton(auth.user);
@@ -1369,7 +1341,6 @@ function setTranslatorMode(modeKey, triggerToast = true) {
   // Update Header Labels & pill
   activeModeLabel.textContent = metadata.label;
   mainScreenTitle.textContent = metadata.title;
-  mainScreenDesc.textContent = metadata.desc;
 
   // Clear or apply theme modifiers
   appShell.className = "app-shell"; // Clear preceding
