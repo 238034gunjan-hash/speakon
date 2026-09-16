@@ -1185,6 +1185,126 @@ function renderConversationSidebar() {
   });
 }
 
+// -------------------------------------------------------------
+// Quick Phrases — instant translate-and-speak
+// -------------------------------------------------------------
+// Deliberately isolated from processTranslation(): a Quick Phrase click
+// must never create a conversation, save a message, or touch PostgreSQL.
+// Flow is just /translate (stateless) -> /tts -> play the audio blob.
+
+let quickPhraseRequestId = 0;
+let activeQuickPhraseButton = null;
+
+function setQuickPhraseButtonState(button, stateClass, statusMessage) {
+  button.classList.remove("is-loading", "is-playing", "is-error");
+  if (stateClass) button.classList.add(stateClass);
+  button.disabled = stateClass === "is-loading" || stateClass === "is-playing";
+  const statusEl = button.querySelector(".phrase-status");
+  if (statusEl) statusEl.textContent = statusMessage || "";
+}
+
+async function translateQuickPhrase(englishText) {
+  const response = await fetch(`${API_BASE_URL}/translate`, {
+    method: "POST",
+    mode: "cors",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      text: englishText,
+      source_lang: "English",
+      target_lang: "Nepali",
+    }),
+  });
+
+  if (!response.ok) {
+    const errorBody = await response.text().catch(() => "");
+    throw new Error(`Translate API error: ${response.status} ${errorBody}`);
+  }
+
+  const data = await response.json();
+  if (data.error) throw new Error(data.error);
+  if (!data.translated_text) throw new Error("No translation returned.");
+  return data.translated_text;
+}
+
+async function playQuickPhraseAudio(nepaliText) {
+  const requestId = ++ttsPlaybackRequestId;
+  stopTtsPlayback();
+
+  const response = await auth.fetchWithAuth("/tts", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ text: nepaliText, language: "Nepali" }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({}));
+    throw new Error(error.error || "Could not generate speech");
+  }
+
+  const audioUrl = URL.createObjectURL(await response.blob());
+  if (requestId !== ttsPlaybackRequestId) {
+    URL.revokeObjectURL(audioUrl);
+    return;
+  }
+
+  const audio = new Audio(audioUrl);
+  activeTtsAudio = audio;
+  activeTtsAudioUrl = audioUrl;
+  audio.playbackRate = speechSpeedRate;
+
+  await new Promise((resolve, reject) => {
+    audio.onended = () => {
+      if (activeTtsAudio === audio) stopTtsPlayback();
+      resolve();
+    };
+    audio.onerror = () => {
+      if (activeTtsAudio === audio) stopTtsPlayback();
+      reject(new Error("Audio playback failed."));
+    };
+    audio.play().catch(reject);
+  });
+}
+
+async function handleQuickPhraseClick(englishText, button) {
+  if (button.disabled) return; // already translating/playing this phrase
+
+  if (activeQuickPhraseButton && activeQuickPhraseButton !== button) {
+    setQuickPhraseButtonState(activeQuickPhraseButton, null, "");
+  }
+  activeQuickPhraseButton = button;
+
+  const requestId = ++quickPhraseRequestId;
+  setQuickPhraseButtonState(button, "is-loading", "Translating...");
+
+  let translatedText;
+  try {
+    translatedText = await translateQuickPhrase(englishText);
+  } catch (error) {
+    console.error("Quick phrase translation failed:", error);
+    if (requestId === quickPhraseRequestId) {
+      setQuickPhraseButtonState(button, "is-error", "Translation failed. Tap to retry.");
+    }
+    return;
+  }
+
+  if (requestId !== quickPhraseRequestId) return; // superseded by a newer click
+
+  setQuickPhraseButtonState(button, "is-playing", `${translatedText} · Playing...`);
+
+  try {
+    await playQuickPhraseAudio(translatedText);
+  } catch (error) {
+    console.error("Quick phrase audio failed:", error);
+    if (requestId === quickPhraseRequestId) {
+      setQuickPhraseButtonState(button, "is-error", `${translatedText} · Audio unavailable`);
+    }
+    return;
+  }
+
+  if (requestId !== quickPhraseRequestId) return;
+  setQuickPhraseButtonState(button, null, translatedText);
+}
+
 function renderModePhrases() {
   modePhrasesGrid.innerHTML = "";
 
@@ -1203,7 +1323,10 @@ function renderModePhrases() {
     const chip = document.createElement("button");
     chip.className = "mode-phrase-btn";
     chip.innerHTML = `
-      <span class="phrase-text">${phraseObj.text}</span>
+      <span class="phrase-text-wrap">
+        <span class="phrase-text">${phraseObj.text}</span>
+        <span class="phrase-status" aria-live="polite"></span>
+      </span>
       <span class="phrase-play-arrow">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
           <polygon points="5 3 19 12 5 21 5 3"></polygon>
@@ -1212,8 +1335,7 @@ function renderModePhrases() {
     `;
 
     chip.addEventListener("click", () => {
-      showToast("Playing quick phrase...");
-      processTranslation(phraseObj.text);
+      handleQuickPhraseClick(phraseObj.text, chip);
     });
 
     modePhrasesGrid.appendChild(chip);
@@ -1241,7 +1363,10 @@ function renderGlobalPhrasesTab() {
       const btn = document.createElement("button");
       btn.className = "phrase-row-btn";
       btn.innerHTML = `
-        <span class="phrase-text">${phraseObj.text}</span>
+        <span class="phrase-text-wrap">
+          <span class="phrase-text">${phraseObj.text}</span>
+          <span class="phrase-status" aria-live="polite"></span>
+        </span>
         <span class="phrase-play-arrow">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <polygon points="5 3 19 12 5 21 5 3"></polygon>
@@ -1250,22 +1375,7 @@ function renderGlobalPhrasesTab() {
       `;
 
       btn.addEventListener("click", () => {
-        // Switch to appropriate tab and select context
-        document
-          .querySelectorAll(".nav-tab")
-          .forEach((t) => t.classList.remove("active"));
-        document
-          .querySelector('.nav-tab[data-target="tab-translator"]')
-          .classList.add("active");
-        document
-          .querySelectorAll(".tab-panel")
-          .forEach((p) => p.classList.remove("active"));
-        document.getElementById("tab-translator").classList.add("active");
-
-        setTranslatorMode(mapKey);
-        setTimeout(() => {
-          processTranslation(phraseObj.text);
-        }, 300);
+        handleQuickPhraseClick(phraseObj.text, btn);
       });
 
       grid.appendChild(btn);

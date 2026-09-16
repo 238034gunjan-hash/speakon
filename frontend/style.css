@@ -492,10 +492,51 @@ body.dark-mode .app-name {
   transform: translateX(4px);
 }
 
+.mode-phrase-btn:disabled {
+  opacity: 0.75;
+  cursor: default;
+  transform: none;
+}
+
+.phrase-text-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
 .mode-phrase-btn .phrase-text {
   font-size: 0.88rem;
   font-weight: 600;
   color: var(--text);
+}
+
+.phrase-status {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.mode-phrase-btn.is-loading .phrase-status,
+.phrase-row-btn.is-loading .phrase-status {
+  color: #D97706; /* Amber, matches .status-badge.translating */
+}
+
+.mode-phrase-btn.is-playing .phrase-status,
+.phrase-row-btn.is-playing .phrase-status {
+  color: #059669; /* Emerald, matches .status-badge.ready-playback */
+}
+
+.mode-phrase-btn.is-error .phrase-status,
+.phrase-row-btn.is-error .phrase-status {
+  color: var(--accent-red);
+}
+
+.mode-phrase-btn.is-loading .phrase-play-arrow,
+.mode-phrase-btn.is-playing .phrase-play-arrow,
+.phrase-row-btn.is-loading .phrase-play-arrow,
+.phrase-row-btn.is-playing .phrase-play-arrow {
+  animation: pulseScale 0.8s infinite alternate;
 }
 
 .mode-phrase-btn .phrase-play-arrow {
@@ -1279,6 +1320,12 @@ body.dark-mode .action-icon-btn:hover {
   background-color: var(--primary-light);
   border-color: var(--primary);
   transform: translateX(4px);
+}
+
+.phrase-row-btn:disabled {
+  opacity: 0.75;
+  cursor: default;
+  transform: none;
 }
 
 .phrase-row-btn .phrase-text {
