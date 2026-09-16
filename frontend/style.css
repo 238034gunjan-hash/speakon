@@ -863,10 +863,41 @@ body.dark-mode .status-text {
   padding: 0 4px;
 }
 
+.chat-title-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .chat-title {
   font-size: 1rem;
   font-weight: 700;
   color: var(--text);
+}
+
+.conversation-quota {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--primary);
+  background-color: var(--primary-light);
+  border-radius: 99px;
+  padding: 2px 9px;
+  transition: all var(--transition-fast);
+}
+body.dark-mode .conversation-quota {
+  background-color: #2E384D;
+  color: #FFFFFF;
+}
+
+.conversation-quota.is-low {
+  color: #D97706;
+  background-color: #FEF3C7;
+}
+
+.conversation-quota.is-empty {
+  color: var(--accent-red);
+  background-color: var(--accent-red-light);
 }
 
 .chat-clear-btn {

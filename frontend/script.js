@@ -1146,7 +1146,24 @@ function renderConversationList() {
   chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
+// Display-only allowance shown next to the Conversations header.
+const CONVERSATION_QUOTA = 15;
+
+function renderConversationQuota() {
+  const quotaBadge = document.getElementById("conversationQuota");
+  if (!quotaBadge) return;
+
+  const used = auth.isLoggedIn() ? conversations.length : 0;
+  const remaining = Math.max(0, CONVERSATION_QUOTA - used);
+
+  quotaBadge.textContent = `${remaining}/${CONVERSATION_QUOTA}`;
+  quotaBadge.classList.toggle("is-low", remaining > 0 && remaining <= 3);
+  quotaBadge.classList.toggle("is-empty", remaining === 0);
+}
+
 function renderConversationSidebar() {
+  renderConversationQuota();
+
   if (!conversationList) {
     return;
   }
