@@ -999,6 +999,8 @@ async function processTranslation(sourceText, options = {}) {
 // -------------------------------------------------------------
 
 function renderConversationList() {
+  renderTranslationQuota();
+
   const currentLog = activeMessages.map(messageToEntry);
   chatContainer.innerHTML = "";
 
@@ -1147,22 +1149,77 @@ function renderConversationList() {
 }
 
 // Display-only allowance shown next to the Conversations header.
-const CONVERSATION_QUOTA = 15;
+// One unit is spent per translation (per chat bubble), across all conversations.
+const TRANSLATION_QUOTA = 15;
 
-function renderConversationQuota() {
-  const quotaBadge = document.getElementById("conversationQuota");
+const TRANSLATION_USAGE_PREFIX = "speakon_translations_used_";
+
+function translationUsageKey() {
+  const userId = auth.user?.id;
+  return userId ? `${TRANSLATION_USAGE_PREFIX}${userId}` : null;
+}
+
+function readTranslationLedger() {
+  const key = translationUsageKey();
+  if (!key) return { total: 0, counted: {} };
+  try {
+    const stored = JSON.parse(localStorage.getItem(key) || "{}");
+    return { total: Number(stored.total) || 0, counted: stored.counted || {} };
+  } catch (error) {
+    return { total: 0, counted: {} };
+  }
+}
+
+function writeTranslationLedger(ledger) {
+  const key = translationUsageKey();
+  if (!key) return;
+  try {
+    localStorage.setItem(key, JSON.stringify(ledger));
+  } catch (error) {
+    // Storage unavailable (private mode) - the badge still tracks this session.
+  }
+}
+
+// Each conversation's bubbles are banked once and the running total only ever
+// climbs, so deleting a conversation never hands the translations back and the
+// countdown carries on into whatever is translated next.
+function countTranslationsUsed() {
+  if (!auth.isLoggedIn()) return activeMessages.length;
+
+  const ledger = readTranslationLedger();
+
+  conversations.forEach((conversation) => {
+    // The open conversation is counted from the live bubble list so the badge
+    // ticks down the moment a bubble appears.
+    const current =
+      activeConversation && conversation.id === activeConversation.id
+        ? activeMessages.length
+        : Number(conversation.message_count) || 0;
+    const banked = Number(ledger.counted[conversation.id]) || 0;
+
+    if (current > banked) {
+      ledger.total += current - banked;
+      ledger.counted[conversation.id] = current;
+    }
+  });
+
+  writeTranslationLedger(ledger);
+  return ledger.total;
+}
+
+function renderTranslationQuota() {
+  const quotaBadge = document.getElementById("translationQuota");
   if (!quotaBadge) return;
 
-  const used = auth.isLoggedIn() ? conversations.length : 0;
-  const remaining = Math.max(0, CONVERSATION_QUOTA - used);
+  const remaining = Math.max(0, TRANSLATION_QUOTA - countTranslationsUsed());
 
-  quotaBadge.textContent = `${remaining}/${CONVERSATION_QUOTA}`;
+  quotaBadge.textContent = `${remaining}/${TRANSLATION_QUOTA}`;
   quotaBadge.classList.toggle("is-low", remaining > 0 && remaining <= 3);
   quotaBadge.classList.toggle("is-empty", remaining === 0);
 }
 
 function renderConversationSidebar() {
-  renderConversationQuota();
+  renderTranslationQuota();
 
   if (!conversationList) {
     return;

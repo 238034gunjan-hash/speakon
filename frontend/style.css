@@ -1,4 +1,4 @@
-/* 
+﻿/* 
  * Speak-On Premium Voice Translator Style Sheet
  * Design Ethos: Apple Human Interface Design, Google Translate Simplicity, Airbnb Spacious Layout
  */
@@ -875,7 +875,7 @@ body.dark-mode .status-text {
   color: var(--text);
 }
 
-.conversation-quota {
+.translation-quota {
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.02em;
@@ -885,17 +885,17 @@ body.dark-mode .status-text {
   padding: 2px 9px;
   transition: all var(--transition-fast);
 }
-body.dark-mode .conversation-quota {
+body.dark-mode .translation-quota {
   background-color: #2E384D;
   color: #FFFFFF;
 }
 
-.conversation-quota.is-low {
+.translation-quota.is-low {
   color: #D97706;
   background-color: #FEF3C7;
 }
 
-.conversation-quota.is-empty {
+.translation-quota.is-empty {
   color: var(--accent-red);
   background-color: var(--accent-red-light);
 }
