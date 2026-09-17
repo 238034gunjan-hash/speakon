@@ -78,10 +78,10 @@
               <!-- Language Selector -->
               <div class="language-selector">
                 <div class="lang-card" id="sourceLangCard">
-                  <span class="lang-label">Speaking</span>
+                  <span class="lang-label" id="sourceLangLabel">Speaking</span>
                   <select id="sourceLanguage" class="lang-select" aria-label="Source Language">
                     <option value="English">English</option>
-                    <option value="Nepali">Nepali</option>
+                    <option value="Nepali">नेपाली</option>
                   </select>
                 </div>
 
@@ -93,9 +93,9 @@
                 </button>
 
                 <div class="lang-card" id="targetLangCard">
-                  <span class="lang-label">Translation</span>
+                  <span class="lang-label" id="targetLangLabel">Translation</span>
                   <select id="targetLanguage" class="lang-select" aria-label="Target Language">
-                    <option value="Nepali">Nepali</option>
+                    <option value="Nepali">नेपाली</option>
                     <option value="English">English</option>
                   </select>
                 </div>
@@ -103,6 +103,8 @@
 
               <!-- Voice input microphone & waves -->
               <div class="voice-stage">
+                <p class="speak-prompt" id="speakPrompt">Speak in English</p>
+
                 <div class="recording-visualizer">
                   <div class="waves-container" id="wavesContainer">
                     <div class="wave-bar"></div>
@@ -152,7 +154,7 @@
             <div class="card mode-phrases-card" id="modePhrasesCard" style="display: none;">
               <div class="mode-phrases-header">
                 <span class="phrases-card-title" id="phrasesCardTitle">Situational Phrases</span>
-                <span class="phrases-card-desc">Tap for instant translation audio</span>
+                <span class="phrases-card-desc" id="phrasesCardDesc">Tap for instant translation audio</span>
               </div>
               <div class="mode-phrases-scroll">
                 <div class="mode-phrases-grid" id="modePhrasesGrid">
@@ -165,7 +167,7 @@
             <div class="chat-section">
               <div class="chat-header">
                 <span class="chat-title-group">
-                  <span class="chat-title">Conversations</span>
+                  <span class="chat-title" id="chatTitle">Conversations</span>
                   <span class="translation-quota" id="translationQuota" title="Translations remaining" aria-live="polite">15/15</span>
                 </span>
                 <button class="chat-clear-btn" id="btnConversationClear" aria-label="Start a new conversation">New Chat</button>
@@ -191,25 +193,23 @@
         <!-- 6. EMERGENCY SECTION -->
         <div class="emergency-section">
           <div class="emergency-header">
-            <span class="emergency-title">Emergency Quick-Access</span>
-            <span class="emergency-tag">Tap for instant audio help</span>
+            <span class="emergency-title" id="emergencyTitle">Emergency Quick-Access</span>
+            <span class="emergency-tag" id="emergencyTag">Tap for instant audio help</span>
           </div>
-          
+
+          <!-- data-action is the stable key; the visible label follows the
+               selected translation direction. -->
           <div class="emergency-grid" id="emergencyGrid">
-            <button class="emergency-btn" data-phrase="Need Assistance" aria-label="Emergency button: Need Assistance">
-              <span class="emerg-icon">🆘</span>
+            <button class="emergency-btn" data-action="assistance" data-phrase="Need Assistance" aria-label="Emergency button: Need Assistance">
               <span class="emerg-label">Need Assistance</span>
             </button>
-            <button class="emergency-btn" data-phrase="Call Police" aria-label="Emergency button: Call Police">
-              <span class="emerg-icon">🚨</span>
+            <button class="emergency-btn" data-action="police" data-phrase="Call Police" aria-label="Emergency button: Call Police">
               <span class="emerg-label">Call Police</span>
             </button>
-            <button class="emergency-btn" data-phrase="Need Hospital" aria-label="Emergency button: Need Hospital">
-              <span class="emerg-icon">🏥</span>
+            <button class="emergency-btn" data-action="hospital" data-phrase="Need Hospital" aria-label="Emergency button: Need Hospital">
               <span class="emerg-label">Need Hospital</span>
             </button>
-            <button class="emergency-btn" data-phrase="I Am Lost" aria-label="Emergency button: I Am Lost">
-              <span class="emerg-icon">📍</span>
+            <button class="emergency-btn" data-action="lost" data-phrase="I Am Lost" aria-label="Emergency button: I Am Lost">
               <span class="emerg-label">I Am Lost</span>
             </button>
           </div>
@@ -220,34 +220,13 @@
       <!-- 2. QUICK PHRASES TAB SECTION -->
       <section class="tab-panel" id="tab-phrases">
         <div class="section-intro">
-          <h1 class="main-heading">Quick Phrases</h1>
-          <p class="main-subheading">Tappable phrase cards categorized for key tourist situations.</p>
+          <h1 class="main-heading" id="phrasesTabTitle">Quick Phrases</h1>
+          <p class="main-subheading" id="phrasesTabSubtitle">Tappable phrase cards categorized for key tourist situations.</p>
         </div>
 
-        <div class="phrases-wrapper">
-          
-          <!-- Category Grid Container -->
-          <div class="phrases-category-card">
-            <h2 class="category-header"><span class="cat-icon">🛒</span> Shopping</h2>
-            <div class="phrases-grid" id="cat-shopping"></div>
-          </div>
-
-          <div class="phrases-category-card">
-            <h2 class="category-header"><span class="cat-icon">🍽️</span> Dining</h2>
-            <div class="phrases-grid" id="cat-dining"></div>
-          </div>
-
-          <div class="phrases-category-card">
-            <h2 class="category-header"><span class="cat-icon">🚌</span> Transportation</h2>
-            <div class="phrases-grid" id="cat-transportation"></div>
-          </div>
-
-          <div class="phrases-category-card">
-            <h2 class="category-header"><span class="cat-icon">🏨</span> Hotel</h2>
-            <div class="phrases-grid" id="cat-hotel"></div>
-          </div>
-
-        </div>
+        <!-- Category cards are rendered by JavaScript: which categories appear,
+             and the phrases inside them, both follow the translation direction. -->
+        <div class="phrases-wrapper" id="phrasesWrapper"></div>
       </section>
 
       <!-- 3. TRANSLATION HISTORY TAB SECTION -->
@@ -394,7 +373,7 @@
     <div class="modal-content modal-content-modes">
       <button class="close-modal-btn" id="closeModesModal" aria-label="Close Modes Selection Modal">&times;</button>
       <div class="modal-header">
-        <h3 class="modal-title">Select Translation Mode</h3>
+        <h3 class="modal-title" id="modesModalTitle">Select Translation Mode</h3>
       </div>
 
       <!-- Thumb-friendly Vertical List of Modes options -->

@@ -8,72 +8,121 @@
 // 1. Core Data Constants (Dictionary & Categorized Phrases)
 // -------------------------------------------------------------
 
-const MODE_PHRASES = {
-  shop: [
-    { text: "How much does this cost?", translated: "à¤¯à¥‹ à¤•à¤¤à¤¿ à¤°à¥à¤ªà¥ˆà¤¯à¤¾à¤ à¤¹à¥‹?" },
-    {
-      text: "Can you lower the price?",
-      translated: "à¤•à¥‡ à¤¤à¤ªà¤¾à¤ˆà¤‚ à¤®à¥‚à¤²à¥à¤¯ à¤˜à¤Ÿà¤¾à¤‰à¤¨ à¤¸à¤•à¥à¤¨à¥à¤¹à¥à¤¨à¥à¤›?",
-    },
-    { text: "I only want one.", translated: "à¤®à¤²à¤¾à¤ˆ à¤à¤‰à¤Ÿà¤¾ à¤®à¤¾à¤¤à¥à¤° à¤šà¤¾à¤¹à¤¿à¤¨à¥à¤›à¥¤" },
-    {
-      text: "Do you accept cards?",
-      translated: "à¤•à¥‡ à¤¤à¤ªà¤¾à¤ˆà¤‚ à¤•à¤¾à¤°à¥à¤¡ à¤¸à¥à¤µà¥€à¤•à¤¾à¤° à¤—à¤°à¥à¤¨à¥à¤¹à¥à¤¨à¥à¤›?",
-    },
-    { text: "That is too expensive.", translated: "à¤¯à¥‹ à¤§à¥‡à¤°à¥ˆ à¤®à¤¹à¤à¤—à¥‹ à¤­à¤¯à¥‹à¥¤" },
-    { text: "Can I see another one?", translated: "à¤•à¥‡ à¤® à¤…à¤°à¥à¤•à¥‹ à¤¹à¥‡à¤°à¥à¤¨ à¤¸à¤•à¥à¤›à¥?" },
-  ],
-  taxi: [
-    {
-      text: "Please take me to this location.",
-      translated: "à¤•à¥ƒà¤ªà¤¯à¤¾ à¤®à¤²à¤¾à¤ˆ à¤¯à¥‹ à¤ à¤¾à¤‰à¤à¤®à¤¾ à¤²à¥ˆà¤œà¤¾à¤¨à¥à¤¹à¥‹à¤¸à¥à¥¤",
-    },
-    { text: "Stop here.", translated: "à¤¯à¤¹à¤¾à¤ à¤°à¥‹à¤•à¥à¤¨à¥à¤¹à¥‹à¤¸à¥à¥¤" },
-    { text: "How much is the fare?", translated: "à¤­à¤¾à¤¡à¤¾ à¤•à¤¤à¤¿ à¤¹à¥‹?" },
-    { text: "Please drive slowly.", translated: "à¤•à¥ƒà¤ªà¤¯à¤¾ à¤¬à¤¿à¤¸à¥à¤¤à¤¾à¤°à¥ˆ à¤¹à¤¾à¤•à¥à¤¨à¥à¤¹à¥‹à¤¸à¥à¥¤" },
-    {
-      text: "Can you wait for me?",
-      translated: "à¤•à¥‡ à¤¤à¤ªà¤¾à¤ˆà¤‚ à¤®à¥‡à¤°à¥‹ à¤²à¤¾à¤—à¤¿ à¤ªà¤°à¥à¤–à¤¨ à¤¸à¤•à¥à¤¨à¥à¤¹à¥à¤¨à¥à¤›?",
-    },
-    {
-      text: "Take me to the airport.",
-      translated: "à¤®à¤²à¤¾à¤ˆ à¤µà¤¿à¤®à¤¾à¤¨à¤¸à¥à¤¥à¤² à¤²à¥ˆà¤œà¤¾à¤¨à¥à¤¹à¥‹à¤¸à¥à¥¤",
-    },
-  ],
-  hotel: [
-    { text: "I have a reservation.", translated: "à¤®à¥‡à¤°à¥‹ à¤¬à¥à¤•à¤¿à¤™ à¤›à¥¤" },
-    {
-      text: "I need a room for one night.",
-      translated: "à¤®à¤²à¤¾à¤ˆ à¤à¤• à¤°à¤¾à¤¤à¤•à¥‹ à¤²à¤¾à¤—à¤¿ à¤•à¥‹à¤ à¤¾ à¤šà¤¾à¤¹à¤¿à¤¨à¥à¤›à¥¤",
-    },
-    { text: "Is breakfast included?", translated: "à¤•à¥‡ à¤¬à¤¿à¤¹à¤¾à¤¨à¤•à¥‹ à¤–à¤¾à¤¨à¤¾ à¤¸à¤®à¤¾à¤µà¥‡à¤¶ à¤›?" },
-    { text: "The Wi-Fi is not working.", translated: "à¤µà¤¾à¤‡à¤«à¤¾à¤‡ à¤šà¤²à¥‡à¤•à¥‹ à¤›à¥ˆà¤¨à¥¤" },
-    {
-      text: "Can I get room service?",
-      translated: "à¤•à¥‡ à¤® à¤•à¥‹à¤ à¤¾ à¤¸à¥‡à¤µà¤¾ à¤ªà¤¾à¤‰à¤¨ à¤¸à¤•à¥à¤›à¥?",
-    },
-    { text: "I want to check out.", translated: "à¤® à¤šà¥‡à¤• à¤†à¤‰à¤Ÿ à¤—à¤°à¥à¤¨ à¤šà¤¾à¤¹à¤¨à¥à¤›à¥à¥¤" },
-  ],
-  dining: [
-    { text: "I would like to order.", translated: "à¤® à¤…à¤°à¥à¤¡à¤° à¤—à¤°à¥à¤¨ à¤šà¤¾à¤¹à¤¨à¥à¤›à¥à¥¤" },
-    {
-      text: "Do you have vegetarian food?",
-      translated: "à¤•à¥‡ à¤¤à¤ªà¤¾à¤ˆà¤‚à¤¸à¤à¤— à¤¶à¤¾à¤•à¤¾à¤¹à¤¾à¤°à¥€ à¤–à¤¾à¤¨à¤¾ à¤›?",
-    },
-    {
-      text: "No spicy food please.",
-      translated: "à¤•à¥ƒà¤ªà¤¯à¤¾ à¤ªà¤¿à¤°à¥‹ à¤–à¤¾à¤¨à¤¾ à¤¨à¤¹à¤¾à¤²à¥à¤¨à¥à¤¹à¥‹à¤²à¤¾à¥¤",
-    },
-    { text: "Can I see the menu?", translated: "à¤•à¥‡ à¤® à¤®à¥‡à¤¨à¥ à¤¹à¥‡à¤°à¥à¤¨ à¤¸à¤•à¥à¤›à¥?" },
-    { text: "The food was excellent.", translated: "à¤–à¤¾à¤¨à¤¾ à¤¨à¤¿à¤•à¥ˆ à¤®à¤¿à¤ à¥‹ à¤¥à¤¿à¤¯à¥‹à¥¤" },
-    { text: "Can I get the bill?", translated: "à¤•à¥‡ à¤® à¤¬à¤¿à¤² à¤ªà¤¾à¤‰à¤¨ à¤¸à¤•à¥à¤›à¥?" },
-  ],
-  emergency: [
-    { text: "Need Assistance", translated: "à¤®à¤²à¤¾à¤ˆ à¤¸à¤¹à¤¯à¥‹à¤— à¤šà¤¾à¤¹à¤¿à¤¯à¥‹à¥¤" },
-    { text: "Call Police", translated: "à¤ªà¥à¤°à¤¹à¤°à¥€à¤²à¤¾à¤ˆ à¤«à¥‹à¤¨ à¤—à¤°à¥à¤¨à¥à¤¹à¥‹à¤¸à¥à¥¤" },
-    { text: "Need Hospital", translated: "à¤®à¤²à¤¾à¤ˆ à¤…à¤¸à¥à¤ªà¤¤à¤¾à¤² à¤œà¤¾à¤¨à¥à¤ªà¤°à¥à¤›à¥¤" },
-    { text: "I Am Lost", translated: "à¤® à¤¹à¤°à¤¾à¤à¤à¥¤" },
-  ],
+// Quick Phrases are audience-aware, not just direction-aware.
+//
+//   enToNe -> an English-speaking tourist in Nepal: things a visitor asks for.
+//   neToEn -> a Nepali shopkeeper, driver, receptionist or waiter: things a
+//             service provider says to a visitor.
+//
+// The two lists are therefore different conversations, not mirror images of
+// each other. `source` is always the language the user speaks, `target` the
+// natural-sounding wording they are aiming for. The live translation still
+// comes from the backend; `target` documents the intent of each phrase.
+//
+// Category keys match the mode keys in MODE_METADATA, so the situational card
+// in a mode and the category in the Phrases tab share one list.
+
+const PHRASE_CATEGORIES = [
+  { key: "shop", icon: "\u{1F6CD}\u{FE0F}" },
+  { key: "taxi", icon: "\u{1F695}" },
+  { key: "hotel", icon: "\u{1F3E8}" },
+  { key: "dining", icon: "\u{1F37D}\u{FE0F}" },
+];
+
+const QUICK_PHRASES = {
+  // Tourist speaking: what a visitor needs to ask a local.
+  enToNe: {
+    shop: [
+      { source: "How much does this cost?", target: "यसको मूल्य कति हो?" },
+      { source: "Can you give me a discount?", target: "अलिकति छुट दिन मिल्छ?" },
+      { source: "Do you have this in another color?", target: "यो अर्को रङमा पनि छ?" },
+      { source: "Do you have a smaller size?", target: "अलि सानो साइज छ?" },
+      { source: "I would like to buy this.", target: "मलाई यो किन्नु छ।" },
+      { source: "Can I pay by card?", target: "कार्डबाट तिर्न मिल्छ?" },
+      { source: "Is this the final price?", target: "यही नै अन्तिम मूल्य हो?" },
+    ],
+    taxi: [
+      { source: "How much to the airport?", target: "एयरपोर्टसम्म कति लाग्छ?" },
+      { source: "Please take me to this address.", target: "कृपया मलाई यो ठेगानामा लैजानुहोस्।" },
+      { source: "How long will it take?", target: "पुग्न कति समय लाग्छ?" },
+      { source: "Can you use the meter?", target: "मिटरबाट जान मिल्छ?" },
+      { source: "Please stop here.", target: "कृपया यहिँ रोक्नुहोस्।" },
+      { source: "I am going to Thamel.", target: "म ठमेल जाँदैछु।" },
+      { source: "Can you wait for me?", target: "मलाई अलिकति पर्खिन सक्नुहुन्छ?" },
+    ],
+    hotel: [
+      { source: "I have a reservation.", target: "मैले बुकिङ गरेको छु।" },
+      { source: "Where is my room?", target: "मेरो कोठा कता हो?" },
+      { source: "What time is breakfast?", target: "बिहानको खाना कति बजे हुन्छ?" },
+      { source: "Is Wi-Fi available?", target: "यहाँ वाइफाइ छ?" },
+      { source: "Can I check in early?", target: "अलि चाँडै चेक-इन गर्न मिल्छ?" },
+      { source: "I need an extra towel.", target: "मलाई एउटा थप तौलिया चाहियो।" },
+      { source: "Can you call a taxi for me?", target: "मेरो लागि ट्याक्सी बोलाइदिनुहुन्छ?" },
+    ],
+    dining: [
+      { source: "Can I see the menu?", target: "मेनु हेर्न पाइन्छ?" },
+      { source: "Is this vegetarian?", target: "यो शाकाहारी हो?" },
+      { source: "Is this spicy?", target: "यो पिरो छ?" },
+      { source: "I don't eat meat.", target: "म मासु खाँदिनँ।" },
+      { source: "Can I have some water?", target: "अलिकति पानी पाउँ?" },
+      { source: "I would like to order this.", target: "मलाई यो अर्डर गर्नु छ।" },
+      { source: "Can I get the bill?", target: "बिल ल्याइदिनुहुन्छ?" },
+    ],
+  },
+
+  // Local speaking: what a shopkeeper, driver, hotel or restaurant worker
+  // needs to say to an English-speaking visitor.
+  neToEn: {
+    shop: [
+      { source: "तपाईंलाई के चाहिन्छ?", target: "What are you looking for?" },
+      { source: "यो कति वटा चाहिन्छ?", target: "How many would you like?" },
+      { source: "यो यसको अन्तिम मूल्य हो।", target: "This is the final price." },
+      { source: "म तपाईंलाई केही छुट दिन सक्छु।", target: "I can give you a discount." },
+      { source: "तपाईंलाई अर्को रङ चाहिन्छ?", target: "Would you like a different color?" },
+      { source: "यो अर्को साइजमा पनि छ।", target: "We have this in other sizes too." },
+      { source: "तपाईं कार्ड वा नगदमा तिर्नुहुन्छ?", target: "Would you like to pay by card or cash?" },
+      { source: "यो राम्रो गुणस्तरको हो।", target: "This is good quality." },
+      { source: "तपाईंलाई अरू केही चाहिन्छ?", target: "Can I get you anything else?" },
+      { source: "फिर्ता गर्न मिल्दैन।", target: "Sorry, we don't accept returns." },
+    ],
+    taxi: [
+      { source: "तपाईं कहाँ जान चाहनुहुन्छ?", target: "Where would you like to go?" },
+      { source: "कुन होटलमा जाने हो?", target: "Which hotel are you going to?" },
+      { source: "त्यहाँ पुग्न लगभग ३० मिनेट लाग्छ।", target: "It takes about 30 minutes to get there." },
+      { source: "बाटोमा धेरै ट्राफिक छ।", target: "There is a lot of traffic on the way." },
+      { source: "मिटरबाट जाने हो?", target: "Shall we go by the meter?" },
+      { source: "यहाँबाट ट्याक्सी लिन सजिलो हुन्छ।", target: "It is easy to get a taxi from here." },
+      { source: "म तपाईंलाई यहाँसम्म पुर्याउँछु।", target: "I can drop you off right here." },
+      { source: "तपाईंलाई एयरपोर्ट जानु छ?", target: "Are you heading to the airport?" },
+      { source: "म तपाईंलाई पर्खिन सक्छु।", target: "I can wait for you." },
+      { source: "भाडा यति हुन्छ।", target: "The fare comes to this much." },
+    ],
+    hotel: [
+      { source: "तपाईंको बुकिङ छ?", target: "Do you have a reservation?" },
+      { source: "कृपया आफ्नो पासपोर्ट देखाउनुहोस्।", target: "Could I see your passport, please?" },
+      { source: "तपाईंको कोठा तयार छ।", target: "Your room is ready." },
+      { source: "तपाईंको कोठा दोस्रो तलामा छ।", target: "Your room is on the second floor." },
+      { source: "बिहानको खाना ७ बजेदेखि १० बजेसम्म हुन्छ।", target: "Breakfast is served from 7 to 10." },
+      { source: "यहाँ Wi-Fi को पासवर्ड छ।", target: "Here is the Wi-Fi password." },
+      { source: "तपाईंलाई अरू केही चाहिन्छ?", target: "Is there anything else you need?" },
+      { source: "हामी तपाईंको लागि ट्याक्सी बोलाइदिन सक्छौँ।", target: "We can call a taxi for you." },
+      { source: "चेक-आउट १२ बजेसम्म गर्नुपर्छ।", target: "Check-out is by 12 o'clock." },
+      { source: "तपाईंलाई आफ्नो बसाइ कस्तो लागिरहेको छ?", target: "How are you enjoying your stay?" },
+    ],
+    dining: [
+      { source: "तपाईंलाई टेबल चाहिन्छ?", target: "Would you like a table?" },
+      { source: "कति जनाको लागि हो?", target: "How many people is it for?" },
+      { source: "तपाईंलाई मेनु दिन्छु।", target: "Here is the menu." },
+      { source: "तपाईंले के अर्डर गर्नुहुन्छ?", target: "What would you like to order?" },
+      { source: "तपाईंलाई केही पिउन चाहिन्छ?", target: "Would you like something to drink?" },
+      { source: "यो परिकार अलि पिरो छ।", target: "This dish is a little spicy." },
+      { source: "यो शाकाहारी परिकार हो।", target: "This is a vegetarian dish." },
+      { source: "तपाईंलाई अरू केही चाहिन्छ?", target: "Can I get you anything else?" },
+      { source: "तपाईंको खाना केही बेरमा तयार हुन्छ।", target: "Your food will be ready shortly." },
+      { source: "के म बिल ल्याइदिउँ?", target: "Shall I bring you the bill?" },
+      { source: "तपाईं कार्ड वा नगदमा तिर्नुहुन्छ?", target: "Will you be paying by card or cash?" },
+    ],
+  },
 };
 
 const MODE_METADATA = {
@@ -124,22 +173,205 @@ const MODE_TRANSLATION_CONTEXT = {
     "Urgent emergency conversation. Keep wording direct, clear, respectful, and easy to understand under stress.",
 };
 
-// Compile quick phrase lookups bidirectionally.
-const DEMO_TRANSLATIONS = {
-  hello: "Namaste",
-  "thank you": "Dhanyabad",
-  yes: "Ho",
-  no: "Hoina",
-  "how are you?": "Tapailai kasto cha?",
-};
+// -------------------------------------------------------------
+// 1B. Directional UI Copy
+// -------------------------------------------------------------
+// Every string that should follow the selected translation direction lives
+// here. The direction itself is derived from the existing language selects,
+// so there is no second source of truth to keep in sync.
 
-// Inject phrases into the lookups
-for (const mode in MODE_PHRASES) {
-  MODE_PHRASES[mode].forEach((phrase) => {
-    DEMO_TRANSLATIONS[phrase.text.toLowerCase().trim()] = phrase.translated;
-    DEMO_TRANSLATIONS[phrase.translated.toLowerCase().trim()] = phrase.text;
-  });
-}
+const UI_TEXT = {
+  enToNe: {
+    directionLabel: "English → नेपाली",
+    sourceFieldLabel: "Speaking",
+    targetFieldLabel: "Translation",
+    speakPrompt: "Speak in English",
+    micInstruction: "Tap the microphone to start speaking.",
+    listeningTitle: "Listening",
+    listeningInstruction: "Please speak clearly in English...",
+    transcribingTitle: "Transcribing",
+    transcribingInstruction: "Converting your English speech to text...",
+    translatingTitle: "Translating",
+    translatingInstruction: "Preparing your Nepali translation...",
+    readyTitle: "Ready",
+    playbackTitle: "Playback Ready",
+    playbackInstruction: "Your Nepali audio is ready.",
+    noAudioTitle: "No Audio",
+    noAudioInstruction: "No audio was captured. Try again.",
+    noAudioToast: "No audio captured.",
+    noTextTitle: "No Text",
+    noTextInstruction: "Speech was captured, but no words were recognised.",
+    noTextToast: "No speech was recognised.",
+    transcribeFailedTitle: "Transcription Failed",
+    transcribeFailedInstruction: "Unable to convert your speech to text.",
+    transcribeFailedToast: "Transcription failed. Please try again.",
+    permissionTitle: "Permission Needed",
+    permissionInstruction: "Allow microphone access to use voice input.",
+    permissionToast: "Microphone permission denied.",
+    translateFailedTitle: "Translation failed",
+    translateFailedInstruction: "Unable to reach the translation service.",
+    translateFailedToast: "Translation failed. Please check your connection.",
+    emptyTranslationTitle: "No translation",
+    emptyTranslationInstruction: "No translation came back. Please try again.",
+    manualPlaceholder: "Or type English text here...",
+    chatEmptySignedIn: "Your Nepali translation will appear here.",
+    chatEmptySignedOut: "Sign in to save and sync conversation history.",
+    bubbleSourceLabel: "You (English)",
+    bubbleTargetLabel: "Nepali Translation",
+    phrasesCardDesc: "Tap to translate and hear it in Nepali",
+    phrasesTabTitle: "Quick Phrases",
+    phrasesTabSubtitle: "Phrases a traveller in Nepal needs, ready to say in Nepali.",
+    categories: {
+      shop: "Shopping",
+      taxi: "Taxi",
+      hotel: "Hotel",
+      dining: "Dining",
+    },
+    modeTitles: {
+      general: "Voice Translator",
+      shop: "Shop Mode",
+      taxi: "Taxi Mode",
+      hotel: "Hotel Mode",
+      dining: "Dining Mode",
+      emergency: "Emergency Broadcast",
+    },
+    modeLabels: {
+      general: "Modes: General",
+      shop: "Modes: Shop",
+      taxi: "Modes: Taxi",
+      hotel: "Modes: Hotel",
+      dining: "Modes: Dining",
+      emergency: "Modes: Emergency",
+    },
+    // Wording used inside the mode picker, where "General Mode" reads better
+    // than the screen heading "Voice Translator".
+    modesModalTitle: "Select Translation Mode",
+    modeMenuTitles: {
+      general: "General Mode",
+      shop: "Shop Mode",
+      taxi: "Taxi Mode",
+      hotel: "Hotel Mode",
+      dining: "Dining Mode",
+    },
+    modeActivatedToast: "{mode} activated.",
+    phrasesCardTitleSuffix: "Phrases",
+    resetModeLabel: "Reset Mode",
+    swapToast: "Now translating English to Nepali.",
+    qpTranslating: "Translating...",
+    qpTranslateFailed: "Translation failed. Tap to retry.",
+    chatTitle: "Conversations",
+    newChatLabel: "New Chat",
+    sidebarSignedOut: "Sign in to sync conversations.",
+    sidebarEmpty: "No conversations yet.",
+    emergencyTitle: "Emergency Quick-Access",
+    emergencyTag: "Tap for instant audio help",
+    emergencyLabels: {
+      assistance: "Need Assistance",
+      police: "Call Police",
+      hospital: "Need Hospital",
+      lost: "I Am Lost",
+    },
+  },
+
+  neToEn: {
+    directionLabel: "नेपाली → English",
+    sourceFieldLabel: "बोल्ने भाषा",
+    targetFieldLabel: "अनुवाद",
+    speakPrompt: "नेपालीमा बोल्नुहोस्",
+    micInstruction: "माइक्रोफोन थिचेर बोल्न सुरु गर्नुहोस्।",
+    listeningTitle: "सुन्दै",
+    listeningInstruction: "कृपया स्पष्ट रूपमा नेपालीमा बोल्नुहोस्...",
+    transcribingTitle: "लेख्दै",
+    transcribingInstruction: "तपाईंको नेपाली बोली पाठमा रूपान्तरण गर्दै...",
+    translatingTitle: "अनुवाद गर्दै",
+    translatingInstruction: "तपाईंको अंग्रेजी अनुवाद तयार गर्दै...",
+    readyTitle: "तयार",
+    playbackTitle: "सुन्न तयार",
+    playbackInstruction: "तपाईंको अंग्रेजी अडियो तयार छ।",
+    noAudioTitle: "अडियो आएन",
+    noAudioInstruction: "कुनै आवाज रेकर्ड भएन। फेरि प्रयास गर्नुहोस्।",
+    noAudioToast: "कुनै आवाज रेकर्ड भएन।",
+    noTextTitle: "शब्द चिनिएन",
+    noTextInstruction: "आवाज त आयो, तर कुनै शब्द चिन्न सकिएन।",
+    noTextToast: "बोली चिन्न सकिएन।",
+    transcribeFailedTitle: "लेख्न असफल",
+    transcribeFailedInstruction: "तपाईंको बोली पाठमा बदल्न सकिएन।",
+    transcribeFailedToast: "बोली पाठमा बदल्न सकिएन। फेरि प्रयास गर्नुहोस्।",
+    permissionTitle: "अनुमति चाहियो",
+    permissionInstruction: "आवाज प्रयोग गर्न माइक्रोफोनको अनुमति दिनुहोस्।",
+    permissionToast: "माइक्रोफोनको अनुमति दिइएन।",
+    translateFailedTitle: "अनुवाद असफल",
+    translateFailedInstruction: "अनुवाद सेवासँग जोडिन सकिएन।",
+    translateFailedToast: "अनुवाद असफल भयो। इन्टरनेट जाँच गर्नुहोस्।",
+    emptyTranslationTitle: "अनुवाद आएन",
+    emptyTranslationInstruction: "कुनै अनुवाद आएन। फेरि प्रयास गर्नुहोस्।",
+    manualPlaceholder: "वा यहाँ नेपालीमा लेख्नुहोस्...",
+    chatEmptySignedIn: "तपाईंको अंग्रेजी अनुवाद यहाँ देखिनेछ।",
+    chatEmptySignedOut: "वार्तालाप सुरक्षित गर्न साइन इन गर्नुहोस्।",
+    bubbleSourceLabel: "तपाईं (नेपाली)",
+    bubbleTargetLabel: "English Translation",
+    phrasesCardDesc: "थिचेर अंग्रेजीमा अनुवाद गरी सुनाउनुहोस्",
+    phrasesTabTitle: "द्रुत वाक्यहरू",
+    phrasesTabSubtitle: "पर्यटकसँग कुरा गर्दा चाहिने वाक्यहरू, तुरुन्तै अंग्रेजीमा।",
+    categories: {
+      shop: "पसल",
+      taxi: "ट्याक्सी",
+      hotel: "होटल",
+      dining: "डाइनिङ",
+    },
+    modeTitles: {
+      general: "आवाज अनुवादक",
+      shop: "पसल मोड",
+      taxi: "ट्याक्सी मोड",
+      hotel: "होटल मोड",
+      dining: "खानपान मोड",
+      emergency: "आपतकालीन प्रसारण",
+    },
+    modeLabels: {
+      general: "मोड: सामान्य",
+      shop: "मोड: पसल",
+      taxi: "मोड: ट्याक्सी",
+      hotel: "मोड: होटल",
+      dining: "मोड: खानपान",
+      emergency: "मोड: आपतकालीन",
+    },
+    modesModalTitle: "अनुवाद मोड छान्नुहोस्",
+    modeMenuTitles: {
+      general: "सामान्य मोड",
+      shop: "पसल मोड",
+      taxi: "ट्याक्सी मोड",
+      hotel: "होटल मोड",
+      dining: "खानपान मोड",
+    },
+    modeActivatedToast: "{mode} सक्रिय भयो।",
+    phrasesCardTitleSuffix: "वाक्यहरू",
+    resetModeLabel: "सामान्य मोडमा फर्कनुहोस्",
+    swapToast: "अब नेपालीबाट अंग्रेजीमा अनुवाद हुनेछ।",
+    qpTranslating: "अनुवाद गर्दै...",
+    qpTranslateFailed: "अनुवाद असफल भयो। फेरि थिच्नुहोस्।",
+    chatTitle: "वार्तालाप",
+    newChatLabel: "नयाँ कुराकानी",
+    sidebarSignedOut: "वार्तालाप सिंक गर्न साइन इन गर्नुहोस्।",
+    sidebarEmpty: "अहिलेसम्म कुनै वार्तालाप छैन।",
+    emergencyTitle: "आपतकालीन छिटो सहयोग",
+    emergencyTag: "तुरुन्तै अडियो सहयोगका लागि थिच्नुहोस्",
+    emergencyLabels: {
+      assistance: "सहयोग चाहियो",
+      police: "प्रहरी बोलाउनुहोस्",
+      hospital: "अस्पताल चाहियो",
+      lost: "म हराएँ",
+    },
+    // In the English direction the backend expands an emergency_action into a
+    // full request sentence. It has no Nepali equivalent, so the Nepali
+    // direction sends these sentences as the source text instead.
+    emergencyPhrases: {
+      assistance: "कृपया मलाई सहयोग गर्नुहोस्। आपतकालीन अवस्था छ।",
+      police: "कृपया प्रहरीलाई बोलाउनुहोस्। मलाई सहयोग चाहियो।",
+      hospital: "कृपया मलाई नजिकैको अस्पताल पुऱ्याउनुहोस्। मलाई उपचार चाहियो।",
+      lost: "म हराएँ। कृपया मलाई बाटो पत्ता लगाउन सहयोग गर्नुहोस्।",
+    },
+  },
+};
 
 const API_BASE_URL =
   window.SPEAKON_API_BASE_URL ||
@@ -213,6 +445,16 @@ const closeModesModal = document.getElementById("closeModesModal");
 const sourceLanguage = document.getElementById("sourceLanguage");
 const targetLanguage = document.getElementById("targetLanguage");
 const swapLanguages = document.getElementById("swapLanguages");
+const sourceLangLabel = document.getElementById("sourceLangLabel");
+const targetLangLabel = document.getElementById("targetLangLabel");
+const speakPrompt = document.getElementById("speakPrompt");
+const phrasesCardDesc = document.getElementById("phrasesCardDesc");
+const phrasesTabTitle = document.getElementById("phrasesTabTitle");
+const phrasesTabSubtitle = document.getElementById("phrasesTabSubtitle");
+const chatTitle = document.getElementById("chatTitle");
+const modesModalTitle = document.getElementById("modesModalTitle");
+const emergencyTitle = document.getElementById("emergencyTitle");
+const emergencyTag = document.getElementById("emergencyTag");
 const micButton = document.getElementById("micButton");
 const wavesContainer = document.getElementById("wavesContainer");
 const statusBadge = document.getElementById("statusBadge");
@@ -231,11 +473,8 @@ const chatContainer = document.getElementById("chatContainer");
 const conversationList = document.getElementById("conversationList");
 const btnConversationClear = document.getElementById("btnConversationClear");
 
-// Category grids in Phrases Tab
-const shoppingGrid = document.getElementById("cat-shopping");
-const diningGrid = document.getElementById("cat-dining");
-const transGrid = document.getElementById("cat-transportation");
-const hotelGrid = document.getElementById("cat-hotel");
+// Phrases Tab container - category cards are rendered into it.
+const phrasesWrapper = document.getElementById("phrasesWrapper");
 
 // History tab components
 const historyList = document.getElementById("historyList");
@@ -424,6 +663,7 @@ async function loadConversation(conversationId) {
     activeMessages = data.messages || [];
     sourceLanguage.value = activeConversation.source_language;
     targetLanguage.value = activeConversation.target_language;
+    applyDirectionalUI();
     renderConversationSidebar();
     renderConversationList();
   } catch (error) {
@@ -503,6 +743,114 @@ function showToast(message) {
     toastNotification.classList.remove("show");
   }, 2400);
 }
+
+// -------------------------------------------------------------
+// 4B. Directional UI (English -> Nepali vs Nepali -> English)
+// -------------------------------------------------------------
+
+// Direction is read straight off the existing selects - no extra state.
+function isNepaliSource() {
+  return sourceLanguage.value === "Nepali";
+}
+
+function directionalText() {
+  return isNepaliSource() ? UI_TEXT.neToEn : UI_TEXT.enToNe;
+}
+
+// Bubble captions follow each message's own languages, so reopening an older
+// conversation recorded in the other direction is still labelled correctly.
+function bubbleLabels(entry) {
+  const copy = entry.from === "Nepali" ? UI_TEXT.neToEn : UI_TEXT.enToNe;
+  return { source: copy.bubbleSourceLabel, target: copy.bubbleTargetLabel };
+}
+
+// Restarts the shared fadeIn so a rewritten label is noticed rather than
+// silently swapped. Removing and re-adding needs a reflow in between.
+function replayDirectionFade(element) {
+  if (!element) return;
+  element.classList.remove("direction-fade");
+  void element.offsetWidth;
+  element.classList.add("direction-fade");
+}
+
+function applyDirectionalUI() {
+  const copy = directionalText();
+
+  sourceLangLabel.textContent = copy.sourceFieldLabel;
+  targetLangLabel.textContent = copy.targetFieldLabel;
+  speakPrompt.textContent = copy.speakPrompt;
+  manualTextInput.placeholder = copy.manualPlaceholder;
+
+  // Only reset the mic caption while idle, so an in-flight recording or
+  // translation keeps showing its own progress text.
+  if (!isListening && !isTranscribing) {
+    statusText.textContent = copy.readyTitle;
+    statusInstruction.textContent = copy.micInstruction;
+  }
+
+  if (phrasesCardDesc) phrasesCardDesc.textContent = copy.phrasesCardDesc;
+  if (phrasesTabTitle) phrasesTabTitle.textContent = copy.phrasesTabTitle;
+  if (phrasesTabSubtitle) phrasesTabSubtitle.textContent = copy.phrasesTabSubtitle;
+
+  // The screen heading stays in English in both directions. It names the
+  // screen rather than instructing the user, so it reads as a fixed title.
+  // The modes pill right below it still follows the selected direction.
+  const headings = UI_TEXT.enToNe.modeTitles;
+  mainScreenTitle.textContent = headings[activeMode] || headings.general;
+  activeModeLabel.textContent = copy.modeLabels[activeMode] || copy.modeLabels.general;
+
+  // Conversation workspace chrome.
+  if (chatTitle) chatTitle.textContent = copy.chatTitle;
+  if (btnConversationClear) btnConversationClear.textContent = copy.newChatLabel;
+
+  if (btnClearModeContext) btnClearModeContext.textContent = copy.resetModeLabel;
+
+  // Mode picker modal.
+  if (modesModalTitle) modesModalTitle.textContent = copy.modesModalTitle;
+  document.querySelectorAll(".mode-selection-item").forEach((item) => {
+    const label = copy.modeMenuTitles[item.dataset.mode];
+    const titleNode = item.querySelector(".mode-item-title");
+    if (label && titleNode) titleNode.textContent = label;
+  });
+
+  // Emergency quick-access: caption and the four action labels.
+  if (emergencyTitle) emergencyTitle.textContent = copy.emergencyTitle;
+  if (emergencyTag) emergencyTag.textContent = copy.emergencyTag;
+  document.querySelectorAll(".emergency-btn").forEach((btn) => {
+    const label = copy.emergencyLabels[btn.dataset.action];
+    const labelNode = btn.querySelector(".emerg-label");
+    if (!label || !labelNode) return;
+    labelNode.textContent = label;
+    btn.setAttribute("aria-label", label);
+  });
+
+  // Flags the whole shell so CSS can react to the active direction.
+  appShell.classList.toggle("dir-ne-en", isNepaliSource());
+
+  replayDirectionFade(speakPrompt);
+  replayDirectionFade(statusInstruction);
+
+  // Repaint phrase lists and bubbles in the new source language.
+  // renderModePhrases also writes the situational card's title.
+  renderModePhrases();
+  renderGlobalPhrasesTab();
+  renderConversationList();
+  renderConversationSidebar();
+}
+
+// Keeps the two selects a valid pair, then repaints the interface.
+function handleDirectionChange(changedSelect) {
+  if (changedSelect === sourceLanguage) {
+    targetLanguage.value = sourceLanguage.value === "English" ? "Nepali" : "English";
+  } else {
+    sourceLanguage.value = targetLanguage.value === "English" ? "Nepali" : "English";
+  }
+  applyDirectionalUI();
+  showToast(directionalText().swapToast);
+}
+
+sourceLanguage.addEventListener("change", () => handleDirectionChange(sourceLanguage));
+targetLanguage.addEventListener("change", () => handleDirectionChange(targetLanguage));
 
 // Profile Modal Interactions
 openProfile.addEventListener("click", () => {
@@ -731,8 +1079,8 @@ function startRecordingSession() {
   wavesContainer.classList.add("animating");
   setMicStatus(
     "listening",
-    "Listening",
-    "Please speak clearly into your microphone...",
+    directionalText().listeningTitle,
+    directionalText().listeningInstruction,
   );
 
   navigator.mediaDevices
@@ -783,16 +1131,20 @@ function startRecordingSession() {
 
         if (!audioBlob.size) {
           isTranscribing = false;
-          setMicStatus("error", "No Audio", "No audio was captured. Try again.");
-          showToast("No audio captured.");
+          setMicStatus(
+            "error",
+            directionalText().noAudioTitle,
+            directionalText().noAudioInstruction,
+          );
+          showToast(directionalText().noAudioToast);
           return;
         }
 
         isTranscribing = true;
         setMicStatus(
           "transcribing",
-          "Transcribing",
-          "Sending audio to Whisper for speech-to-text...",
+          directionalText().transcribingTitle,
+          directionalText().transcribingInstruction,
         );
 
         try {
@@ -815,22 +1167,19 @@ function startRecordingSession() {
           console.error("Whisper transcription error:", error);
           const message = String(error?.message || error);
 
+          const copy = directionalText();
           if (message.includes("empty-audio")) {
-            showToast("No audio was captured. Please try again.");
+            showToast(copy.noAudioToast);
           } else if (message.includes("empty-transcript")) {
-            setMicStatus(
-              "error",
-              "No Text",
-              "Speech was captured, but Whisper returned no transcript.",
-            );
-            showToast("Whisper returned no text.");
+            setMicStatus("error", copy.noTextTitle, copy.noTextInstruction);
+            showToast(copy.noTextToast);
           } else {
             setMicStatus(
               "error",
-              "Transcription Failed",
-              "Unable to convert audio to text.",
+              copy.transcribeFailedTitle,
+              copy.transcribeFailedInstruction,
             );
-            showToast("Transcription failed. Please try again.");
+            showToast(copy.transcribeFailedToast);
           }
         } finally {
           isTranscribing = false;
@@ -852,12 +1201,12 @@ function startRecordingSession() {
       wavesContainer.classList.remove("animating");
       setMicStatus(
         "error",
-        "Permission Needed",
-        "Allow microphone access to use voice input.",
+        directionalText().permissionTitle,
+        directionalText().permissionInstruction,
       );
 
       if (error && error.name === "NotAllowedError") {
-        showToast("Microphone permission denied.");
+        showToast(directionalText().permissionToast);
       } else {
         showToast("Unable to access microphone.");
       }
@@ -877,7 +1226,7 @@ function stopRecordingSession() {
   }
 
   if (!isTranscribing) {
-    setMicStatus("", "Ready", "Tap the microphone and begin speaking");
+    setMicStatus("", directionalText().readyTitle, directionalText().micInstruction);
   }
 }
 
@@ -893,11 +1242,11 @@ function simulateSpeechInput() {
     else if (activeMode === "hotel") fallbackText = "I have a reservation.";
     else fallbackText = "Hello, how are you?";
   } else {
-    if (activeMode === "shop") fallbackText = "à¤¯à¥‹ à¤•à¤¤à¤¿ à¤°à¥à¤ªà¥ˆà¤¯à¤¾à¤ à¤¹à¥‹?";
-    else if (activeMode === "taxi") fallbackText = "à¤®à¤²à¤¾à¤ˆ à¤µà¤¿à¤®à¤¾à¤¨à¤¸à¥à¤¥à¤² à¤²à¥ˆà¤œà¤¾à¤¨à¥à¤¹à¥‹à¤¸à¥à¥¤";
-    else if (activeMode === "dining") fallbackText = "à¤•à¥‡ à¤® à¤®à¥‡à¤¨à¥ à¤¹à¥‡à¤°à¥à¤¨ à¤¸à¤•à¥à¤›à¥?";
-    else if (activeMode === "hotel") fallbackText = "à¤®à¥‡à¤°à¥‹ à¤¬à¥à¤•à¤¿à¤™ à¤›à¥¤";
-    else fallbackText = "à¤¨à¤®à¤¸à¥à¤¤à¥‡, à¤¤à¤ªà¤¾à¤ˆà¤‚à¤²à¤¾à¤ˆ à¤•à¤¸à¥à¤¤à¥‹ à¤›?";
+    if (activeMode === "shop") fallbackText = "यो कति रुपैयाँ हो?";
+    else if (activeMode === "taxi") fallbackText = "मलाई विमानस्थल लैजानुहोस्।";
+    else if (activeMode === "dining") fallbackText = "के म मेनु हेर्न सक्छु?";
+    else if (activeMode === "hotel") fallbackText = "मेरो बुकिङ छ।";
+    else fallbackText = "नमस्ते, तपाईंलाई कस्तो छ?";
   }
 
   showToast("Audio capture parsed.");
@@ -908,15 +1257,18 @@ function simulateSpeechInput() {
 // 6. Translation Engine
 // -------------------------------------------------------------
 
+// Resolves to the saved entry, or to null when nothing could be translated.
+// options.emergencyAction  - expand a quick-access alert server-side.
+// options.speakResult      - read the translation out even if auto-play is off.
 async function processTranslation(sourceText, options = {}) {
   if (!sourceText.trim()) {
     showToast("Type or speak a phrase to translate.");
-    return;
+    return null;
   }
 
   statusBadge.className = "status-badge translating";
-  statusText.textContent = "Translating";
-  statusInstruction.textContent = "Processing local grammar dialects...";
+  statusText.textContent = directionalText().translatingTitle;
+  statusInstruction.textContent = directionalText().translatingInstruction;
 
   const originalLang = sourceLanguage.value;
   const translatedLang = targetLanguage.value;
@@ -926,19 +1278,19 @@ async function processTranslation(sourceText, options = {}) {
     translationResult = await translateViaBackend(sourceText, options);
   } catch (error) {
     console.error("Backend translation error:", error);
-    showToast("Backend translation failed. Please check the server.");
+    showToast(directionalText().translateFailedToast);
     statusBadge.className = "status-badge error";
-    statusText.textContent = "Translation failed";
-    statusInstruction.textContent = "Unable to get backend response.";
-    return;
+    statusText.textContent = directionalText().translateFailedTitle;
+    statusInstruction.textContent = directionalText().translateFailedInstruction;
+    return null;
   }
 
   if (!translationResult?.translatedText) {
-    showToast("Backend returned no translation.");
+    showToast(directionalText().translateFailedToast);
     statusBadge.className = "status-badge error";
-    statusText.textContent = "No translation";
-    statusInstruction.textContent = "Backend response was empty.";
-    return;
+    statusText.textContent = directionalText().emptyTranslationTitle;
+    statusInstruction.textContent = directionalText().emptyTranslationInstruction;
+    return null;
   }
 
   const entry = {
@@ -986,12 +1338,14 @@ async function processTranslation(sourceText, options = {}) {
   renderConversationList();
 
   statusBadge.className = "status-badge ready-playback";
-  statusText.textContent = "Playback Ready";
-  statusInstruction.textContent = "Audio translation built!";
+  statusText.textContent = directionalText().playbackTitle;
+  statusInstruction.textContent = directionalText().playbackInstruction;
 
-  if (autoPlayActive) {
+  if (autoPlayActive || options.speakResult) {
     speakTranslation(savedEntry.translated, null, savedEntry.to);
   }
+
+  return savedEntry;
 }
 
 // -------------------------------------------------------------
@@ -1012,18 +1366,19 @@ function renderConversationList() {
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
           </svg>
         </div>
-        <p>${auth.isLoggedIn() ? "Start a new translation or reopen a saved conversation." : "Sign in to save and sync conversation history."}</p>
+        <p>${auth.isLoggedIn() ? directionalText().chatEmptySignedIn : directionalText().chatEmptySignedOut}</p>
       </div>
     `;
     return;
   }
 
   currentLog.forEach((entry) => {
+    const labels = bubbleLabels(entry);
     const sentRow = document.createElement("div");
     sentRow.className = "speech-row sent";
     sentRow.innerHTML = `
       <div class="speech-bubble">
-        <div class="bubble-meta">Tourist (${entry.from})</div>
+        <div class="bubble-meta">${labels.source}</div>
         <div class="bubble-text">${entry.original}</div>
         <div class="bubble-time">${entry.timestamp}</div>
       </div>
@@ -1054,7 +1409,7 @@ function renderConversationList() {
 
     recRow.innerHTML = `
       <div class="speech-bubble">
-        <div class="bubble-meta">– Translation (${entry.to})</div>
+        <div class="bubble-meta">${labels.target}</div>
         <div class="bubble-text">${entry.translated}</div>
         <div class="bubble-time">${entry.timestamp}</div>
         ${suggestionHtml}
@@ -1227,13 +1582,15 @@ function renderConversationSidebar() {
 
   conversationList.innerHTML = "";
 
+  const copy = directionalText();
+
   if (!auth.isLoggedIn()) {
-    conversationList.innerHTML = `<div class="conversation-empty">Sign in to sync conversations.</div>`;
+    conversationList.innerHTML = `<div class="conversation-empty">${copy.sidebarSignedOut}</div>`;
     return;
   }
 
   if (conversations.length === 0) {
-    conversationList.innerHTML = `<div class="conversation-empty">No conversations yet.</div>`;
+    conversationList.innerHTML = `<div class="conversation-empty">${copy.sidebarEmpty}</div>`;
     return;
   }
 
@@ -1260,11 +1617,13 @@ function renderConversationSidebar() {
 }
 
 // -------------------------------------------------------------
-// Quick Phrases — instant translate-and-speak
+// Quick Phrases
 // -------------------------------------------------------------
-// Deliberately isolated from processTranslation(): a Quick Phrase click
-// must never create a conversation, save a message, or touch PostgreSQL.
-// Flow is just /translate (stateless) -> /tts -> play the audio blob.
+// A Quick Phrase is ordinary user input: tapping one fills the text box the
+// user would have typed into and hands it to processTranslation(), the same
+// path the microphone and the Send button use. There is no second translation
+// or speech mechanism here, so phrases share the conversation, the history and
+// the Edge TTS voice with everything else.
 
 let quickPhraseRequestId = 0;
 let activeQuickPhraseButton = null;
@@ -1277,106 +1636,67 @@ function setQuickPhraseButtonState(button, stateClass, statusMessage) {
   if (statusEl) statusEl.textContent = statusMessage || "";
 }
 
-async function translateQuickPhrase(englishText) {
-  const response = await fetch(`${API_BASE_URL}/translate`, {
-    method: "POST",
-    mode: "cors",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      text: englishText,
-      source_lang: "English",
-      target_lang: "Nepali",
-    }),
-  });
-
-  if (!response.ok) {
-    const errorBody = await response.text().catch(() => "");
-    throw new Error(`Translate API error: ${response.status} ${errorBody}`);
-  }
-
-  const data = await response.json();
-  if (data.error) throw new Error(data.error);
-  if (!data.translated_text) throw new Error("No translation returned.");
-  return data.translated_text;
+// The phrase list for the direction the user is speaking in.
+function phrasesForCategory(categoryKey) {
+  const set = isNepaliSource() ? QUICK_PHRASES.neToEn : QUICK_PHRASES.enToNe;
+  return set[categoryKey] || [];
 }
 
-async function playQuickPhraseAudio(nepaliText) {
-  const requestId = ++ttsPlaybackRequestId;
-  stopTtsPlayback();
-
-  const response = await auth.fetchWithAuth("/tts", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ text: nepaliText, language: "Nepali" }),
-  });
-
-  if (!response.ok) {
-    const error = await response.json().catch(() => ({}));
-    throw new Error(error.error || "Could not generate speech");
-  }
-
-  const audioUrl = URL.createObjectURL(await response.blob());
-  if (requestId !== ttsPlaybackRequestId) {
-    URL.revokeObjectURL(audioUrl);
-    return;
-  }
-
-  const audio = new Audio(audioUrl);
-  activeTtsAudio = audio;
-  activeTtsAudioUrl = audioUrl;
-  audio.playbackRate = speechSpeedRate;
-
-  await new Promise((resolve, reject) => {
-    audio.onended = () => {
-      if (activeTtsAudio === audio) stopTtsPlayback();
-      resolve();
-    };
-    audio.onerror = () => {
-      if (activeTtsAudio === audio) stopTtsPlayback();
-      reject(new Error("Audio playback failed."));
-    };
-    audio.play().catch(reject);
-  });
-}
-
-async function handleQuickPhraseClick(englishText, button) {
-  if (button.disabled) return; // already translating/playing this phrase
+async function handleQuickPhraseClick(phraseText, button) {
+  if (button.disabled) return; // this phrase is already in flight
 
   if (activeQuickPhraseButton && activeQuickPhraseButton !== button) {
     setQuickPhraseButtonState(activeQuickPhraseButton, null, "");
   }
   activeQuickPhraseButton = button;
 
+  const copy = directionalText();
   const requestId = ++quickPhraseRequestId;
-  setQuickPhraseButtonState(button, "is-loading", "Translating...");
+  setQuickPhraseButtonState(button, "is-loading", copy.qpTranslating);
 
-  let translatedText;
+  // Show the phrase where typed input goes, so the tap reads as "this is what
+  // I said" rather than as a hidden shortcut.
+  manualTextInput.value = phraseText;
+
+  let entry = null;
   try {
-    translatedText = await translateQuickPhrase(englishText);
+    entry = await processTranslation(phraseText, { speakResult: true });
   } catch (error) {
     console.error("Quick phrase translation failed:", error);
-    if (requestId === quickPhraseRequestId) {
-      setQuickPhraseButtonState(button, "is-error", "Translation failed. Tap to retry.");
-    }
+  } finally {
+    if (manualTextInput.value === phraseText) manualTextInput.value = "";
+  }
+
+  if (requestId !== quickPhraseRequestId) return; // superseded by a newer tap
+
+  if (!entry) {
+    setQuickPhraseButtonState(button, "is-error", copy.qpTranslateFailed);
     return;
   }
 
-  if (requestId !== quickPhraseRequestId) return; // superseded by a newer click
+  // Leave the translation on the button: the person holding the phone can see
+  // what the other side is about to hear.
+  setQuickPhraseButtonState(button, null, entry.translated);
+}
 
-  setQuickPhraseButtonState(button, "is-playing", `${translatedText} · Playing...`);
-
-  try {
-    await playQuickPhraseAudio(translatedText);
-  } catch (error) {
-    console.error("Quick phrase audio failed:", error);
-    if (requestId === quickPhraseRequestId) {
-      setQuickPhraseButtonState(button, "is-error", `${translatedText} · Audio unavailable`);
-    }
-    return;
-  }
-
-  if (requestId !== quickPhraseRequestId) return;
-  setQuickPhraseButtonState(button, null, translatedText);
+// Builds one phrase button. Used by both the in-mode card and the Phrases tab.
+function buildPhraseButton(phraseText, className) {
+  const button = document.createElement("button");
+  button.className = className;
+  button.type = "button";
+  button.innerHTML = `
+    <span class="phrase-text-wrap">
+      <span class="phrase-text">${escapeHtml(phraseText)}</span>
+      <span class="phrase-status" aria-live="polite"></span>
+    </span>
+    <span class="phrase-play-arrow">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+      </svg>
+    </span>
+  `;
+  button.addEventListener("click", () => handleQuickPhraseClick(phraseText, button));
+  return button;
 }
 
 function renderModePhrases() {
@@ -1389,71 +1709,43 @@ function renderModePhrases() {
     return;
   }
 
-  // Show situational phrases card if in a business mode
   modePhrasesCard.style.display = "flex";
-  phrasesCardTitle.textContent = `${MODE_METADATA[activeMode].title} Phrases`;
+  const copy = directionalText();
+  phrasesCardTitle.textContent = `${copy.modeTitles[activeMode]} ${copy.phrasesCardTitleSuffix}`;
 
-  MODE_PHRASES[activeMode].forEach((phraseObj) => {
-    const chip = document.createElement("button");
-    chip.className = "mode-phrase-btn";
-    chip.innerHTML = `
-      <span class="phrase-text-wrap">
-        <span class="phrase-text">${phraseObj.text}</span>
-        <span class="phrase-status" aria-live="polite"></span>
-      </span>
-      <span class="phrase-play-arrow">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <polygon points="5 3 19 12 5 21 5 3"></polygon>
-        </svg>
-      </span>
-    `;
-
-    chip.addEventListener("click", () => {
-      handleQuickPhraseClick(phraseObj.text, chip);
-    });
-
-    modePhrasesGrid.appendChild(chip);
+  phrasesForCategory(activeMode).forEach((phrase) => {
+    modePhrasesGrid.appendChild(buildPhraseButton(phrase.source, "mode-phrase-btn"));
   });
 }
 
+// One category card per context, rebuilt whenever the direction changes so the
+// headings and the phrases always belong to the same audience.
 function renderGlobalPhrasesTab() {
-  const categories = ["shopping", "dining", "transportation", "hotel"];
-  const grids = {
-    shopping: shoppingGrid,
-    dining: diningGrid,
-    transportation: transGrid,
-    hotel: hotelGrid,
-  };
+  if (!phrasesWrapper) return;
 
-  categories.forEach((cat) => {
-    const grid = grids[cat];
-    if (!grid) return;
+  const copy = directionalText();
+  phrasesWrapper.innerHTML = "";
 
-    grid.innerHTML = "";
-    const mapKey =
-      cat === "shopping" ? "shop" : cat === "transportation" ? "taxi" : cat;
+  PHRASE_CATEGORIES.forEach((category) => {
+    const phrases = phrasesForCategory(category.key);
+    if (!phrases.length) return;
 
-    MODE_PHRASES[mapKey].forEach((phraseObj) => {
-      const btn = document.createElement("button");
-      btn.className = "phrase-row-btn";
-      btn.innerHTML = `
-        <span class="phrase-text-wrap">
-          <span class="phrase-text">${phraseObj.text}</span>
-          <span class="phrase-status" aria-live="polite"></span>
-        </span>
-        <span class="phrase-play-arrow">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <polygon points="5 3 19 12 5 21 5 3"></polygon>
-          </svg>
-        </span>
-      `;
+    const card = document.createElement("div");
+    card.className = "phrases-category-card";
+    card.innerHTML = `
+      <h2 class="category-header">
+        <span class="cat-icon">${category.icon}</span>
+        <span>${escapeHtml(copy.categories[category.key] || category.key)}</span>
+      </h2>
+      <div class="phrases-grid"></div>
+    `;
 
-      btn.addEventListener("click", () => {
-        handleQuickPhraseClick(phraseObj.text, btn);
-      });
-
-      grid.appendChild(btn);
+    const grid = card.querySelector(".phrases-grid");
+    phrases.forEach((phrase) => {
+      grid.appendChild(buildPhraseButton(phrase.source, "phrase-row-btn"));
     });
+
+    phrasesWrapper.appendChild(card);
   });
 }
 
@@ -1522,9 +1814,8 @@ function setTranslatorMode(modeKey, triggerToast = true) {
     }
   });
 
-  // Update Header Labels & pill
-  activeModeLabel.textContent = metadata.label;
-  mainScreenTitle.textContent = metadata.title;
+  // Header labels and the modes pill are written by applyDirectionalUI below,
+  // which picks the wording for the active translation direction.
 
   // Clear or apply theme modifiers
   appShell.className = "app-shell"; // Clear preceding
@@ -1544,24 +1835,20 @@ function setTranslatorMode(modeKey, triggerToast = true) {
     splitLayoutElement.classList.add("mode-active");
   }
 
-  // Load contextual phrase lists
-  renderModePhrases();
-
-  renderConversationList();
-
-  // Reset microphone instructions and badges
+  // Reset microphone badge before the directional pass rewrites its wording
   statusBadge.className = "status-badge";
-  statusText.textContent = "Ready";
-  statusInstruction.textContent = "Tap the microphone and begin speaking";
 
-  // Force alert contexts
-  if (modeKey === "emergency") {
-    sourceLanguage.value = "English";
-    targetLanguage.value = "Nepali";
-  }
+  // Emergency keeps whichever direction the user selected: a Nepali speaker
+  // needs the alert in English just as a tourist needs it in Nepali.
+
+  // Repaints headings, phrase lists, conversation bubbles and mic captions
+  // in whichever direction is now selected.
+  applyDirectionalUI();
 
   if (triggerToast) {
-    showToast(`${metadata.title} activated.`);
+    const copy = directionalText();
+    const modeName = copy.modeTitles[modeKey] || metadata.title;
+    showToast(copy.modeActivatedToast.replace("{mode}", modeName));
   }
 }
 
@@ -1595,7 +1882,8 @@ function swapSelectedLanguages() {
   const current = sourceLanguage.value;
   sourceLanguage.value = targetLanguage.value;
   targetLanguage.value = current;
-  showToast(`Swapped Speaking Language to: ${sourceLanguage.value}`);
+  applyDirectionalUI();
+  showToast(directionalText().swapToast);
 }
 swapLanguages.addEventListener("click", swapSelectedLanguages);
 
@@ -1639,20 +1927,13 @@ btnConversationClear.addEventListener("click", async () => {
   }
 });
 
-// Emergency Alert Buttons click
-const emergencyActions = {
-  "Need Assistance": "assistance",
-  "Call Police": "police",
-  "Need Hospital": "hospital",
-  "I Am Lost": "lost",
-};
-
+// Emergency Alert Buttons click. data-action is the backend key and data-phrase
+// the English source text; the visible label is set by applyDirectionalUI.
 document.querySelectorAll(".emergency-btn").forEach((btn) => {
   btn.addEventListener("click", async () => {
     if (emergencyRequestInProgress) return;
 
-    const phraseLabel = btn.dataset.phrase;
-    const emergencyAction = emergencyActions[phraseLabel];
+    const emergencyAction = btn.dataset.action;
     if (!emergencyAction) return;
 
     emergencyRequestInProgress = true;
@@ -1662,9 +1943,17 @@ document.querySelectorAll(".emergency-btn").forEach((btn) => {
 
     try {
       setTranslatorMode("emergency", false);
-      await processTranslation(phraseLabel, {
-        emergencyAction,
-      });
+
+      // English source: the backend turns the action key into a full request
+      // sentence. Nepali source: send the Nepali sentence itself, so the
+      // saved message really is the language the user is speaking.
+      if (isNepaliSource()) {
+        await processTranslation(
+          UI_TEXT.neToEn.emergencyPhrases[emergencyAction],
+        );
+      } else {
+        await processTranslation(btn.dataset.phrase, { emergencyAction });
+      }
     } finally {
       emergencyRequestInProgress = false;
       document.querySelectorAll(".emergency-btn").forEach((button) => {
